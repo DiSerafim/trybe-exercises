@@ -96,3 +96,56 @@ if (tri + an + gulo == 180) {
 } else {
   console.log("Erro! angulos inválidos");
 }
+
+//#xadrez
+let peçaDoXadrez = "Dama".toLowerCase(); // 
+
+switch (peçaDoXadrez) {
+  case "rei":
+    console.log("Se movimenta, se deslocando uma casa na direção horizontal, vertical ou diagonal. Ele tem um movimento especial chamado roque.");
+    break;
+  
+  case "dama":
+    console.log("Chamada de Rainha possui o movimento combinado da Torre e do Bispo, movendo-se em linha reta nas fileiras, colunas e diagonais.");
+    break;
+  
+  case "torre":
+    console.log("Move-se em linha reta nas colunas e fileiras do Tabuleiro.");
+    break;
+  
+  case "bispo":
+    console.log("Movimenta-se em linhas retas nas diagonais do tabuleiro. Devido ele andar somente nas diagonais seu movimento é restrito pela cor das casas, ou seja, alcança somente 32 casas no tabuleiro (claras ou escuras).");
+    break;
+  
+  case "cavalo":
+    console.log("Pode mover para a casa mais próxima de onde está desde que não seja na mesma coluna, diagonal ou fileiras do Tabuleiro, com o formato característico da letra L, podendo pular peças intervenientes.");
+    break;
+  
+  case "peão":
+    console.log("Se movimenta para a casa desocupada imediatamente a sua frente na mesma coluna ou no primeiro movimento opcionalmente por duas casas na mesma coluna desde que ambas as casas estejam desocupadas.");
+    break;
+  
+  default:
+    console.log("Error! informações apenas sobre (Rei, Dama, Torre, Bispo, Cavalo e Peão)")
+}
+
+//#converte uma nota dada em porcentagem (de 0 a 100)
+let porcentagem = "101"; 
+
+if (porcentagem < 0 || porcentagem > 100) {
+  console.log("ERROR! não pode ser menor que zero e nem maior que 100")
+} else if (porcentagem >= 90) {
+  console.log("A")
+} else if (porcentagem >= 80) {
+  console.log("B")
+} else if (porcentagem >= 70) {
+  console.log("C")
+} else if (porcentagem >= 60) {
+  console.log("D")
+} else if (porcentagem >= 50) {
+  console.log("E")
+} else if (porcentagem < 50) {
+  console.log("F")
+} else {
+  console.log("Error! tente um número entre 0 e 100")
+} 
