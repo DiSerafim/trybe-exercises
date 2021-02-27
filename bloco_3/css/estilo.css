@@ -65,11 +65,12 @@ article .sob h2 {
   margin-top: 30px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
 }
 
 article .sob figure {
   display: inline-block;
-  margin-top: 30px;
+  margin-top: 40px;
   padding: 10px;
   width: auto;
   height: 400px;
@@ -91,20 +92,6 @@ article .sob figure img {
   height: auto;
 }
 
-article .info {
-  padding: 10px;
-  margin-top: 140px;
-  background-color: rosybrown;
-  border-bottom: solid 1px rgb(250, 252, 250);
-}
-
-article .info h2 {
-  padding: 10px;
-  margin-top: 30px;
-  text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 .informações {
   height: max-content;
   min-height: 97vh;
@@ -120,21 +107,22 @@ article .info h2 {
   border-bottom: solid 1px rgb(250, 252, 250);
 }
 
-.informações .info h2{
+.informações .info h2 {
   padding: 10px;
   margin-top: 30px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
 }
 
-.informações .info ul{
+.informações .info ul {
   float: left;
   padding: 10px;
   margin-top: 80px;
   width: 40%;
 }
 
-.informações .info ul li{
+.informações .info ul li {
   padding: 1px;
   text-align: left;
   margin-left: 10px;
@@ -142,34 +130,112 @@ article .info h2 {
   font-size: 16px;
 }
 
-.informações .info ul li em{
+.informações .info ul li em {
   color: #011d42;
   font-size: 18px;
 }
 
-.informações .info figure{
-    margin-left: 50%;
-    width: 45%;
-    margin-top: 110px;
+.informações .info figure {
+  margin-left: 50%;
+  width: 45%;
+  margin-top: 110px;
 }
 
-.informações .info figure p{
-    font-size: 14px;
+.informações .info figure p {
+  font-size: 14px;
 }
 
-.informações .info figure img{
-    width: 100%;
-    margin-top: 5px;
+.informações .info figure img {
+  width: 100%;
+  margin-top: 5px;
 }
 
 .fatos {
-  background-color: rgb(135, 219, 222);
   height: max-content;
-  min-height: 99vh;
+  min-height: 97vh;
+  padding: 10px;
+}
+
+.fatos .fat {
+  padding: 10px;
+  margin-top: 140px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.fatos .fat h2 {
+  padding: 10px;
+  margin-top: 30px;
+  text-align: justify;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
+}
+
+.fatos .fat figure {
+  display: inline-block;
+  margin-top: 50px;
+  padding: 10px;
+  width: auto;
+  height: 400px;
+}
+
+.fatos .fat figure p {
+  float: left;
+  padding: 10px;
+  width: 50%;
+  height: auto;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.fatos .fat figure img {
+  float: right;
+  padding: 10px;
+  width: 40%;
+  height: auto;
 }
 
 .interessante {
-  background-color: rgb(135, 151, 222);
   height: max-content;
-  min-height: 99vh;
+  min-height: 97vh;
+  padding: 10px;
+}
+
+.interessante .int {
+  padding: 10px;
+  margin-top: 140px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.interessante .int h2 {
+  padding: 10px;
+  margin-top: 30px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
+}
+
+.interessante .int figure {
+  display: inline-block;
+  margin-top: 50px;
+  padding: 10px;
+  width: auto;
+  height: 400px;
+}
+
+.interessante .int figure p {
+  float: left;
+  padding: 10px;
+  width: 50%;
+  height: auto;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.interessante .int figure img {
+  float: right;
+  padding: 10px;
+  width: 40%;
+  height: auto;
 }
