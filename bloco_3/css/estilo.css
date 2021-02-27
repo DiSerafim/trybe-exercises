@@ -16,7 +16,9 @@ header {
   background-color: #c9c9c9;
   text-align: center;
   padding: 10px;
-  margin-top: 30px;
+  position: fixed;
+  margin-top: 0;
+  width: 94%;
   font-family: Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
 }
 
@@ -25,7 +27,7 @@ nav ul {
   padding: 5px;
   background-color: #e6e3e3;
   position: fixed;
-  margin: 0;
+  margin-top: 100px;
 }
 
 nav ul li {
@@ -47,13 +49,13 @@ nav ul li a:hover {
 
 article {
   height: max-content;
-  min-height: 90vh;
+  min-height: 97vh;
   padding: 10px;
 }
 
 article .sob {
   padding: 10px;
-  margin-top: 35px;
+  margin-top: 135px;
   background-color: rosybrown;
   border-bottom: solid 1px rgb(250, 252, 250);
 }
@@ -89,65 +91,75 @@ article .sob figure img {
   height: auto;
 }
 
-.informações {
-  height: max-content;
-  min-height: 96vh;
+article .info {
   padding: 10px;
-}
-
-.informações .info {
-  padding: 10px;
-  margin-top: 170px;
-  min-height: 100%;
+  margin-top: 140px;
   background-color: rosybrown;
   border-bottom: solid 1px rgb(250, 252, 250);
 }
 
-.informações .info h2 {
+article .info h2 {
   padding: 10px;
   margin-top: 30px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.informações .info ul {
-  float: left;
-  background-color: royalblue;
-  width: 40%;
+.informações {
+  height: max-content;
+  min-height: 97vh;
   padding: 10px;
-  margin-top: 100px;
-  margin-left: 15px;
-  text-align: left;
+}
+
+.informações .info {
+  padding: 10px;
+  max-width: 98%;
+  min-height: 569px;
+  margin-top: 140px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.informações .info h2{
+  padding: 10px;
+  margin-top: 30px;
+  text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.informações .info ul{
+  float: left;
+  padding: 10px;
+  margin-top: 80px;
+  width: 40%;
 }
 
 .informações .info ul li{
-  background-color: royalblue;
   padding: 1px;
-  margin-left: 15px;
+  text-align: left;
+  margin-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.informações .info ul li em{
+  color: #011d42;
+  font-size: 18px;
 }
 
 .informações .info figure{
-  float: right;
-  background-color: royalblue;
-  width: 45%;
-  padding: 10px;
-  margin-top: 100px;
-  margin-left: 15px;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
+    margin-left: 50%;
+    width: 45%;
+    margin-top: 110px;
 }
 
-.informações .info figure{
-  float: right;
-  background-color: royalblue;
-  width: 45%;
-  padding: 10px;
-  margin-top: 100px;
-  margin-left: 15px;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
+.informações .info figure p{
+    font-size: 14px;
+}
+
+.informações .info figure img{
+    width: 100%;
+    margin-top: 5px;
 }
 
 .fatos {
