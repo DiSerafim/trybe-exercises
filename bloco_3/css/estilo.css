@@ -16,8 +16,14 @@ header {
   background-color: #c9c9c9;
   text-align: center;
   padding: 10px;
-  margin-top: 30px;
+  position: fixed;
+  margin-top: 0;
+  width: 94%;
   font-family: Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
+}
+
+header p{
+  margin-left: 200px;
 }
 
 nav ul {
@@ -25,7 +31,7 @@ nav ul {
   padding: 5px;
   background-color: #e6e3e3;
   position: fixed;
-  margin: 0;
+  margin-top: 100px;
 }
 
 nav ul li {
@@ -47,13 +53,13 @@ nav ul li a:hover {
 
 article {
   height: max-content;
-  min-height: 90vh;
+  min-height: 97vh;
   padding: 10px;
 }
 
 article .sob {
   padding: 10px;
-  margin-top: 35px;
+  margin-top: 135px;
   background-color: rosybrown;
   border-bottom: solid 1px rgb(250, 252, 250);
 }
@@ -63,11 +69,12 @@ article .sob h2 {
   margin-top: 30px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
 }
 
 article .sob figure {
   display: inline-block;
-  margin-top: 30px;
+  margin-top: 40px;
   padding: 10px;
   width: auto;
   height: 400px;
@@ -91,14 +98,15 @@ article .sob figure img {
 
 .informações {
   height: max-content;
-  min-height: 96vh;
+  min-height: 97vh;
   padding: 10px;
 }
 
 .informações .info {
   padding: 10px;
-  margin-top: 170px;
-  min-height: 100%;
+  max-width: 98%;
+  min-height: 569px;
+  margin-top: 140px;
   background-color: rosybrown;
   border-bottom: solid 1px rgb(250, 252, 250);
 }
@@ -108,56 +116,163 @@ article .sob figure img {
   margin-top: 30px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
 }
 
 .informações .info ul {
   float: left;
-  background-color: royalblue;
+  padding: 10px;
+  margin-top: 80px;
   width: 40%;
-  padding: 10px;
-  margin-top: 100px;
-  margin-left: 15px;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
-.informações .info ul li{
-  background-color: royalblue;
+.informações .info ul li {
   padding: 1px;
-  margin-left: 15px;
+  text-align: left;
+  margin-left: 10px;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
 
-.informações .info figure{
-  float: right;
-  background-color: royalblue;
-  width: 45%;
-  padding: 10px;
-  margin-top: 100px;
-  margin-left: 15px;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
+.informações .info ul li em {
+  color: #011d42;
+  font-size: 18px;
 }
 
-.informações .info figure{
-  float: right;
-  background-color: royalblue;
+.informações .info figure {
+  margin-left: 50%;
   width: 45%;
-  padding: 10px;
-  margin-top: 100px;
-  margin-left: 15px;
-  text-align: left;
-  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 110px;
+}
+
+.informações .info figure p {
+  font-size: 14px;
+}
+
+.informações .info figure img {
+  width: 100%;
+  margin-top: 5px;
 }
 
 .fatos {
-  background-color: rgb(135, 219, 222);
   height: max-content;
-  min-height: 99vh;
+  min-height: 97vh;
+  padding: 10px;
+}
+
+.fatos .fat {
+  padding: 10px;
+  margin-top: 140px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.fatos .fat h2 {
+  padding: 10px;
+  margin-top: 30px;
+  text-align: justify;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
+}
+
+.fatos .fat figure {
+  display: inline-block;
+  margin-top: 50px;
+  padding: 10px;
+  width: auto;
+  height: 400px;
+}
+
+.fatos .fat figure p {
+  float: left;
+  padding: 10px;
+  width: 50%;
+  height: auto;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.fatos .fat figure img {
+  float: right;
+  padding: 10px;
+  width: 40%;
+  height: auto;
 }
 
 .interessante {
-  background-color: rgb(135, 151, 222);
   height: max-content;
-  min-height: 99vh;
+  min-height: 97vh;
+  padding: 10px;
+}
+
+.interessante .int {
+  padding: 10px;
+  margin-top: 140px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.interessante .int h2 {
+  padding: 10px;
+  margin-top: 30px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
+}
+
+.interessante .int figure {
+  display: inline-block;
+  margin-top: 50px;
+  padding: 10px;
+  width: auto;
+  height: 400px;
+}
+
+.interessante .int figure p {
+  float: left;
+  padding: 10px;
+  width: 50%;
+  height: auto;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.interessante .int figure img {
+  float: right;
+  padding: 10px;
+  width: 40%;
+  height: auto;
+}
+
+.bibliografias {
+  height: max-content;
+  min-height: 97vh;
+  padding: 10px;
+}
+
+.bibliografias .bib {
+  padding: 10px;
+  margin-top: 200px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.bibliografias .bib h2 {
+  padding: 10px;
+  margin-top: 30px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
+}
+
+.bibliografias .bib a {
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  margin: 0;
+}
+
+.bibliografias .bib p {
+  margin-top: 30px;
+  text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
 }
