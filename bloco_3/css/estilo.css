@@ -22,6 +22,10 @@ header {
   font-family: Verdana, Geneva, Tahoma, sans-serif, 'Times New Roman', Times, serif;
 }
 
+header p{
+  margin-left: 200px;
+}
+
 nav ul {
   text-align: center;
   padding: 5px;
@@ -238,4 +242,37 @@ article .sob figure img {
   padding: 10px;
   width: 40%;
   height: auto;
+}
+
+.bibliografias {
+  height: max-content;
+  min-height: 97vh;
+  padding: 10px;
+}
+
+.bibliografias .bib {
+  padding: 10px;
+  margin-top: 200px;
+  background-color: rosybrown;
+  border-bottom: solid 1px rgb(250, 252, 250);
+}
+
+.bibliografias .bib h2 {
+  padding: 10px;
+  margin-top: 30px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  border-bottom: solid 1px rgb(247, 149, 1);
+}
+
+.bibliografias .bib a {
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  margin: 0;
+}
+
+.bibliografias .bib p {
+  margin-top: 30px;
+  text-align: left;
+  font-family: Arial, Helvetica, sans-serif;
 }
