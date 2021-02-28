@@ -1,6 +1,10 @@
 /*  
 introducao-a-html-e-css_4
 HTML semântico
+Bloco_3
+Html semântico
+tema / Stomatopoda / lagostas-boxeadoras
+finalizado em 27 de fevereiro de 2021
 */
 body {
   background-color: blueviolet;
@@ -195,7 +199,7 @@ article .sob figure img {
 .fatos .fat figure img {
   float: right;
   padding: 10px;
-  width: 40%;
+  width: 30%;
   height: auto;
 }
 
