@@ -1,4 +1,4 @@
-/*exercísio de fixação 24/02/2021
+/*exercísio de fixação 24/02/2021 - Introdução - JavaScript / JavaScript - Primeiros passos
 console.log("Hello World!!");
 const name = 'Diego';
 const birthCity = 'Belém';
