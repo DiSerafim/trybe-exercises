@@ -228,4 +228,4 @@ for (let index = 0; index <= numbers.length; index += 1) {              // 1° f
 let newArray = [];
 for(let rightIndex=1; rightIndex < numbers.length; rightIndex++){ for(let leftIndex=rightIndex-1; leftIndex < rightIndex; leftIndex++){ newArray.push(numbers[leftIndex] * numbers[rightIndex]); } if(rightIndex === numbers.length-1){ newArray.push(numbers[rightIndex] * 2); }}console.log(numbers);console.log(newArray);
 
-abc
+cde
