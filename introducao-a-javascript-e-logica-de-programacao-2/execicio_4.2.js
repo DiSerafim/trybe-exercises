@@ -73,14 +73,14 @@ console.log(indexOfTask); //1
 //Exercício 1
 //Obtenha o valor "Serviços" do array menu
 let menu = ['Home', 'Serviços', 'Portfólio', 'Links'];
-let menuServices = menu.length;
+let menuServices = menu.indexOf('Portfólio');
 
-console.log(menuServices); // 4
+console.log(menuServices); // 2
 
 //Exercício 2
 //Procure o índice do valor "Portfólio" do array menu
 let menu = ['Home', 'Serviços', 'Portfólio', 'Links'];
-let indexOfPortfolio = menu.indexOf('Portfólio');
+let indexOfPortfolio = menu[2];
 
 console.log(indexOfPortfolio); //2
 
