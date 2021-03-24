@@ -146,7 +146,7 @@ const checkIfElse = (age) => {
 
 
 
-// AULA AOVIVO
+// AULA AO VIVO
 const x = 3;
 x = 18;
 console.log(x);
@@ -208,5 +208,24 @@ Esta é uma mensagem automática.`;
 console.log(email);
 
 
-// CONTEUDO - Exercícios
+// CONTEUDO - Exercícios do dia
+// Ex-01
+const testingScope = escopo => {
+  if (escopo === true) {
+    let ifScope = 'Não devo ser utilizada fora do meu escopo (if)';
+    ifScope = `${ifScope} ótimo, fui utilizada no escopo!`;
+    console.log(ifScope);
+  } else {
+    let elseScope = `Não devo ser utilizada fora meu escopo (else)`;
+    console.log(elseScope);
+  }
+}
+testingScope(true);
 
+// Ex-02
+const oddsAndEvens = [13, 3, 4, 10, 7, 2];
+// Seu código aqui.
+oddsAndEvens.sort(function (a, b) {
+  return a - b;
+});
+console.log(oddsAndEvens);
