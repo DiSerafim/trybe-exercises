@@ -209,7 +209,7 @@ console.log(email);
 
 
 // CONTEUDO - Exercícios do dia
-// 01
+// Ex-01
 const testingScope = escopo => {
   if (escopo === true) {
     let ifScope = 'Não devo ser utilizada fora do meu escopo (if)';
@@ -221,3 +221,11 @@ const testingScope = escopo => {
   }
 }
 testingScope(true);
+
+// Ex-02
+const oddsAndEvens = [13, 3, 4, 10, 7, 2];
+// Seu código aqui.
+oddsAndEvens.sort(function (a, b) {
+  return a - b;
+});
+console.log(oddsAndEvens);
