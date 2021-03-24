@@ -64,3 +64,20 @@ for (let indexLinha = 0; indexLinha < piramideMeio; indexLinha += 1) {
     ladoDireito -= 1;
     ladoEsquerdo += 1;
 }
+
+// 03 - inverta o lado do triângulo
+let piramideBase = 5;
+let asteristico = '*';
+let espacos = '';
+let piramideMeio = (piramideBase + 1) / 2;
+let ladoEsquerdo = (piramideMeio);
+for (let indexLinha = 0; indexLinha < piramideMeio; indexLinha += 1) {
+    for (let indexColuna = 1; indexColuna <= piramideBase; indexColuna += 1) {
+        if (indexColuna < ladoEsquerdo) {
+            espacos += asteristico;
+        } else {
+            espacos += ' ';
+        }
+    }
+    console.log(espacos);
+}

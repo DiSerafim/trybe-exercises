@@ -1,0 +1,38 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // Adicionando mais uma configuração:
+// Adicionando mais uma configuração:
+
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Executar Programa",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "program": "${workspaceFolder}/arquivoCodigo.js"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Executar Programa 2",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "program": "${workspaceFolder}/arquivoCodigo2.js"
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Executar Programa",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "program": "${file}"
+      }
+    ]
+  }
