@@ -1,0 +1,605 @@
+// Fundamentos do Desenvolvimento Web
+
+// Bloco 01:
+
+// Unix & Bash - Parte 1
+
+1 - Os principais pontos abordados serão:
+
+Quais são seus principais componentes?
+Quais são suas variações?
+Arquivos e processos, o que são?
+Qual sua estrutura de diretórios?
+O que é o terminal?
+Comandos executados no Bash.
+
+// Você será capaz de:
+Executar comandos no terminal para navegar entre os diretórios;
+Executar comandos no terminal para criar e manipular arquivos e diretórios;
+Executar comandos no terminal para realizar buscas;
+
+
+2 - Conteúdo
+
+ctrl + alt + t        - Para abrir o terminal
+ls                    - Lista todos os arquivos dentro do diretório
+ls -a                 - Mostra tudo, até arquivos ocultos
+cd nomeDiretório      - Entra no diretório apontado
+clear                 - Limpa a tela do terminal
+mkdir  nomeDiretório  - Cria um diretório com o nome apontado
+cd ..                 - Volta para o diretório PAI
+pwd                   - Mostra o diretório completo de onde você está
+cp                    - para copiar um arquivo
+cp + nome arquivo + nome arquivo cópia
+obs: não esqueça de colocar a extenção do arquivo ex: .txt | .html | .js
+
+rm                    - Remove(exclui) arquivos com exteção, ex: .txt, .html, .js, etc...
+rm + nome arquivo
+obs: não esqueça de colocar a extenção do arquivo ex: .txt | .html | .js
+
+mv - Move arquivos em geral para um outro local
+mv + nome arquivo + /local de destino
+com isso conseguimos mudar diretórios e arquivos de um lugar para outro
+
+rmdir                 - Remove diretórios
+rmdir + nome diretório
+Só funciona se o diretório estiver vazio
+
+rm -rf - Remove diretório com todo o seu conteúdo dentro
+rm -rf + nome diretório
+-r - indica que quer remover arquivos e diretórios
+f - significa que não é preciso nenhum tipo de confirmação
+
+less                  - Abre o arquivo em modo de exibição, como livreto e para mudar de página, basta clicar na 'tecla espaço'
+less + nome arquivo
+
+q - para sair do comando less
+
+/frase - pesquisará 'frase' dentro do arquivo | n - navegará entre as frases encontradas
+
+head                    - mostra as 10 primeiras linhas do texto
+head + nome arquivo
+head + -5 + nomeArquivo - mostrará as 5 primeiras linhas do texto
+
+tail                    - ostra as 10 ultimas linhas do texto
+tail + nome arquivo
+tail + -5 + nomeArquivo - mostra as 5 ultimas linhas do texto
+
+grep                    - Busca por palavras apontadas
+grep + fraseBuscada + nomeArquivo          - tem que ser palavras exatas
+grep + -i + fraseBuscada + nomeArquivo     - mostra tanto maiúscula quanto minúscula
+grep + -i + 'fraseBuscada' + nomeArquivo   - mostra a 'frase buscada entre aspas' tanto maiúscula quanto minúscula
+grep + -iv + 'fraseBuscada' + nomeArquivo  - mostrará toda a lista menos a frase que está entre aspas 'frase buscada'
+grep + -in + 'frase buscada' + nome arquivo - mostrará a frase buscada e a posição em que ela se encontra
+grep + -ic + 'frase buscada' + nome arquivo - mostrará quantas vezes o arquivo se repete.
+
+wc                                          - O resultado é semelhante a isso: 29 92 545 nome arquivo
+wc + nome arquivo
+explicação: 1º - a quantidade de linhas | 2º - a quantidade de palavras | 3º a quantidade de letras(caracteres)
+wc -wnome arquivo                            - mostra apenas a quantidade de palavras
+wc -l nome arquivo                           - mostra somente o total de linhas do arquivo
+wc -c nome arquivo                           - mostra apenas a quantidade de caracteres do arquivo
+
+// Nomeando arquivos e ajuda no terminal
+
+ls *
+ls + *                                       - Ele mostrá todos os diretório e o conteúdo que tem dentro deles
+ls ?
+
+man + comando                                - Mostrar o manual de qualquer comando
+
+whatis + comando                             - Mostrar oque o comando faz
+
+apropos + oque você quer fazer               - Trás todos os comandos que vc pode utilizar para realizar oque vc quer fazer
+
+#Exercícios
+
+Qual das opções abaixo não é variação do UNIX? *
+Solaris
+Linux
+MacOS
+Windows X
+
+Qual das alternativas abaixo não é uma das três partes que compõe o UNIX? *
+kernel
+shell
+programas
+memória X
+
+
+No UNIX, tudo é ou um processo, ou um arquivo. *
+Verdadeiro X
+Falso
+
+
+O sistema de arquivos do UNIX é organizado de forma hierárquica, como se fosse uma árvore invertida. No topo da árvore está o caminho raiz ("root" ou "/"). *
+Verdadeiro X
+Falso
+
+Qual dos comandos abaixo é usado para listar o conteúdo de um diretório? *
+cd
+mkdir
+ls X
+
+Qual dos comandos abaixo é usado para criar diretórios? *
+ls
+mkdir X
+cd
+
+Qual dos comandos abaixo é usado para navegar entre diretórios? *
+ls
+mkdir
+cd X
+
+Quais caracteres representam o diretório atual e o diretório "pai", respectivamente? *ideia
+. e .. X
+... e ..
+.. e .
+
+
+Qual dos comandos abaixo é usado para mostrar qual é o caminho completo do diretório atual? *
+pwd Xideia
+cd
+ls
+
+Qual dos comandos abaixo é usado para mover (mudar de pasta) um arquivo? *
+mv X
+cp
+rm
+
+Qual dos comandos abaixo é usado para copiar (duplicar) um arquivo? *
+mv
+rm
+cp X
+
+Qual dos comandos abaixo é usado para deletar (para sempre) um arquivo? *
+rm X
+cp
+mv
+
+Qual dos comandos abaixo é usado para deletar (para sempre) um diretório? *
+cp
+rmdir X
+mv
+
+Qual dos comandos abaixo não mostra o contéudo de um arquivo *
+cat
+tail
+less
+clear X
+head
+
+Qual dos comandos abaixo não pode ser usado para buscar dentro de um arquivo ? *
+less
+pwd X
+wc
+grep
+
+
+Qual dos comandos abaixo limpa a tela do terminal ? *
+clear X
+clean
+cls
+
+Qual dos comandos lista todos os arquivos do diretório atual que terminam em .txt ? *
+ls -la
+echo "*.txt"
+ls *.txt X
+
+
+Quais dos comandos abaixo pode ser utilizado para pesquisar ajuda para descobrir a sintaxe correta de um comando? *
+cp
+apropos X
+less
+pwd
+
+
+Qual dos comandos abaixo é usado para obter ajuda sobre como um comando funciona? *
+man X
+help
+moo
+
+// Exercícios Quiz
+
+// Parte I - Criação de arquivos e diretórios
+1 - Utilizando o terminal, aplique o comando de criação de diretórios que você aprendeu, crie um diretório chamado unix_tests e navegue até ele.
+# mkdir unix_tests
+
+2 - Crie um arquivo de texto com o nome trybe.txt .
+# cat > trybe.txt
+
+3 - Crie uma cópia do arquivo trybe.txt com nome trybe_backup.txt.
+# cp trybe.txt trybe_backup.txt
+
+4 - Renomeie o arquivo trybe.txt .
+# mv trybe.txt trybe_rename.txt
+
+5 -  Dentro de unix_tests , crie um novo diretório chamado backup.
+# mkdir backup
+
+6 -  Mova o arquivo trybe_backup.txt para o diretório backup.
+# mv trybe_backup.txt backup
+
+7 -  Dentro de unix_tests , crie um novo diretório chamado backup2 .
+# mkdir backup2
+
+8 -  Mova o arquivo trybe_backup.txt da pasta backup para a pasta backup2 .
+# mv trybe_backup.txt ../backup2
+
+9 -  Apague a pasta backup .
+# rmdir backup
+
+10 - Renomeie a pasta backup2 para backup .
+# mv backup2 backup
+
+11 - Veja qual o path completo do diretório atual e liste todos os arquivos dentro dele.
+# pwd
+
+12 - Apague o diretório backup .
+# rm -rf backup
+
+13 - Limpe o terminal.
+# clear
+
+Para os exercícios 14 e 15, crie, um arquivo de texto com o conteúdo, chamado skills.txt:
+# trybe_rename.txt
+
+14 - Mostre na tela as 5 primeiras skills do arquivo skills.txt .
+# head -5 skills.txt
+
+15 - Mostre na tela as 4 últimas skills do arquivo skills.txt .
+# tail -4 skills.txt
+
+16 - Apague todos os arquivos que terminem em .txt .
+# * não apaguei
+
+
+// Parte II - Manipulação & Busca
+
+Na pasta unix_tests , baixe um arquivo com os nomes de todos os países do mundo utilizando o comando curl
+# curl -o countries.txt "https://gist.githubusercontent.com/kalinchernev/486393efcca01623b18d/raw/daa24c9fea66afb7d68f8d69f0c4b8eeb9406e83/countries"
+
+2 - Mostre todo o conteúdo do arquivo countries.txt na tela.
+# less countries.txt
+
+3 - Mostre o conteúdo de countries.txt, página por página, até encontra a Zambia .
+# less countries.txt + barra de espaço para mudar de pagina
+
+4 - Mostre novamente o conteúdo de countries.txt página por página, mas agora utilize um comando  - para buscar por Zambia .
+# less countries.txt /zambia
+
+5 - Busque por Brazil no countries.txt .
+# less countries.txt /Brazil
+
+6 - Busque novamente por brazil , mas agora utilizando o lower case .
+# grep -i brazil countries.txt
+
+obs: - Para os próximos exercícios, crie um novo arquivo chamado phrases.txt e adicione algumas frases  - a sua escolha. Não precisa criar o arquivo pelo terminal.
+
+7 - Busque pelas frases que não contenham a palavra fox .
+# grep -iv 'fox' phrases.txt
+
+8 - Conte o número de palavras do arquivo phrases.txt .
+# wc -w phrases.txt
+
+9 - Conte o número de linhas do arquivo phrases.txt .
+# wc -l phrases.txt
+
+10 - Crie os arquivos empty.tbt e empty.pdf .
+# touch empty.tbt empty.pdf
+
+11 - Liste todos os arquivos do diretório unix_tests .
+# ls
+
+12 - Liste todos os arquivos que terminem com txt .
+# find *.txt
+
+13 - Liste todos os arquivos que terminem com tbt ou txt .
+# find *.tbt *.txt
+
+14 - Acesse o manual do comando ls .
+# man ls
+
+
+// Fundamentos do Desenvolvimento Web
+
+// Bloco 01:
+
+// Unix & Bash - Parte 2
+
+- Utilizar o comando find ;
+- Utilizar os operadores > , >> e | no terminal;
+- Alterar as permissões de arquivos e diretórios;
+- Verificar o status e enviar sinais a processos UNIX;
+
+// Tratar inputs e outputs no terminal.
+
+cat                             - abre arquivos e mostra seu conteúdo
+cat > nome arquivo.txt
+cat > cores.txt                 - (cria o arquivo cores.txt e insere textos opcionais)
+
+cat cores.txt                    - (abre o arquivo criado)
+
+cat >> cores.txt                 - (vai abrir o arquivo para ser editado)
+
+cat > frutas.txt                 - (morango, laranja, banana e maçã)
+
+cat cores.txt frutas.txt > tudo.txt   - (esse comando cria o arquivo 'tudo.txt' e colocará os textos de cores.txt e frutas.txt. Tudo dentro do arquivo tudo.txt)
+
+sort < cores.txt                 - (Organiza por ordem alfabética)
+
+sort < cores.txt > coresOrdenadas.txt - (esse comando organiza por ordem alfabética os textos 'sort <' e cria e insere os textos oraganizados no próximo arquivo criado '>')
+
+who                              - (comando usado para saber quem tem acesso ao sistema 'computador' que está sendo usado)
+
+who | sort                       - (Organiza o que tem dentro do 'who' ou seja mostra as pessoas que usam este computador por ordem alfabética)
+
+who | wc -l                      - (mostra a quantidade de usuários)
+
+
+
+Permissões. Comandos ls -l ou ll
+
+    Permissões | Links  | Proprietário | Grupo | Tamanho | Data e Hora   | Nome
+    -----------|--------|--------------|-------|---------|---------------|---------
+    drwxr-xr-x | 2      | root         | root  | 4096    | Out 19 09:10  | composer/
+
+    Permissões => É possível verificar o tipo do item e nível de permissão parLeitura, Escrita e Execução de item ou diretório;
+    Links => Número de ligações que o item possui, no caso do diretório, número dsubdiretórios que possui;
+    Proprietário => Quem é o dono, quem criou. É o diretório padrão do usuário, o home;
+    Grupo => Grupo ao qual pertence o item ou diretório. Utilizado para dar permissõeà outras pessoas;
+    Tamanho => Em Bytes;
+    Data e Hora => Momento em que foi criado ou última modificação;
+    Nome => Nome do item ou diretório;
+            
+    Leitura r - 4
+    Escrita w - 2
+    Execução x - 1
+    Esses valores são permissões com base em bits de ligados = 1 e desligados = 0 ,
+            
+    rwx = 111 ( 7 | Acesso Total )
+    r-- = 100 ( 4 | Somente Leitura )
+    -w- = 010 ( 2 | Somente Escrita )
+    --x = 001 ( 1 | Somente Execução )
+    rw- = 110 ( 6 | Somente Leitura e Escrita )
+    r-x = 101 ( 5 | Somente Leitura e Execução )
+    -wx = 011 ( 3 | Somente Escrita e Execução )
+    --- = 000 ( 0 | Todos Acessos Negados )
+
+    ls (mostra os arquivos dentro do nosso diretório)
+
+ls -l       - (Mostra uma porção de outras informações que o 'ls' não mostra + mas a pessoa que tem acesso ao diretório)
+
+cat >       - arquivo.txt (criamos o arquivo.txt)
+
+ls -l       - (retornará)
+
+-rw-r--r-- 1 root root 9 fev 4 15:43 arquivo.txt
+
+Explicação:
+r 'read'                (significa que vc pode ler o arquivo)
+w 'write'               (Editar um arquivo ou modificar o conteúdo de um diretório)
+x 'execute'             (permite executar um arquivo ou acessar um diretório pelo comando 'cd')
+- hífen                 (no início da sequência indica um arquivo comum)
+d                       (no início da sequência indica um diretório e podemos separar em 4 grupos, veremeos a baixo)
+- ou d| rw- | r--| r--  ('-' hifen é um arquivo comum, se for o 'd' é um diretório)
+rw-                     (usuário são 3 caracteres e significa que você pode ler e escrever, mas não pode executar pois tem o hifén avisando '-')
+r--                     (grupo são 3 caracteres e só pode ler o arquivo)
+r--                     (outros usuários e também só podem ler esse arquivo)
+
+
+ 
+find . -name "*.txt"                 # Para listar todos os arquivos que terminam em .txt
+find . -type d                       # Para localizar todos os diretórios
+find . -type f                       # Para localizar todos os arquivos
+find ./teste -name exemplo*          # Localizar tanto arquivos quanto diretórios que comecem por algum trecho
+# Resultado
+./teste/exemplo.txt
+./teste/exemplo
+find ./teste -type f -name "exemplo*" # Localizar somente arquivos que comecem por algum trecho
+# Resultado
+./teste/exemplo.txt
+find ./teste -type d -name "exemplo*" # Localizar somente diretórios que comecem por algum trecho
+# Resultado
+./teste/exemplo
+
+history                              # Mostra o histórico de comandos          
+history | tail                       # Pegar os últimos 10 comandos
+
+echo "Este é um teste"
+# Result
+Este é um teste
+
+echo "Este é mais um teste" > teste.txt # Pode ser usado para colocar textos dentro de arquivos.
+cat teste.txt
+Este é mais um teste
+
+// Exercícios Quiz
+As permissões a seguir permitem que qualquer pessoa possa ler o arquivo: rw-r----x *
+Falso X
+Verdadeiro
+
+Qual dos comandos abaixo cria o arquivo futuro.txt escreve a palavra Trybe dentro do arquivo? *
+echo "Trybe" > futuro.txt X
+echo futuro.txt > Trybe
+
+Qual desses comandos organiza em ordem listas digitadas no terminal ou arquivos com listagens? *
+sort X
+cat
+wc
+
+Qual das permissões abaixo é a mais indicada para um arquivo que você deseja que só o autor possa ler e modificar? *
+-rw------- X
+-rwxrwxrwx
+-r--rx-rwx
+
+Quais comandos abaixo são utilizados para listar os processos que estão rodando no computador? *
+procv
+ps X
+sleep
+
+
+Qual dos caracteres abaixo coloca o processo em background, se colocado ao final do comando? *
+@
+#
+& X
+
+Qual dos comandos abaixo é usado para "matar" (terminar a execução) do processo com PID 1234 imediatamente? *
+kill -now 1234
+kill --bill 1234
+kill -9 1234 X
+
+Qual dos comandos abaixo é usado para encontrar todos os arquivos com a extensão .js dentro do diretório scripts e seus subdiretórios? O diretório base da busca é o diretório scripts. *
+ls -l scripts
+ls -l scripts | grep js
+find . -name "*.js" -print X
+
+Qual dos comandos abaixo é usado para mostrar o histórico dos últimos 42 comandos que você executou no terminal? *
+register | tail - 42 X
+history | tail -n 42
+history | head -n 42
+
+// Exercícios Parte I - Comandos de Input e Output
+
+1 - Navegue até a pasta unix_tests ;
+# cd unix_tests
+
+2 - Crie um arquivo texto pelo terminal com o nome skills2.txt e adicione os valores Internet , Unix e Bash , um em cada linha.
+# cat >> skills2.txt
+
+3 - Adicione mais 5 itens à sua lista de skills e depois imprima a lista ordenada no terminal. 🤓
+# cat skills2.txt
+
+4 - Conte quantas linhas tem o arquivo skills2.txt .
+# wc -l skills2.txt
+
+5 - Crie um arquivo chamado top_skills.txt usando o skills2.txt , contendo as 3 primeiras skills em ordem alfabética.
+# sort < skills2.txt > top_skills.txt
+
+6 - Crie um novo arquivo chamado phrases2.txt pelo o terminal e adicione algumas frases de suas escolha.
+# cat > phrases2.txt
+
+7 - Conte o número de linhas que contêm as letras br .
+# grep -ic 'br' phrases2.txt
+
+8 - Conte o número de linhas que não contêm as letras br .
+# grep -iv 'se' phrases2.txt
+
+9 - Adicione dois nomes de países ao final do arquivo phrases2.txt .
+# cat >> phrases2.txt
+
+10 - Crie um novo arquivo chamado bunch_of_things.txt com os conteúdos dos arquivos phrases2.txt e countries.txt
+# cat > bunch_of_things.txt
+
+11 - Ordene o arquivo bunch_of_things.txt .
+# cat phrases2.txt countries.txt > bunch_of_things.txt
+
+
+// Parte II - Permissões
+
+1 - Navegue até a pasta unix_tests ;
+# cd unix_tests
+
+2 - Rode o comando ls -l e veja quais as permissões dos arquivos;
+# -rw-r--r-- 1 root root 1900 abr  1 21:44 bunch_of_things.txt
+
+3 - Mude a permissão do arquivo bunch_of_things.txt para que todos os usuários possam ter acesso à leitura e escrita, e verifique se está correto com o comando ls -l ;
+# chmod a+rw bunch_of_things.txt
+
+4 - Resultado esperado: -rw-rw-rw- 1 ana ana 1860 ago 13 11:39 bunch_of_things.txt
+# -rw-rw-rw- 1 root root 1900 abr  1 21:44 bunch_of_things.txt
+
+5 - Tire a permissão de escrita do arquivo bunch_of_things.txt para todos os usuários, verifique se está correto com o comando ls -l ;
+# chmod a-w bunch_of_things.txt
+
+6 - Resultado esperado: -r--r--r-- 1 ana ana 1860 ago 13 11:39 bunch_of_things.txt
+# -r--r--r-- 1 root root 1900 abr  1 21:44 bunch_of_things.txt
+
+7 - Volte à permissão do arquivo bunch_of_things.txt para a listada inicialmente utilizando o comando chmod 644 bunch_of_things.txt .
+# chmod 644 bunch_of_things.txt
+
+8 - Resultado esperado: -rw-r--r-- 1 ana ana 1860 ago 13 11:39 bunch_of_things.txt
+# -rw-r--r-- 1 root root 1900 abr  1 21:44 bunch_of_things.txt
+
+
+// Parte III - Processos & Jobs
+
+1 - Liste todos os processos;
+# ls -lag
+
+2 - Agora use o comando sleep 30 & ;
+# sleep 30 &
+
+3 - Use a listagem de processos para encontrar o PID do processo que está executando o comando sleep 30 e termine a sua execução (mate o processo) ;
+# ps
+# ^C
+
+4 - Execute novamente o comando sleep 30 , mas agora sem o & . Depois, faça com que ele continue executando em background;
+# ^Z
+
+5 - Crie um processo em background que rode o comando sleep por 300 segundos.
+# sleep 300 &
+
+6 - Crie mais dois processos que rodem o comando sleep por 200 e 100 segundos, respectivamente.
+# sleep 200 &
+# sleep 100 &
+
+obs: - Você deve criá-los em foreground (sem usar o & ) e suspendê-los (apertando ctrl+z ) após cada um começar a executar.
+
+
+7 - Verifique que apenas o processo sleep 300 está em execução com o comando jobs . Suspenda a execução desse processo.
+# [2]   Executando              sleep 300 &
+# fg %2
+# ^Z
+
+obs: - Você vai precisar trazer o processo para foreground ( fg ) e suspendê-lo ( ctrl+z ), ou enviar um sinal).
+
+
+8 - Retome a execução do processo sleep 100 em background com o comando bg .
+# bg
+
+9 - Termine a execução de todos os processos sleep (mate os processos) .
+# kill %6
+
+
+// (Bônus) - Parte IV - O despertar do terminal
+
+E pra terminar com a energia óh, lá no alto, que tal aprender agora alguns comandos divertidos do UNIX? ☝ 🎊
+
+1 - Abra o terminal e execute o comando sudo apt-get install cmatrix e, depois, execute o comando cmatrix . Quando estiver se sentindo como o Neo , aperte ctrl+c para voltar ao terminal;
+ # sudo apt-get install cmatrix
+
+2 - Execute o comando sudo apt-get install fortune , após a instalação, crie um arquivo de texto chamado fortune.txt que contenha a sua sorte do dia. Utilize apenas uma linha de comando. Dica: use o comando fortune , e o operador > ;
+ # cat > fortune.txt
+
+3 - Conte quantas palavras tem a frase da sua sorte do dia. Dica: use o comando wc ;
+ # wc -w fortune.txt
+
+4 - Execute o comando sudo apt-get install sl , após a instalação, execute o comando sl . Agora tente sl -F ;
+ # sudo apt-get install sl
+
+5 - Execute o comando sudo apt-get install cowsay , após a instalação, execute o comando cowsay e algo que você queira falar. Agora faça a vaquinha dizer a frase que está gravada no arquivo fortune.txt ;
+ # cowsay fortune.txt
+
+6 - Descubra os fatores primos usando o comando factor e em seguida o número 42 ;
+ # factor 42
+
+7 - Veja como fica a sua sorte do dia ao contrário. Dica: utilize o comando rev .
+ # rev fortune.txt
+
+8 - Execute o comando telnet towel.blinkenlights.nl e espere alguns segundos. Lembre-se que você tem mais exercícios para fazer! 😅
+ # telnet towel.blinkenlights.nl
+
+// FIM
+
+// Recapitulando...
+
+O Unix é um sistema operacional que inspirou muitos outros sistemas, como MacOS, Linux, Solaris etc.;
+O Unix é composto basicamente pelo Shell, Kernel e os programas;
+A estrutura de diretórios do Unix é organizada no formato de uma árvore invertida, de forma hierárquica, iniciando pelo root ;
+Tudo no Unix é um arquivo ou um processo;
+O terminal é seu principal aliado para ter produtividade em ambiente Unix;
+Depois de entender como abrir e utilizar o terminal, você aprendeu na prática como utilizar os comandos Bash. Vamos relembrar alguns dos comandos que você aprendeu a usar.
+Um bom exercício é, mentalmente, tentar descrever o que cada comando faz.
+ls , mkdir , cd , pwd , cp , mv , rm , rmdir , clear , cat , less , head , tail , grep , wc , > , >> , | , sort , who , man , whatis , apropos , * , ? , chmod , ps , bg , kill , find , history .
+
