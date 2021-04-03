@@ -6,4 +6,4 @@
 - Internet
 - JavaScript
 - React
-- SQL
+- ouSQL
