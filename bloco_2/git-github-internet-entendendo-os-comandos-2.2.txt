@@ -1,0 +1,226 @@
+// Fundamentos do Desenvolvimento Web
+
+// Bloco 02:
+// Git, GitHub e Internet
+// Oque é e para que serve
+
+// Você será capaz de:
+- Copiar um repositório já existente no GitHub para o seu computador;
+- Abrir Pull Requests e realizar Code Reviews ;
+- Trabalhar em um mesmo projeto, com mais de uma pessoa, de forma assíncrona e distribuída.
+
+# Somente colocando em prática diariamente os conceitos do Git você conseguirá se aperfeiçoar no uso de repositórios e do versionamento de código! ✌️ 💪 
+
+// Parte 1 - Baixando repositórios com o git clone
+- Caso você queira copiar um repositório Git já existente — por exemplo, um projeto em que você queira contribuir —, o comando necessário é:
+# git clone urlDoSeuRepositórioTrybeExercises
+
+- Normalmente, ao participar dos projetos da Trybe , você irá precisar desse comando para conseguir baixar o repositório que já está configurado e poder focar apenas nos requisitos do projeto.
+
+// Parte 2 - Do git log ao Pull Request
+// 2.1 - git log
+Através do log é possivel ver todos os commits
+
+// Pull Request
+A vantagem de se realizar o Pull Request é que você garante que o branch-padrão terá todo seu trabalho concluído e aprovado, realizando todas as novas alterações em uma branch separada.
+
+Para criar um pull request que está pronto para revisão, clique em Criar Pull Request. Para criar um rascunho de pull request, use o menu suspenso e selecione Criar rascunho de pull request e, em seguida, clique em Rascunho de Pull Request.
+
+Você também pode criar o pull request, após fazer o git push na sua máquina local. Aparecendo logo após o push o botão Comparar e Pull Request:
+
+// 2.2 - Git remove
+
+Usado para remover e resuscitar arquivos
+Primeiro crie uma pasta para clonar seu repositório github e dê um git init dentro dela
+# git init
+Agora clone seu repositório dentro da pasta
+# git clone git@github.com:DiSerafim/Serafim.git
+Agora é só selecionar o arquivo que você quer excluir
+# git rm + arquivo que você quer excluir
+faça a verificação
+# git status
+Olhe em sua pasta se o arquivo excluído está lá
+# ls
+adicione as modificações feitas
+# git add .
+Agora comitar
+# git commit -m "Avise qual arquivo foi excluído"
+Agora envie para o seu github
+# git push
+
+// git remove / vamos recuperar um arquivo excluído
+Primeiro identifique o arquivo que você quer recuperar. Pode ser identificado pelo seu commit "frase descrição"
+# git log
+Através do log é possivel ver todos os commits
+Comando para abrir os arquivos deletados
+# git log --diff-filter=D --summary
+Agora copie os 4 primeiros digitos após 'commit'
+# 4442
+Agora vamos recuperar nosso arquivo deletado
+# git checkout 4442~1 + nome exato do arquivo + extensão
+Pronto agora verifique sua pasta
+# ls
+Verifique o status do arquivo
+# git status
+Vamos adiconar o arquivo que havia sido excluído
+# git add .
+Agora é só comitar
+# git commit -m "nome do arquivo, foi recuperado"
+Agora você pode subir seus arquivos
+# git push
+
+// 2.3 - git ignore
+Ignora arquivos que você não quer adicionar
+Primeiro crie o arquivo .gitignore
+# touch .gitignore
+Use o ls -la para vizualizar, pois o .gitignore é um arquivo oculto
+# ls -la
+Edite o arquivo .gitignore e adicione os arquivos que você quer ignorar
+# cat > .gitignore
+# *.txt
+Pronto, agora faça a verificação e verá que os seus arquivos .txt estão fora
+# git status
+Agora vamos subir nossos arquivos
+# git add .gitignore
+# git commit -m "Ignorar arquivos .txt no .gitignore"
+Caso queira adicionar ou modificar o .gitignore basta editar
+# cat >> .gitignore
+Vamos ignorar mais um
+# nomeQualquer.xml
+Verifique o status
+# git status
+Vamos ignorar um diretório (pasta)
+# cat >> .gitignore
+Nome do diretório + / a barra indica que é um diretório e tudo que está dentro será ignorado 
+# nomeDoDiretorio/
+Depois de ignorar tudo que for preciso, já podemos subir nossos arquivos
+# git status
+# git add .
+# git commit -m "Arquivos .txt .xml e pasta tal/ foram ignorados"
+# git push
+Pronto
+
+// 2.4 - Git push, pull, fetch
+// git push
+Vamos direto ao ponto, crie seu diretório no github, copie o link, comente se quiser, crie o README.md se quiser. Coloque em público ou privado.
+
+Agora abra a pasta que você quer conectar remotamente com seu github e inicie o git
+# git init
+# git remote add origin git@github.com:DiSerafim/Serafim.git
+
+Pronto agora vc já pode criar seus arquivos em sua pasta do seu projeto ex:
+# arquivo.html
+# git status
+# git add arquivo.html
+# git commit -m "Adiciona o arquivo.html"
+# git push -u origin master
+E.. pronto.
+
+// git pull
+Vamos clonar um repositório, primeiro vá para o local onde quer fazer seu clone, depois:
+# git clone git@github.com:DiSerafim/Serafim.git
+# ls
+# cd nomeDocloneCriado
+# ls
+
+Agora você pode fazer as auterações que deseja e:
+# git add alteracoesFeitas.html
+# git commit -m "Alterações feitas no arquivo alteracoesFeitas.html"
+
+Digamos que mais alguem também está trabalhando no mesmo arquivo que vocẽ. É aí que entra o fetch
+antes de subir seu arquivo final dê um fetch
+
+// fetch
+git fetch
+Verifique o status
+# git status
+É ai que entra o git pull. Quando outras pessoas modificam o arquivo
+
+// git pull
+Agora você terá seu arquivo atualizado e com todas as alterações que foram feitas pelos outros usuários
+Verifique se esta tudo em ordem, ou faça as suas alterações e:
+# git add alteracoesFeitas.html
+# git commit -m "Adicionando minhas alterações feitas"
+# git push
+E.. pronto
+
+// 2.5 - Pull Request no GitHub
+Vamos observar o processo a baixo:
+1 - Navegue até a página principal do repositório no GitHub.
+2 - No menu "Branch", você pode digitar o nome da sua nova branch e clicar em Create new branch.
+3 - Acima da lista de arquivos, clique em Pull request .
+4 - Use o menu suspenso do branch base para selecionar o branch em que deseja fazer merge de suas alterações. Em seguida, use o menu suspenso do branch de comparação para escolher o branch de tópico no qual você fez as alterações.
+
+Obs: Para seguir para o passo 5 é preciso ter o primeiro commit realizado, caso tenha dificuldades em realizar pelo GitHub, siga a dica Extra realizando pelo seu terminal.
+
+5 - Digite um título e uma descrição para a pull request.
+6 - Para criar um pull request que está pronto para revisão, clique em Criar Pull Request. Para criar um rascunho de pull request, use o menu suspenso e selecione Criar rascunho de pull request e, em seguida, clique em Rascunho de Pull Request.
+
+Obs: Você também pode criar o pull request, após fazer o git push na sua máquina local. Aparecendo logo após o push o botão Comparar e Pull Request:
+
+// Parte 3 - Code Review
+
+As duas principais vantagens que a Code Review traz são:
+// Legibilidade do código;
+Para que o restante do time entenda o seu código você vai precisar se preocupar com coisas como: nome na declaração de variáveis, nome das funções e outros pontos relativos ao design do seu código.
+
+// Transmissão de conhecimento.
+Realizar a Code Review de outras pessoas ou ter revisores olhando para o seu código é extremamente eficiente para o aprendizado, já que você passa a ter diferentes pontos de vista para o mesmo problema.
+
+// Exercício QUIZ
+
+Qual o comando Git utilizado para verificar o status dos arquivos que foram editados? *
+git log
+git commit
+git status X
+git add
+
+
+Qual o comando responsável por mostrar a versão instalada do seu Git? *
+git --stat
+git --version X
+git version X
+git log
+
+
+Qual o comando responsável por iniciar um repositório local no Git? *
+git start
+git str
+git init X
+git push
+
+Qual o comando Git que permite que você copie um repositório remoto (Github) para sua maquina? *
+git pull 
+git push
+git clone X
+git commit
+
+Qual o comando Git utilizado para ver o histórico dos seus commits? *
+git pull
+git history
+git log X
+git lp
+
+Qual a sequência de comandos que seleciona um arquivo específico e o salva em seu repositório local? *
+git commit -m "msg" && git add .
+git add arquivo && git commit -r "msg"
+git commit -am "msg"
+git add arquivo && git commit -m "msg" X
+
+// Exercício Agora a prática
+
+1 - Navegue até a raiz do projeto com o arquivo .txt;
+# cd exercises-2.2
+
+2 - Verifique se não existe nada sem "commitar" utilizando git status;
+# git status
+
+3 - Caso exista algo, verifique se é necessário e faça o commit , ou remova-o.
+#
+
+4 - Crie uma nova branch com o nome trybe-skills-changes e faça checkout nela;
+#
+
+5 - No arquivo .txt , ao final da lista de habilidades , adicione mais duas habilidades que serão desenvolvidas na Trybe;
+#
+
