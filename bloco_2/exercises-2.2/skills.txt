@@ -1,0 +1,9 @@
+- Unix
+- Bash
+- Git
+- HTML
+- CSS
+- Internet
+- JavaScript
+- React
+- SQL
