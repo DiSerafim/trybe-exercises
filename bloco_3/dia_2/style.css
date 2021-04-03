@@ -1,11 +1,21 @@
+body {
+  font-size: 16px;
+}
+
 section {
   background-color: rgb(128, 184, 184);
   font-family: sans-serif;
   padding: 10px;
 }
+
 section h1 {
   font-size: 65px;
   color: orange;
+}
+
+section #p {
+  font-weight: 600;
+  font-size: 3em;
 }
 
 #pul {
@@ -15,8 +25,6 @@ section h1 {
   border-radius: 10px;
   width: 25%;
   text-align: center;
-  font-weight: 600;
-  font-size: 3em;
 }
 
 #ama {
