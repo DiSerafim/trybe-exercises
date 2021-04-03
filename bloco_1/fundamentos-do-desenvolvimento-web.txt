@@ -1,0 +1,64 @@
+// Fundamentos do Desenvolvimento Web
+
+// Bloco 01: Unix, Bash e Shell Script
+
+// Setup
+1 - Checklist de software
+
+// VS Code
+Escolhemos o VS Code, pois, além de ser gratuito, é open source e possui plugins incríveis que vão te ajudar ao longo do curso.
+
+// Google Chrome
+É o navegador mais utilizado da web desde 2012 e possui ótimas ferramentas para auxiliar a pessoa desenvolvedora web.
+
+// Zoom
+É uma das ferramentas de videoconferência mais bem avaliadas do mercado e possui ótima performance e consistência, além de oferecer funções colaborativas que vamos usar ao longo do curso.
+Fique de olho nos links da videochamada para garantir que está na sala correta. Antes de entrar na chamada, sempre verifique se o seu áudio e vídeo, bem como seu microfone, estão funcionando. O Zoom permite que você faça testes antes de entrar, o que evita interrupções durante a chamada devido a problemas técnicos.
+Mantenha seu microfone no mudo sempre que não estiver falando. Isso evita que a chamada fique com eco, especialmente quando tiver outra pessoa perto de você na mesma chamada. Ah, e lembre-se de verificar se o microfone está fora do mudo antes de começar a falar.; )
+Por fim, assegure-se de que sua conexão com a internet esteja ativa e estável. Se estiver tendo problemas com a qualidade da chamada, tente desligar o vídeo.
+
+// Slack
+É uma ferramenta poderosa de comunicação assíncrona, que substitui e-mail, mensagem de texto e mensagem instantânea de uma vez. É onde você fará a maior parte das comunicações ao longo do curso.
+O Slack é a principal ferramenta de comunicação que utilizaremos no decorrer do curso. Junto com o Zoom, conseguimos criar um ambiente altamente colaborativo, onde você terá espaços específicos para tirar dúvidas, conversar fiado, resolver problemas, falar com seus colegas e instrutores e tudo mais.
+Lembre-se sempre de adicionar o contexto às suas perguntas. Aqui vão algumas dicas:
+O que você acha que é o problema?
+O que exatamente você quer que aconteça?
+O que está acontecendo agora?
+Como você chegou até esse ponto?
+O que você já tentou para resolver o problema?
+
+// Spotify
+Ótima ferramenta para ouvir música, e é gratuita apesar dos anúncios
+Estamos montando playlists colaborativas para te ajudar a focar, a desestressar, a se concentrar e a ser mais produtivo!
+
+2 - Checklist de Hardware
+Computador
+Processador com pelo menos dois cores
+Pelo menos 4GB de RAM
+Pelo menos 120GB de HD
+Conectividade com rede Wi-Fi
+Conectividade com fones de ouvido e microfone
+Webcam
+
+// O que vamos aprender?
+// Dividimos a introdução em quatro partes:
+1 - Sistema operacional chamado UNIX.
+
+2 - Git para guardar seus arquivos.
+
+3 - o desenvolvimento web. Você vai aprender a estruturar documentos HTML , estilizá-los com o CSS e criar comportamentos customizados com o JavaScript !
+
+4 - Você aprenderá sobre como criar sites responsivos e com CSS elegante e eficiente.
+
+5 - Aprenderá a como utilizar o JavaScript, utilizando recursos avançados como HOF , Código assíncrono , Testes unitários entre outras coisas incríveis!
+
+// Você será capaz de:
+Utilizar o bash.
+Entender como a internet funciona, seus principais conceitos e terminologias.
+Utilizar de forma confortável o Git e o Github.
+Criar documentos HTML estilizados com CSS.
+Utilizar o JavaScript para adicionar comportamento a páginas web.
+Utilizar recursos de HTML e CSS Avançado.
+Trabalhar com JavaScript ES6.
+Criar códigos assíncronos em JavaScript.
+Escrever testes unitários.

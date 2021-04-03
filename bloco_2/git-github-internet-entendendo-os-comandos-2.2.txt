@@ -228,7 +228,7 @@ git add arquivo && git commit -m "msg" X
  # git branch
 
 7 - Crie uma nova branch trybe-skills-updates a partir da master e faça checkout nela;
- # 
+ # git checkout -b trybe-skills-updates
 
-8 - No mesmo arquivo .txt que você modificou no passo 4 , também ao final da sua lista de habilidades, adicione mais um aprendizado que você terá nos próximos blocos;
+8 - No mesmo arquivo .txt que você modificou no passo 4, também ao final da sua lista de habilidades, adicione mais um aprendizado que você terá nos próximos blocos;
  # 
