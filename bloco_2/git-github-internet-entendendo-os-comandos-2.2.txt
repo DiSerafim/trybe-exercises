@@ -230,5 +230,44 @@ git add arquivo && git commit -m "msg" X
 7 - Crie uma nova branch trybe-skills-updates a partir da master e faça checkout nela;
  # git checkout -b trybe-skills-updates
 
-8 - No mesmo arquivo .txt que você modificou no passo 4, também ao final da sua lista de habilidades, adicione mais um aprendizado que você terá nos próximos blocos;
- # 
+8 - No mesmo arquivo .txt que você modificou no passo 4 , também ao final da sua lista de habilidades, adicione mais um aprendizado que você terá nos próximos blocos;
+# Faça um git add nome-do-arquivo.extensao
+# Agora um git commit -m "Mensagem que você gostaria"
+# e por último um git push -u origin trybe-skills-updates
+# Após o primeiro "push" da sua branch, você pode usar apenas o # comando git push
+# Abra um Pull Request com uma descrição amigável.
+
+// Recapitulando
+O Git é um sistema de versionamento distribuído (DVCS);
+
+A maior vantagem do Git é que ele é distribuído, ou seja, o repositório fica na sua máquina e você não precisa se preocupar em fazer "lock" de arquivos assim como em outros VCS's;
+
+Vimos que a instalação do Git e sua configuração são simples. Basta baixar o instalador e configurá-lo usando o comando git config;
+
+Para iniciar um repositório local, vimos que você tem duas opções:
+
+git init (para criar um novo repositório Git );
+
+git clone (para copiar um repositório Git existente para sua máquina e, assim, poder criar branches e Pull Requests).
+
+O GitHub é uma plataforma de hospedagem de código-fonte com controle de versão usando o Git;
+
+Vimos também que, para subir seu código para o GitHub , basta você verificar qual das opções abaixo deseja:
+
+Criar um repositório do zero localmente, na sua máquina, onde utilizará o comando git init;
+
+Trabalhar num repositório já existente, onde utilizará o comando git clone;
+
+Esses dois comandos são excludentes , ou seja, você ou usa um, ou usa o outro, nunca os dois ao mesmo tempo. Após isso, siga um dos dois fluxos abaixo:
+
+Fluxo 1 - Após git init;
+Criar seu primeiro commit ;
+Criar o repositório remoto na sua conta do GitHub ;
+Adicionar a URL do repositório remoto;
+Executar o famoso push.
+
+Fluxo 2 - Após git clone;
+Criar sua branch dentro do repositório clonado;
+Fazer checkout na sua branch;
+Criar seu primeiro commit;
+Executar o famoso push.
