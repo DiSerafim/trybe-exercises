@@ -1,0 +1,503 @@
+// Fundamentos do Desenvolvimento Web
+
+// Bloco 02:
+// Git, GitHub e Internet
+// Internet - Entendendo como ela funciona
+
+// Você será capaz de:
+- Explicar de forma simples como a internet funciona;
+- Entender o modelo Cliente & Servidor e identificar suas partes;
+- Compreender como funcionam os protocolos HTTP e HTTPS;
+- Identificar quais os tipos de requisição podem ser feitos através desses protocolos.
+
+// Conteúdos - Parte 1
+// As peças que montam a Internet
+// Cliente & Servidor e suas partes
+
+// Cliente: Firefox, Mozilla, Chrome... O termo técnico é cliente. O cliente é uma aplicação que está conectada à Internet. A sua principal função é receber a interação do usuário e traduzi-la em uma requisição para outro computador chamado Servidor Web. Apesar de usarmos o navegador para acessar à Internet, você pode pensar no seu computador como sendo o Cliente no modelo Cliente-Servidor. Todo computador tem um número único, chamado endereço IP.
+
+// Servidor: Nossa busca por www.google.com será enviada para um Servidor. O Servidor é um super computador conectado à Internet. Ele também tem o seu próprio endereço IP, assim como o seu computador. O Servidor espera por requisições de outras máquinas (clientes). Um Servidor tem um software específico em execução que irá dizer como ele deve responder a uma requisição do seu navegador. A principal função do Servidor é armazenar, processar e entregar páginas web para os Clientes. Tipos de servidores, Web Servers, Database Servers, File Servers, Application Servers. O servidor que usamos para fazer a busca por www.google.com é um Web Server.
+
+// Endereço IP: A sigla IP refere-se a Internet Protocol. Um identificador numérico para um dispositivo (computador, celular, tablet, impressora, roteador, servidor...) conectado à rede TCP/IP. Todo dispositivo conectado à Internet tem um endereço IP, e será usado para comunicar com outros dispositivos. Os endereços IP tem quatro campos de dígitos separados por pontos (244.155.65.2). Esses números são chamados de endereço lógico. Para localizar um dispositivo conectado à Internet o endereço lógico é convertido em um endereço físico por um software. Esse endereço físico faz parte do seu hardware e é conhecido por endereço de controle de acesso à mídia (MAC address).
+
+// TCP/IP: Transmission Control Protocol/Internet Protocol. Um protocolo é um conjunto de regras, e o protocolo TCP/IP é utilizado para transmitir dados na rede. É o protocolo de comunicação mais utilizado no mundo Web.
+
+// ISP: ISP ou Internet Service Provider é o seu provedor de Internet. É qualquer empresa que nos fornece acesso.
+
+// DNS: DNS ou Domain Name System é um dispositivo com uma base de dados distribuída que gerencia os nomes de serviços, computadores ou qualquer dispositivo conectado à Internet. É usado para relacionar o endereço nominal (google.com) com o endereço IP. Os servidores DNS são responsáveis por localizar e traduzir para números (um endereço IP) as buscas por sites que digitamos no navegador.
+
+// Port Number: O número de porta é um número de 16 bits utilizado para identificar uma porta específica no servidor, e está sempre associado ao endereço IP. É uma forma de identificar um processo específico encaminhado para o servidor.
+
+// Host: O Host é qualquer computador conectado à rede, seja como cliente, servidor ou qualquer outro tipo de dispositivo. Para o site que estamos buscando, www.google.com , o host é o servidor web que hospeda a página na web. É comum confundir o host com o servidor. Lembre-se que eles são coisas diferentes! O Servidor é um tipo de host - uma máquina específica com endereço IP. Por outro lado, o host pode ser também uma organização inteira que fornece um serviço de hospedagem para manter inúmeros servidores web.
+
+// HTTP: Hyper-text Transfer Protocol é o protocolo utilizado para a comunicação entre navegadores e servidores na Internet.
+
+// URL: É a sigla para Uniform Resource Locators e identifica um recurso web específico. Podemos mudar a nossa busca para https://www.google.com/travel/flights para pesquisar por preços de passagens aéreas. O URL identifica o protocolo que será utilizado para comunicarmos com o servidor (https), o nome do host (google.com) e o recurso que queremos acessar (travel/flights).
+
+// Como funcionam os protocolos HTTP e HTTPS
+O funcionamento da Internet depende de regras, que são os protocolos. É através desses protocolos que conseguimos acessar páginas, fazer downloads, enviar emails. Dentre os protocolos, há dois que são frequentemente utilizados: o protocolo TCP/IP e o protocolo HTTP.
+
+// Exercício Quiz
+1 - Marque quais opções abaixo são exemplos de um "Cliente": *
+Firefox X
+Safari X
+Opera X
+Chrome X
+Internet Explorer X
+
+2 - Qual a principal função de um "Servidor Web" ? *
+Formatar páginas no formato PDF
+Trabalhar no setor público
+Renderizar páginas web
+Guardar, processar e entregar páginas web para o(s) "Cliente(s)". X
+
+3 - Qual o protocolo responsável por converter endereços IP em endereços físicos? *
+DNS
+HTTP
+FTP
+TCP/IP X
+
+4 - Marque quais opções abaixo são exemplos de "ISP": *
+Volkswagen
+Coca-Cola
+Vivo X
+JBS
+NET X
+Oi X
+FIAT
+
+5 - O que é um DNS ? *
+Servidor de Números Digitais - usado para converter números irracionais em números racionais
+Servidor de Nomes de Domínios - guarda os nomes de domínio e seus endereços de IP correspondentes X
+Serviço de Nomes Digitalizados - guarda os nomes extraídos de documentos digitalizados
+Servidor de Dados Nacionais - guarda os dados sobre os cidadãos brasileiros
+
+6 - Qual dos protocolos abaixo é mais utilizado para a comunicação entre "Web browsers" e "Web servers" ? *
+DNS
+TCP/IP
+FTP
+HTTP X
+
+7 - Selecione as principais partes de uma URL: *
+Número do roteador
+Nome de domínio X
+Nome do cliente
+Protocolo X
+Recurso X
+
+8 - Qual a porta de comunicação padrão para o protocolo HTTP? *
+60
+90
+70
+80 X
+
+9 - Qual a porta de comunicação padrão para o protocolo HTTPS? *
+440
+442
+443 X
+441
+
+10 - Qual elemento é o responsável por renderizar a página web enviada pelo servidor? *
+Cliente X
+ISP
+Roteador
+DNS
+
+11 - Como se chamam as pequenas unidades de informação que são transmitidas pela rede quando um cliente faz uma requisição ? *
+Pacotes X
+Malotes
+Cartas
+Presentes
+
+12 - Em quantos protocolos, podemos dizer, que se divide o protocolo TCP/IP? *
+1. 1
+2. 2 X
+3. 3
+4. 4
+5. 5
+6. 6
+7. 7
+8. 8
+9. 9
+
+13 - Qual recurso os navegadores possuem para conseguir montar as páginas web? *
+Modo anônimo
+Engine de Busca
+Engine de Renderização X
+Opção de tela cheia
+
+14 - O que é "DOM" ? *
+Manipulação do Objeto Derivado - processo que trata resíduos químicos
+Modelo de Objeto de Documento - uma forma de representar os elementos HTML em forma de árvore X
+Molde de Oitenta Decisões - uma estratégia quântica de reprogramação do DNA
+Modelo de Orientação dos Dados - usado para modelar informações de geolocalização
+
+
+// O modelo cliente-servidor e a estrutura de uma aplicação web
+O modelo cliente-servidor é utilizado para descrever a forma com que um cliente (um computador conectado à Web) e um servidor se comunicam na rede.
+
+Cliente servidor
+Aplicações web. Elas são compostas por um cliente, um servidor e uma base de dados.
+
+Em uma aplicação Web o cliente é responsável por definir a estrutura , a aparência e mecanismos para lidar com as interações do usuário (como um click, ou um campo para preenchimento).
+
+A estrutura da sua página é definida por uma linguagem chamada HTML, Hyper text markup language. Permite configurar a estrutura física da sua página web. Cada tag do HTML descreve um elemento específico do documento.
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <header>
+    <h1>Minha página Web!</h1>
+  </header>
+  <p>Bem vindos! Essa é a estrutura básica da minha primeira página</p>
+  <ul>O que estou aprendendo:
+    <li>Git & GitHub</li>
+    <li>Internet</li>
+    <li>Shell</li>
+  </ul>
+</body>
+</html>
+
+A aparência da página é definida por uma outra linguagen chamada CSS, Cascading Style Sheets. O CSS é uma linguagem que te permite descrever como os elementos definidos pelo HTML devem ser estilizados.
+
+body {
+  background-color: blue;
+}
+
+h1 {
+  color: purple;
+  font-size: large;
+}
+
+p {
+  color: green;
+  font-weight: bold;
+}
+
+h2 {
+  color: red;
+  border: 3px solid black;
+}
+
+As interações com o usuário são definidas por uma terceira linguagem: o JavaScript. É o JavaScript que confere à página um comportamento dinâmico.
+
+// Limpar o leitor com um click duplo
+const clearButton = document.querySelector('.limpar');
+clearButton.addEventListener('dblclick', function () {
+  inputResultado.value = "";
+});
+
+O servidor Web É quem recebe as requisições do cliente. O protocolo HTTP É que define uma linguagem para que clientes e servidores se comuniquem. O servidor espera por requisições HTTP de uma porta específica, sempre associada a um endereço IP. Com as requisições, ele vai realizar ações e enviar a resposta via HTTP. Todos os dados que viajam entre o cliente e o servidor são enviados através da rede Internet usando o protocolo TCP/IP.
+
+E por fim, o banco de dados de uma aplicação web é onde a informação é armazenada de forma acessível, gerenciável e em constante atualização.
+
+balanceador de carga
+O balanceador de cargas resolve o problema de tráfego de dados distribuindo as requisições para servidores backend. A medida que a sua aplicação cresce. À medida que adicionamos mais funcionalidades para a aplicação, sua complexidade é aumentada e a carga de trabalho solicitada ao servidor também cresce, este conjunto de fatores pode sobrecarrega-lo. Assim, para resolver esse problema, é necessário separar o servidor por funcionalidade. É aqui que serviços entra em ação.
+
+Um serviço é outro servidor capaz de interagir com servidores, o que não acontece com um servidor Web, que interage apenas com o cliente. Cada serviço tem uma funcionalidade, como um serviço para autenticação de usuário ou serviços de busca. Assim, é possível quebrar o servidor Web da sua aplicação em múltiplos serviços, cada um com uma funcionalidade específica. A vantagem dos serviços é que você pode escaloná-los de forma independente. Além disso, os times de uma empresa também podem trabalhar de forma independente em um determinado serviço
+
+Rede de Distribuição de Conteúdo, ou Content Delivery Network (CDN). O CDN é um sistema de distribuição de servidores "proxy". Podemos entender um servidor proxy como sendo um intermediário entre cliente e servidor.
+
+// Exercício Quiz Parte 2
+1 - Existem centenas de maneiras de se configurar uma aplicação web. Porém, a maioria delas segue a mesma estrutura básica. Selecione abaixo os principais componentes dessa estrutura: *
+Cliente X
+Servidor X
+Banco de dados X
+Notebook
+Webcam
+Nobreak
+
+2 - Selecione as principais responsabilidades do código que roda no lado do "Cliente", no modelo Cliente & Servidor: *
+Definir a estrutura da página web X
+Implementar mecanismos para responder às interações dos usuários X
+Responder requisições HTTP
+Modelar os dados de acordo com a especificação do cliente
+Definir a aparência e usabilidade da página web X
+Armazenamento de dados em tabelas
+
+3 - Qual o nome da linguagem responsável por definir a estrutura física de uma página/documento web ? *
+Javascript
+CSS
+SQL
+HTML X
+Swift
+
+4 - Qual o nome da linguagem responsável por alterar a aparência e o estilo de uma página/documento web ? *
+Javascript
+SQL
+HTML
+CSS X
+Swift
+
+5 - Qual o nome da linguagem responsável por lidar com as interações do usuário em página/documento web ? *
+HTML
+CSS
+Swift
+SQL
+Javascript X
+
+6 - Qual a principal responsabilidade do "Servidor" em uma aplicação web? *
+Encontrar novos clientes para expandir sua base de negócios
+Monitorar o uso de CPU e memória RAM do notebook
+Esperar por requisições HTTP em uma porta específica, realizar as ações requisitadas quando uma requisição chegar, e enviar a resposta via HTTP X
+Garantir que o microfone e a webcam estejam funcionando antes de entrar no Zoom
+
+7 - Qual a principal responsabilidade do "Banco de Dados" em uma aplicação web? *
+Gerar código de forma automática
+Filtrar arquivos maiores que 1GB
+Fazer testes no código da aplicação
+Armazenar informação de forma acessível, gerenciada e atualizável X
+
+8 - Qual dos motivos abaixo é uma justificativa plausível para escalarmos uma aplicação web? *
+O gerente do projeto está de férias
+O número de requisições simultâneas para a aplicação é muito grande X
+O time deseja construir um novo servidor na sexta-feira
+Os testes não estão passando
+
+9 - Qual mecanismo utilizamos para distribuir o tráfego de uma mesma aplicação web entre vários servidores back-end diferentes ? *
+Balanceador de Carga X
+Usar vários browsers
+Sinal de trânsito
+Repetidor de Sinal TPLink
+
+10 - Selecione os serviços que poderíamos extrair de uma aplicação web, pensando em escalabilidade: *
+Serviço de Email X
+Serviço de Autenticação X
+Serviço de Busca X
+Serviço de fazer o café de quem desenvolve
+Serviço de Limpeza do Cooler
+
+11 - Qual mecanismo utilizamos para melhorar o tempo de resposta de uma aplicação web que possui visitantes em diferentes regiões geográficas? (como China e Brasil, por exemplo) *
+Limitar a quantidade de pessoas que usam da China
+Rede de Distribuição de Conteúdo X
+Atrasar o relógio
+Enviar um servidor para cada país pelos Correios
+
+
+// Conteúdos - Parte 2
+// O protocolo HTTP, É através desses protocolos que conseguimos acessar páginas, fazer downloads, enviar emails. Dentre os protocolos, há dois que são frequentemente utilizados: o protocolo TCP/IP e o protocolo HTTP.
+
+// O Protocolo TCP/IP, é a base de envio e recebimento de dados de toda a Internet. É um conjunto de regras que permite a comunicação entre todas as máquinas conectadas à Internet.
+
+Cliente e Servidor aderem a uma linguagem comum, com regras que alinham as expectativas de ambas as partes, de forma que eles sabem exatamente o que esperar. Essa linguagem é o que chamamos de protocolo HTTP.
+
+O HTTP é uma linguagem de texto, o que significa que as mensagens trocadas são quantificadas em bits. Cada mensagem é dividida em duas partes: o header e o body.
+
+É importante ter em mente que o HTTP por si só não consegue transmitir dados. Ele ainda depende do protocolo TCP/IP para pegar as requisições e respostas entre duas máquinas. O HTTP é uma camada de abstração que padroniza a forma com que os hosts se comunicam.
+
+// HTTPS é uma forma mais segura de comunicação que utiliza a encriptação. Para adicionar mais essa camada de segurança, o HTTPS utiliza um segundo mecanismo de segurança: o SSL.
+
+// HTTP Headers
+// HTTP é composto por Header e Body. O Header contém metadata (dados sobre dados) que incluem o tipo de requisição (GET, POST, PUT, DELETE), o caminho URL, o endereço IP dentre outros.
+- Content-Type: text/plain Especifica como os dados são representados. Nesse exemplo, temos o texto sendo enviado como resposta no formato HTML.
+- Server: GitHub.com Servidor Web para onde as requisições estão sendo feitas.
+- Status: 200 OK Forma padrão para o servidor comunicar ao cliente sobre o resultado da requisição. O código 200 significa que o servidor encontrou o recurso e está enviando o resultado da requisição.
+- Host: api.github.com Host da aplicação
+- cookie: _octo=GH1.1.358825508.1593780201; _ga=GA1.2.60245099.1593780202; logged_in=yes; dotcom_user=isabellavjs; tz=America%2FSao_Paulo
+
+// HTTP Body
+O servidor armazena então os dados (metadados) mais importantes para estabelecer uma comunicação com o cliente. O Body refere-se ao corpo da mensagem que está sendo transmitida.
+
+// Métodos HTTP
+Os métodos HTTP são os verbos que dizem ao servidor o que fazer com os dados no URL. O endereço URL identifica recursos específicos. Quando o cliente utiliza o endereço URL combinado a um verbo HTTP, o servidor saberá qual será a ação necessária para cada recurso. Os exemplos mais comuns são:
+- GET
+O método GET é o mais comum, e é utilizado para ler informações encaminhadas pelo servidor para uma URL específica. As requisições GET são apenas para leitura , o que significa que os dados nunca poderão ser modificados no servidor. O servidor irá apenas retornar os dados, sem modificá-los. Assim, esse tipo de requisição é considerada uma operação segura, pois o efeito retornado será sempre o mesmo, independentemente do número de requisições feitas. Assim sendo, dizemos que requisições GET são idempotentes , o que significa que o efeito da requisição no servidor será sempre o mesmo - fazer milhões de requisições GET para o mesmo URL tem o mesmo efeito que uma única requisição. O método GET apenas retorna dados.
+Requisições GET são respondidas com status 200 (OK) se o recurso que estamos querendo acessar for encontrado com sucesso, ou 404 (NOT FOUND) se a página não for encontrada.
+
+- POST
+O método POST é utilizado para criar um novo recurso, como um formulário para login. Você usará o método POST para criar um recurso subordinado (ex: novo usuário) para a aplicação pai (ex: http://exemplo.com/usuario). Ao contrário do método GET, o método POST não é nem seguro e nem idempotente. Fazer duas ou mais requisições POSTS resultará em novos recursos criados (mesmo que idênticos). Requisições POST são retornadas com o status code 201 (CREATED) e um novo caminho no header com o Link do recurso criado.
+
+- PUT
+O método PUT é utilizado para atualizar o recurso identificado pelo URL. Esse método também pode ser utilizado para criar um novo recurso. Requisições PUT não são consideradas operações seguras, pois o estado da aplicação é modificado no servidor. No entanto, o método PUT é idempotente porque múltiplas requisições PUT para atualizar um recurso têm o mesmo efeito que uma única requisição.
+A resposta a requisição é o status code 200 (OK) se o recurso foi atualizado com sucesso, ou 404 (NOT FOUND) se ele não for encontrado.
+
+- DELETE
+DELETE é utilizado para deletar um recurso identificado pelo URL. As requisições DELETE são idempotentes, pois quando deletamos um recurso ele será deletado. Você pode fazer milhares de requisições com o método DELETE que no fim o resultado será o mesmo: um recurso deletado.
+A resposta requisição é o status code 200 (OK) se o recurso for deletado com sucesso, ou 404 (NOT FOUND) se o recurso que será deletado não existir.
+
+- REST
+Você pode já ter ouvido falar do termo RESTful para descrever uma aplicação. REST é a sigla para Representational State Transfer . É um estilo de arquitetura utilizado no design de aplicações Web. O estado da aplicação são os dados necessários para que o servidor possa atender a uma determinada requisição. As regras do REST nos guiam a desenvolver sistemas mais performáticos, escaláveis, simples, de fácil manutenção e modificação, portátil e confiável. Dentre elas, podemos destacar:
+- Interface uniforme:
+# Recursos, como dados de um banco de dados, devem ser identificados na requisição e o cliente terá acesso apenas a representação do recurso (ex: JSON, HTML)
+# O cliente deve ter informações suficientes para manipular recursos no servidor utilizando representações
+# As mensagens trocadas entre cliente e servidor devem ser auto-descritivas
+Stateless: Essa regra define que todos os dados do estado da aplicação que precisam ser manipulados em uma requisição devem estar contidos na própria requisição (URL, HTTP body, HTTP header) e o servidor deve encaminhar para o cliente todos os dados referentes ao estado na resposta (HTTP headers, status code, HTTP response body).
+
+// Exercício Quiz - Protocolo HTTP & REST
+1 - Qual das opções abaixo melhor reflete o padrão de troca de mensagens no modelo Cliente & Servidor ? *
+Requisição e Resposta X
+Giz e Quadro Negro
+Ligação e Telefone
+Caneta e Papel
+
+2 - Quando um cliente e um servidor trocam uma requisição e uma resposta usando o protocolo HTTP, temos uma: *
+Escanteio HTTP
+Transação HTTP X
+Saque HTTP
+Pênalti HTTP
+
+3 - As mensagens HTTP são escritas em texto. *
+Falso
+Verdadeiro X
+
+4 - Cada mensagem HTTP contém duas partes, que são: *
+Cabeçalho e corpo X
+Joelho e pé
+Corpo e alma
+Ombro e joelho
+
+5 - Selecione a opção que demonstra uma diferença entre o protocolo HTTP e o protocolo HTTPS: *
+O "S" a mais significa Sibéria
+Não sei o que é protocolo HTTPS
+Não existe diferença
+O protocolo HTTPS utiliza encriptação como uma forma de segurança X
+
+6 - Qual o protocolo de segurança utilizado pelo protocolo HTTPS ? *
+Inverter a ordem das letras
+TLS/SSL X
+Base64
+IPV4
+
+7 - Geralmente, onde encontramos os metadados de uma requisição HTTP? (como por exemplo: status, path, cookie, etc) *
+Cabeçalho X
+Wi-Fi
+Nenhuma das opções
+Corpo
+
+8 - Selecione as opções que são cabeçalhos válidos de uma requisição HTTP: *
+Remote Address X
+Cookie X
+Accept-Encoding X
+Request Method X
+Content-Type X
+User-Agent X
+Accept-Language X
+Status Code X
+Host X
+Request URL X
+Content-Encoding X
+
+9 - Dependendo do tipo de requisição HTTP, o corpo da resposta pode vir vazio. *
+Verdadeiro X
+Falso
+
+10 - Selecione os principais verbos/métodos do protocolo HTTP: *
+FROM
+PUT X
+DELETE X
+GET X
+POST X
+SELECT
+JOIN
+WHERE
+
+11 - Requisições HTTP feitas com o verbo/método GET são idempotentes. Ou seja, fazer uma requisição ou um milhão de requisições, vai ter o mesmo efeito no servidor, já que uma requisição GET não deveria modificar nenhum dado, apenas retorná-los. *
+Falso
+Verdadeiro X
+
+12 - Qual a finalidade do método/verbo HTTP "POST" ? *
+Deletar a base de dados
+Enviar cartas aos Correios
+Criar um novo recurso, como um novo usuário por exemplo X
+Formatar o computador
+
+13 - Selecione as opções que são características do método/verbo HTTP "PUT": *
+Requisições feitas com o método PUT podem ser usadas para criar novos recursos. X
+Requisições feitas com o método PUT são idempotentes, se utilizadas para atualizar um recurso. X
+Requisições feitas com o método PUT modificam o estado no servidor. X
+Requisições feitas com o método PUT são usadas para atualizar um recurso, como atualizar o nome de um usuário por exemplo. X
+
+14 - O que acontece se você enviar múltiplas requisições com o verbo/método DELETE para um mesmo recurso ? *
+O recurso será deletado no banco de dados, e nos backups subsequentes. Uma vez para cada requisição
+O recurso vai ser deletado na primeira requisição, e as demais retornarão algum tipo de erro X
+O recurso não será deletado
+
+15 - Marque a opção que melhor define o "REST": *
+Sigla de partido polítco
+Estilo de arquitetura para fazer o design de aplicações web X
+Abreviação de restaurante
+Placa de carro no modelo Mercosul
+
+16 - Quais opções abaixo definem os benefícios de se utilizar o REST em uma aplicação web? *
+Modificabilidade X
+Visibilidade X
+Simplicidade X
+Performance X
+Escalabilidade X
+Confiabilidade X
+Portabilidade X
+
+17 - De acordo com o "REST", quais das opções abaixo podem ser utilizadas pelo "Cliente" para enviar dados para o "Servidor" ? *
+URL X
+Cabeçalho de uma requisição HTTP X
+Corpo de uma requisição HTTP X
+Corpo de uma resposta HTTP
+Status Code de uma resposta HTTP
+Parâmetros de consulta X
+Cabeçalho de uma resposta HTTP
+
+18 - De acordo com o "REST", quais das opções abaixo podem ser utilizadas pelo "Servidor" para enviar dados para o "Cliente" ? *
+Cabeçalho de uma requisição HTTP
+Corpo de uma requisição HTTP
+Parâmetros de consulta
+Status Code de uma resposta HTTP X
+Corpo de uma resposta HTTP X
+URL
+Cabeçalho de uma resposta HTTP X
+
+// Curl
+Abreviação para Client URL . Ele é um comando disponível na maioria dos sistemas baseados em Unix que serve para verificar conectividade, além transferir dados via terminal.
+- Para Linux:
+# curl --version
+
+- Se o curl estiver dvidamente instalado, seu terminal exibirá uma mensagem similar a:
+curl 7.68.0 (x86_64-pc-linux-gnu) libcurl/7.68.0 OpenSSL/1.1.1f zlib/1.2.11 brotli/1.0.7 libidn2/2.2.0 libpsl/0.21.0 (+libidn2/2.2.0) libssh/0.9.3/openssl/zlib nghttp2/1.40.0 librtmp/2.3
+Release-Date: 2020-01-08
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp
+Features: AsynchDNS brotli GSS-API HTTP2 HTTPS-proxy IDN IPv6 Kerberos Largefile libz NTLM NTLM_WB PSL SPNEGO SSL TLS-SRP UnixSockets
+
+// Caso você ainda não possua o comando curl instalado, seguiremos um passo a passo para realizarmos a instalação:
+// Linux
+- Este comando irá atualizar a lista de pacotes e programas que podem ser instalados, em seguida, irá baixar e instalar os pacotes de atualização dos programas que estão instalados.
+# sudo apt update && sudo apt upgrade
+- Agora utilizaremos o comando que fará a instalação do curl.
+# sudo apt install curl
+- Por fim cheque novamente a versão do curl para garatirmos que tudo foi instalado corretamente.
+- curl --version
+
+OBS: Assim como você fará com toda nova tecnologia que aprender em programação, o primeiro passo na maioria das vezes é dar uma olhada na documentação! A documentação contém muitas informações úteis que podem nos poupar tempo de pesquisa se a analizarmos.
+https://curl.se/docs/
+Com a etapa de instalação concluida e a documentação em mãos, vamos conhecer um pouco mais sobre o comando rodando exemplos práticos no terminal!
+
+// Sintaxe básica do curl .
+// curl [OPTIONS] [URL]
+# Options aqui podemos especificar diversas opções que nos permitem acessar informações e definir comportamentos/configuralções, como por exemplo:
+ -u ou --user : Permite especificar nome de usuário e senha para autenticação no servidor.
+ -T ou --upload-file : Permite transferir arquivos locais para uma URL remota.
+ -s ou --silent : Coloca o curl em modo silencioso. Este comando fará com que mensagens de erro e status de progressão não gerem nenhum tipo de notificação.
+ Caso você queira conhecer mais opções, é possível acessar o manual completo do curl através do comando curl --manual .
+# URL é o endereço WEB ao qual vamos nos referir para fazer nosas requisições via comando curl.
+
+// Agora faremos nossa primeira requisição para um site.
+// curl testdomain.com
+# Note que a resposta que você receberá no terminal será um código HTML que como vimos anteriormente, permite configurar a estrutura física da página web.
+# Além disto, observe também que as tags <html> , <head> , <title> , <body> e <h1> estão presentes na resposta. A tag <h1> foi vista anteriormente no conteúdo e representa o título principal. As demais tags nós veremos com mais detalhes no próximo bloco de conteúdo. 🚀
+
+// Nesta próxima etapa, utilizaremos uma option do comando curl , conhecida como --head . Ela nos permitirá ter acesso a todo cabeçalho da página. Não se preocupe em entender todos os detalhes, vários pontos que estão presentes nesta resposta serão vistos por você com profundidade ao longo do curso!
+# curl --head https://www.betrybe.com/
+- Nesta requisição ao site da trybe, recebemos algumas informações como por exemplo:
+# Status da requisição : está representado pelo número 200, e nos informa que nossa requisição foi feita com sucesso.
+# Server : Servidor Web para onde as requisições estão sendo feitas.
+# Content-type : Especifica como os dados são representados. Neste caso, text/html .
+
+// Por fim, veremos como podemos fazer uma requisição de download para uma URL específica, utilizando a option -O . A partir desta requisição você terá acesso ao arquivo localmente, no diretório em que o terminal está rodando.
+# curl -O https://uploads-ssl.webflow.com/5dbd9ce75ad64f24b67f0932/5dbdd9165ad64f5e29811c52_BRAND3.png
+- Note que o arquivo em sua máquina terá o mesmo nome do arquivo remoto. É comum que as nomenclaturas de arquivos remotos não sejam descritivas. Para resolver este problema, podemos utilizar uma segunda option do comando curl que nos permitirá nomear o arquivo da forma que desejarmos.
+# curl -o trybe_logo.png https://uploads-ssl.webflow.com/5dbd9ce75ad64f24b67f0932/5dbdd9165ad64f5e29811c52_BRAND3.png
+- Observe que agora o download foi feito com o nome trybe_logo.png
+- Existem diversas outras options que podem ser utilizadas via comando curl , porém, não nos aprofundaremos neste conteúdo por agora.
