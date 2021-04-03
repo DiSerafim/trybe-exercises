@@ -1,6 +1,6 @@
 cross fox
 # Considere o arquivo nomes.txt para os exemplos a seguir
-                    # Seu conteúdo inicial é:
-                    Ana
-                    Maria
-                    João
+# Seu conteúdo inicial é:
+Ana
+Maria
+João
