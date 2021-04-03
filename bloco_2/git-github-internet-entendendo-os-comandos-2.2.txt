@@ -216,10 +216,10 @@ git add arquivo && git commit -m "msg" X
 # git status
 
 3 - Caso exista algo, verifique se é necessário e faça o commit , ou remova-o.
-#
+# git commit -m "dando push dentro da pasta bloco_2/exercises-2.2" 
 
 4 - Crie uma nova branch com o nome trybe-skills-changes e faça checkout nela;
-#
+# git checkout trybe-skills-changes
 
 5 - No arquivo .txt , ao final da lista de habilidades , adicione mais duas habilidades que serão desenvolvidas na Trybe;
 #
