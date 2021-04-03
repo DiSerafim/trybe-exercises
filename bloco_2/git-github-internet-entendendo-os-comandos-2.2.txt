@@ -222,5 +222,13 @@ git add arquivo && git commit -m "msg" X
 # git checkout trybe-skills-changes
 
 5 - No arquivo .txt , ao final da lista de habilidades , adicione mais duas habilidades que serão desenvolvidas na Trybe;
-#
+# git checkout master
 
+6 - Verifique que você está na branch master , com o comando: git branch (esta branch deve estar com o formato original, sem as habilidades recém adicionadas);
+ # git branch
+
+7 - Crie uma nova branch trybe-skills-updates a partir da master e faça checkout nela;
+ # 
+
+8 - No mesmo arquivo .txt que você modificou no passo 4 , também ao final da sua lista de habilidades, adicione mais um aprendizado que você terá nos próximos blocos;
+ # 
