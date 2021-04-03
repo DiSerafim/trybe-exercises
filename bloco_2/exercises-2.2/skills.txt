@@ -1,8 +1,9 @@
-Internet
-Unix
-Bash
-HTML
-CSS
-JavaScript
-React
-SQL
+- Unix
+- Bash
+- Git
+- HTML
+- CSS
+- Internet
+- JavaScript
+- React
+- SQL
