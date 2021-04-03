@@ -1,8 +1,8 @@
-Intenet
+Internet
 Unix
 Bash
 HTML
 CSS
-Javascript
+JavaScript
 React
 SQL
