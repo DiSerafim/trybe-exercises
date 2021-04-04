@@ -2,7 +2,8 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8">
-    <title>HTML & CSS / bloco_3.3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>box model / bloco_3.3</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -18,61 +19,24 @@
     <p>Posicionar elementos na página de diferentes formas;</p>
     <p>Combinar e agrupar seletores de CSS para criar regras bem definidas.</p>
 
-    <h2>Parte I *Vídeo</h2>
-    <p>Vamos começar com este vídeo para você criar suas primeiras regras com CSS:</p>
-    <p>Introdução ao CSS</p>
-    <section>
-      <h2>Exercícios</h2>
-      <p>1 - Modifique o tamanho do h1 para 65 pixels</p>
-      <p>2 - Modifique a cor do texto do h1 para laranja</p>
-      <p>3 - Modifique a cor de fundo da lista não ordenada</p>
-      <p>4 - Crie uma classe para modificar a cor de fundo da tag p e da ul ao mesmo tempo</p>
-      <h1>Exercícios 3.2</h1>
-      <p id="p">Qual é a sua cor favorita?</p>
-      <ul id="pul">
-        <li id="ama">Amarelo</li>
-        <li id="ver">Vermelho</li>
-        <li id="mar">Marrom</li>
-      </ul>
-      <hr>
-      <h2>Parte II *Vídeo</h2>
-      <p>Agora você vai aprender sobre os seletores CSS que modificam propriedades do texto nas páginas:</p>
-      <p>propriedades de texto no CSS</p>
-      <h2>Exercícios</h2>
-      <p>1 - Modifique o família do h1 para sans-serif</p>
-      <p>2 - Deixe o parágrafo com o font-weight 600</p>
-      <p>3 - Modifique o font-size do body para 16px</p>
-      <p>4 - Coloque o tamanho do parágrafo com o tamanho de 3 vezes o padrão do body</p>
-      <p>5 - Explore as propriedades font-style, line-height, text-align e text-decoration</p>
-      <p>6 - Troque a cor de fundo de cada item da lista para a cor correspondente ao texto</p>
-      <hr>
-      <h2>Parte III</h2>
-      <p>Hora de aprender outras formas de adicionar o CSS nas páginas web:</p>
-      <p>CSS Inline e Externo</p>
-      <h2>Exercícios</h2>
-      <p>Coloque todo o CSS criado até agora nos exercícios anteriores em um arquivo externo.</p>
-    </section>
-    <h2>Exercícios</h2>
-    <p>Vamos continuar com a criação do seu Portfólio Web ! Hoje é o segundo dia utilizando o GitHub Pages, então lembre-se: o processo de versionamento é relativamente diferente do restante dos exercícios do curso.</p>
-    <p>Agora é hora de estilizar tudo que você aprendeu! Com este exercício, você será capaz de:</p>
-    <p>Estilizar seu Portfólio Web usando todo o conhecimento que você construiu hoje;</p>
-    <p>Atualizar seu Portfólio Web no GitHub Pages. <br> https://pages.github.com/ </p>
-    <h2>Estilizando seu Portfólio Web!</h2>
-    <p>Antes de começar, você deve seguir as instruções abaixo e fazer o setup para o exercício de hoje:</p>
-    <p>Entre no diretório que você criou no dia anterior;</p>
-    <p>Adicione a tag <style></style> , que é onde você vai colocar suas alterações;</p>
-    <p>Procure uma paleta de cores com a qual você mais se identifique e que você pode gerar <a href="https://coolors.co/" target="_blank">nesse site</a>.</p>
-    <p>Lembre-se que, para executar o seu código enquanto o desenvolve, você deve utilizar a extensão Live Server . Para saber mais sobre ela, acesse nosso conteúdo sobre isso.</p>
-    <h2>Requisitos</h2>
-    <p>Seu Portfólio Web deve ser estilizado usando as informações a seguir:</p>
-    <p>Defina fontes diferentes para o seu nome e para a descrição que você criou;</p>
-    <p>Defina uma cor base de background do seu Portfólio Web ;</p>
-    <p>Altere o estilo das tags que você usou para destacar algumas informações, como sua nacionalidade e a cidade/estado onde mora;</p>
-    <p>Coloque tamanhos diferentes para os elementos da lista de habilidades que você criou. Lembre-se de usar classes para cada um dos elementos;</p>
+    <h2>Modelo de Caixas - CSS *Vídeo</h2>
+    <p>vamos começar pela apresentação do famoso box model ou "modelo de caixas" utilizado como base do CSS.</p>
+    <p>Modelo de Caixas - CSS</p>
+    
+    <h2>O que é o Box Model?</h2>
+    <p>A primeira coisa que temos que deixar bem explícita é que todos os elementos HTML são renderizados como caixas pelo browser. Por isso nós usamos o termo "box model" ou "modelo de caixas" quando nos referimos a essa forma de renderização e, por tabela, quando falamos de alguns elementos do layout.</p>
+    <h3>width e height</h3>
+    <p>Especificam, respectivamente, a largura e a altura da área de conteúdo, desconsiderando as bordas, margens e padding.</p>
+    <h3>padding</h3>
+    <p>Pode ser traduzido como "enchimento" e controla a quantidade de espaço vazio entre o conteúdo em si e a borda da caixa.</p>
+    <h3>border</h3>
+    <p>ela serve como um atalho para controlar um conjunto de outras propriedades que poderiam ser definidas individualmente, nesse caso border-width , border-style , e border-color !</p>
+    <h3>margin</h3>
+    <p>A margem funciona como um tipo de "campo de força" que expande o elemento para além das suas dimensões visíveis. Ela fica do lado de fora da borda e não é afetada pela estilização do elemento, servindo mais para manejar o afastamento entre as caixas.</p>
+    
+    <h2>Visualizando o Box Model na prática</h2>
+    <a href="box_model.html">Veja o exercício criado</a>
+    
     <h4><a href="https://diserafim.github.io/" target="_blanck">Portifolio Criado</a></h4>
-    <h2>Dicas</h2>
-    <p>Lembre-se de utilizar o Git para versionar o seu código!</p>
-    <p>Faça commits a cada requisito que você desenvolver.</p>
-    <p>Coloque mensagens descritivas nos commits .</p>
   </body>
 </html>
