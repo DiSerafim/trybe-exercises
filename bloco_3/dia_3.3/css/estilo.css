@@ -1,159 +1,384 @@
-body{
-    background-color: #ccc;
+/* box_model interno */
+.box_model {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 10px;
 }
+
+.box_model .local-atual p {
+  background-color: #272;
+  width: 150px;
+  padding: 5px;
+  font-size: 10px;
+  color: #fff;
+}
+
+.box_model .caixa {
+  color: white;
+  display: inline-block;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.box_model .width-and-height {
+  height: 50px;
+  width: 50px;
+}
+
+.box_model .padding {
+/* insira aqui um padding de 20px na classe abaixo para aplicá-lo aos itens B, C e D */
+  padding: 20px;
+}
+
+.box_model .margin {
+/* insira aqui uma margem de 30px na classe abaixo para aplicá-la aos itens C e D */
+  margin: 30px;
+}
+
+
+/* box_model exteno */
+
+.local-atual p {
+  background-color: #272;
+  width: 150px;
+  padding: 5px;
+  font-size: 10px;
+  color: #fff;
+}
+
 .caixa {
-    color: white;
-    display: inline-block;
-    line-height: 50px;
-    text-align: center;
-    vertical-align: top;
-  }
+  color: white;
+  display: inline-block;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: top;
+}
 
-  .width-and-height {
-    height: 50px;
-    width: 50px;
-  }
+.width-and-height {
+  height: 50px;
+  width: 50px;
+}
 
-  .padding {
-  /* insira aqui um padding de 20px na classe abaixo para aplicá-lo aos itens B, C e D */
-    padding: 20px;
-  }
+.padding {
+/* insira aqui um padding de 20px na classe abaixo para aplicá-lo aos itens B, C e D */
+  padding: 20px;
+}
 
-  .margin {
-  /* insira aqui uma margem de 30px na classe abaixo para aplicá-la aos itens C e D */
-    margin: 30px;
-  }
-  .super-mario{
-    width: 10%;
-    padding: 0 5px;
+.margin {
+/* insira aqui uma margem de 30px na classe abaixo para aplicá-la aos itens C e D */
+  margin: 30px;
+}
+
+/* posicionamento-de-elementos interno */
+.posicionamento-de-elementos {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.posicionamento-de-elementos .local-atual p {
+  background-color: #272;
+  width: 150px;
+  padding: 5px;
+  font-size: 10px;
+  color: #fff;
+}
+
+.posicionamento-de-elementos .super-mario {
+  width: 10%;
+  padding: 0 5px;
+  position: absolute;
+  border: solid 1px #ccc;
+  position: absolute;
+}
+
+.posicionamento-de-elementos .goomba {
+  width: 20%;
+  padding: 0 5px;
+  margin-left: 100px;
+}
+
+.posicionamento-de-elementos .baloon {
+  width: 10%;
+  padding: 0 5px;
+  position: absolute;
+  margin-top: 90px;
+  margin-left: 50px;
+  z-index: 1;
+}
+
+.posicionamento-de-elementos .bowser {
+  position: absolute;
+  width: 20%;
+  padding: 0 5px;
+  margin-left: 150px;
+}
+
+.posicionamento-de-elementos .word {
+    font-size: 12px;
+    margin-bottom: -245px;
+    margin-left: 438px;
+    z-index: 2;
+}
+
+.posicionamento-de-elementos .border {
+/* insira aqui uma borda com valor '5px solid black' para aplicá-la ao item D */
+  border: solid 5px #000;
+}
+
+/* posicionamento-de-elementos externo */
+.posicionamento-de-elementos {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.posicionamento-de-elementos .local-atual p {
+  background-color: #272;
+  width: 150px;
+  padding: 5px;
+  font-size: 10px;
+  color: #fff;
+}
+
+.super-mario {
+  width: 10%;
+  padding: 0 5px;
+  position: absolute;
+  border: solid 1px #ccc;
+  position: absolute;
+}
+
+.goomba {
+  width: 20%;
+  padding: 0 5px;
+  margin-left: 100px;
+}
+
+.baloon {
+  width: 10%;
+  padding: 0 5px;
+  position: absolute;
+  margin-top: 90px;
+  margin-left: 50px;
+  z-index: 1;
+}
+
+.bowser {
+  width: 20%;
+  padding: 0 5px;
+  margin-left: 150px;
+}
+
+.word {
     position: absolute;
-    border: solid 1px #ccc;
-    position: absolute;
-  }
-  .goomba{
-    width: 20%;
-    padding: 0 5px;
-    margin-left: 100px;
-  }
-  .baloon{
-    width: 10%;
-    padding: 0 5px;
-    position: absolute;
-    margin-top: 90px;
-    margin-left: 50px;
-    z-index: 1;
-  }
-  .bowser{
-    width: 20%;
-    padding: 0 5px;
-    margin-left: 150px;
-  }
-  .word{
-      position: absolute;
-      font-size: 12px;
-      margin-top: -265px;
-      margin-left: 448px;
-      z-index: 2;
-  }
-  .border {
-  /* insira aqui uma borda com valor '5px solid black' para aplicá-la ao item D */
-    border: solid 5px #000;
-  }
-.img{
+    font-size: 12px;
+    margin-top: -265px;
+    margin-left: 448px;
+    z-index: 2;
+}
+
+.border {
+/* insira aqui uma borda com valor '5px solid black' para aplicá-la ao item D */
+  border: solid 5px #000;
+}
+
+.img {
     max-width: 50%;
 }
-span{
+
+span {
     color: blue;
 }
-.paragrafos{
+
+.paragrafos {
     background-color: cornsilk;
     padding: 5px;
     width: 700px;
     height: 220px;
     overflow: auto;
 }
-.menu{
+
+.menu {
   padding: 5px;
   background-color: #c1c1c1;
 }
-.menu ul{
+
+.menu ul {
   padding: 5px;
 }
-.menu li{
+
+.menu li {
   padding: 5px;
   list-style: none;
   margin-left: 10px;
   display: inline;
 }
-.menu li:hover{
+
+.menu li:hover {
   background-color: #999;
   height: 100%;
 }
-.menu li a, ol li a{
+
+.menu li a, ol li a {
   text-decoration: none;
 }
-.local-atual p{
-  background-color: #272;
-  width: 4%;
-  padding: 5px;
-  font-size: 10px;
-  color: #fff;
-}
-p.lista , h1.lista{
+
+p.lista , h1.lista {
   background-color: #c1c1c1;
   text-align: center;
 }
-ol.lista{
+
+/* agrupamento_seletores interno */
+.agrupamento_seletores {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.agrupamento_seletores h1, .agrupamento_seletores p {
+  text-align: center;
+}
+
+.agrupamento_seletores ol.lista, .agrupamento_seletores ul.lista {
   background-color: #c5c5c5;
   padding: 10px;
   text-decoration: none;
+  list-style: none;
 }
-li.lista:hover{
+
+.agrupamento_seletores li.lista:hover {
   background-color: #ccc;
 }
-li.lista a:active{
+
+.agrupamento_seletores li.lista a:active {
   color: #272;
   font-size: 18px;
   font-family: monospace;
 }
-li.lista a{
+
+.agrupamento_seletores li.lista a {
   text-decoration: none;
 }
-ol.lista li{
+
+.agrupamento_seletores ol.lista li, .agrupamento_seletores ul.lista li {
   margin-left: 10px;
   margin-bottom: 10px;
 }
-.pseudo{
+
+/* agrupamento_seletores externo */
+ol.lista, ul.lista {
+  background-color: #c5c5c5;
+  padding: 10px;
+  text-decoration: none;
+  list-style: none;
+}
+
+li.lista:hover {
+  background-color: #ccc;
+}
+
+li.lista a:active {
+  color: #272;
+  font-size: 18px;
+  font-family: monospace;
+}
+
+li.lista a {
+  text-decoration: none;
+}
+
+ol.lista li {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+/* Pseudoclasses interno */
+.pseudoclasses {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.pseudoclasses .pseudo {
   background-color: #c5c5c5;
 }
-.pseudo h3:hover{
+
+.pseudoclasses .pseudo h3:hover {
   border: solid 1px rgb(32, 97, 129);
   padding: 1px;
 }
-.pri{
+
+.pseudoclasses .pri {
   background-color: rgb(243, 10, 10);
   font-family: cursive;
   font-style: italic;  
 }
-.sec{
+
+.pseudoclasses .sec {
   background-color: rgb(223, 113, 10);
   font-family: fantasy;
   font-style: oblique;
 }
-.com{
+
+.pseudoclasses .com {
   background-color: darkorchid;
   font-family: monospace;
   font-style: italic;
   padding: 1px;
   font-size: 20px;
 }
-.esc{
+.pseudoclasses .esc {
   background-color: darkslategray;
   color: #ccc;
   font-family: initial;
   font-style: unset;
 }
-.cla{
+
+.pseudoclasses .cla {
+  background-color: cyan;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-style: italic;
+}
+
+/* Pseudoclasses externo */
+.pseudo {
+  background-color: #c5c5c5;
+}
+
+.pseudo h3:hover {
+  border: solid 1px rgb(32, 97, 129);
+  padding: 1px;
+}
+
+.pri {
+  background-color: rgb(243, 10, 10);
+  font-family: cursive;
+  font-style: italic;  
+}
+
+.sec {
+  background-color: rgb(223, 113, 10);
+  font-family: fantasy;
+  font-style: oblique;
+}
+
+.com {
+  background-color: darkorchid;
+  font-family: monospace;
+  font-style: italic;
+  padding: 1px;
+  font-size: 20px;
+}
+.esc {
+  background-color: darkslategray;
+  color: #ccc;
+  font-family: initial;
+  font-style: unset;
+}
+
+.cla {
   background-color: cyan;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: italic;
