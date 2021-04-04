@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>box model / bloco_3.3</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/estilo.css">
   </head>
   <body>
     <h1>Fundamentos do Desenvolvimento Web</h1>
@@ -33,10 +34,82 @@
     <p>ela serve como um atalho para controlar um conjunto de outras propriedades que poderiam ser definidas individualmente, nesse caso border-width , border-style , e border-color !</p>
     <h3>margin</h3>
     <p>A margem funciona como um tipo de "campo de força" que expande o elemento para além das suas dimensões visíveis. Ela fica do lado de fora da borda e não é afetada pela estilização do elemento, servindo mais para manejar o afastamento entre as caixas.</p>
-    
-    <h2>Visualizando o Box Model na prática</h2>
-    <a href="box_model.html">Veja o exercício criado</a>
-    
+    <hr>
+    <section class="box_model">
+      <div class="local-atual">
+        <a href="box_model.html"><p>Veja o Exercício-01 criado</p></a>
+      </div>
+      <h1>Exercício de Box Model</h1>
+      <hr>
+      <div class="caixa width-and-height" style="background: #036b52">A</div>
+      <div class="caixa width-and-height padding" style="background: #41197f;">B</div>
+      <div class="caixa width-and-height padding margin" style="background: #444955">C</div>
+      <div class="caixa width-and-height padding margin border" style="background: #3898EC">D</div>
+    </section>
+    <p>Se você tiver curiosidade para saber sobre as propriedades display , text-align e vertical-align , sinta-se livre para consultar as documentações do <a href="https://developer.mozilla.org/pt-BR/docs/Aprender/CSS/Construindo_blocos/The_box_model">MDN</a> e da <a href="https://www.w3schools.com/css/css_boxmodel.asp">W3Schools</a>.</p>
+    <h2>Posicionamento de Elementos</h2>
+    <p>Agora, você vai aprender a posicionar elementos HTML utilizando CSS. Para isso, assista ao vídeo abaixo:</p>
+    <p>é notável o quanto posicionar elementos é importante e nos abre uma gama de possibilidades para estilizar uma página, movendo elementos utilizando propriedades como top e left . Foi possível observar também a propriedade absolute , que permite posicionar qualquer elemento de acordo com o elemento pai que tenha um position diferente. E por fim, vimos o z-index , que estabelece as camadas em que o objeto irá se posicionar, e o float , que lhe possibilita empurrar um elemento para a esquerda ou para a direita da página, permitindo que outras estruturas possam se organizar em torno dele.</p>
+    <section class="posicionamento-de-elementos">
+      <div class="local-atual">
+        <a href="posicionamento _de_elementos.html"><p>Veja o Exercício-02 criado</p></a>
+      </div>
+      <h1>Exercícios de Posicionamento de Elementos</h1>
+      <p>Exercícios:</p>
+      <p>1- Posicione o Mário acima do Goomba.</p>
+      <p>2- Posicione a tag p para que fique dentro do balão de fala.</p>
+      <p>3- Posicione o balão para que se torne uma fala de Bowser.</p>
+      <p>4- Posicione os elementos para que tenham alguma distância entre si.</p>
+      <hr>
+      <h2>Posicionamento de elementos</h2>
+      <img src="https://bit.ly/39HLUyi" alt="jumpMario" class="super-mario" />
+      <img src="https://bit.ly/3arGfMc" alt="gomba" class="goomba" />
+      <p class="word">
+        Goomba, do something!
+      </p>
+      <img src="https://bit.ly/3tmxgED" alt="baloon" class="baloon" />
+      <img src="https://bit.ly/2MV2bY0" alt="bowser" class="bowser" />
+    </section>
+    <h2>Agrupamento de Seletores e Pseudoclasses</h2>
+    <p>
+      Você verá a seguir como agrupar seus seletores e como usar as pseudoclasses para estilizar ainda mais seu site: *vídeo..
+    </p>
+    <p>Viu como podemos economizar linhas de código simplesmente agrupando estilos? Ao fazer isso, podemos corrigir rapidamente erros de estilo pela página. Imagine: você precisa criar a versão dark-theme do seu site, fazendo todos os backgrounds ficarem escuros, textos ficarem claros e estilizar os títulos.</p>
+    <p>E quanto às pseudoclasses? Desde um simples :hover , para o elemento mudar quando o cursor do mouse passa por cima, até um :focus em um input de formulário, para quando o elemento estiver selecionado e puder ter um valor inserido, as pseudoclasses ajudam a estilizar melhor os elementos, dando um retorno visual ao usuário e agregando mais estilo ao seu site.</p>
+    <p>DICA: Experimente colocar a propriedade transition nos seus estilos que possuem pseudoclasses. 😉 <br>
+    Vamos praticar o que aprendemos.</p>
+    <section class="agrupamento_seletores">
+      <hr>
+      <div class="local-atual">
+        <a href="agrupando_seletores.html"><p>Veja o Exercício-03 criado</p></a>
+      </div>
+      <h1>Exercícios de Agrupamento de Seletores e Pseudoclasses</h1>
+      <h2 class="lista">Lista dos Melhores Sites que já vi</h2>
+      <p class="lista">Top 3 dos melhores sites que existem na web</p>
+      <ol class="lista">
+          <li class="lista"><a href="#agrupamento_seletores">Trybe</a></li>
+          <li class="lista"><a href="#agrupamento_seletores">Curso em vídeo</a></li>
+          <li class="lista"><a href="#agrupamento_seletores">Cc50</a></li>
+      </ol>
+      <p>EXERCÍCIOS</p>
+      <p>1. Adicione uma lista ordenada dos 3 melhores sites que você conhece. *</p>
+      <p>2. Crie um arquivo no mesmo diretório e nomeie-o de 'style.css'.  *</p>
+      <p>3. Nesse arquivo .css, adicione os estilos para que:  *</p>
+      <p>3.1 O texto das tags 'h1' e 'p' estejam centralizados.</p>
+      <p>3.2 A cor de fundo da sua lista mude quando o cursor estiver sobre o item.</p>
+      <p>3.3 A fonte do item mude quando ele for clicado.</p>
+      <p class="lista">Principais motivos para eu gostar deles</p>
+      <ul class="lista">
+        <li>Trybe - oferece curso de desenvolvimento web, no modelo de sucesso compartilhado. <a href="https://www.betrybe.com" target="_blank">Saiba mais..</a></li>
+        <li>Curso em Vídeo - oferece grátis, curso básico de desenvolvimento web. <a href="https://www.cursoemvideo.com/" target="_blank">Saiba mais..</a></li>
+        <li>Foi meu primeiro curso de desenvolvimento web, conheci em 2013. <a href="https://cc50.com.br" target="_blank">Saiba mais..</a></li>
+      </ul>
+
+      <p>EXERCÍCIOS</p>
+      <p>1. Adicione uma lista não ordenada com, pelo menos, 3 características que você gosta.</p>
+      <p>2. No 'style.css', adicione a propriedade 'list-style: none' para ambas as listas.</p>
+    </section>
+
     <h4><a href="https://diserafim.github.io/" target="_blanck">Portifolio Criado</a></h4>
   </body>
 </html>
