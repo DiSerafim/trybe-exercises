@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Semântico 3.4</title>
+    <link rel="stylesheet" href="../css_4/estilo.css">
+</head>
+<body>
+    <h2>Fundamentos do Desenvolvimento Web</h2>
+    <h2>Bloco 03.4</h2>
+    <h2>HTML Semântico</h2>
+    <h2>O que vamos aprender?</h2>
+    <p>Desde que você começou a fazer uso de elementos HTML, já parou para pensar sobre o significado de um elemento? Suponha que você, ao digitar a URL de um site, visualize somente o DOM construído, e não a renderização da página pelo browser.</p>
+    <p>Essa representação, esse sentido que um elemento HTML carrega acerca de seu conteúdo se chama HTML Semântico , e é isto que você estudará na aula de hoje.</p>
+    <h2>Você será capaz de:</h2>
+    <p>Fazer uso de elementos HTML de acordo com o sentido e o propósito que eles carregam. Tais elementos incluem, mas não se limitam a: header , nav , aside , article , section , footer e img;</p>
+    <p>Criar páginas semanticamente válidas e acessíveis de acordo com o W3CAG;</p>
+    <p>Entender a diferença entre elementos de bloco e elementos inline.</p>
+    <h2>Por que isso é importante?</h2>
+    <p>Saber aplicar elementos HTML de acordo com o sentido e o propósito que cada um deles carrega, além de reforçar a sua capacidade para modelagem de um problema, resulta em páginas melhor ranqueadas em motores de busca (e.g. Google) e mais acessíveis.</p>
+    <h2>Conteúdos</h2>
+    <p>HTML Semântico é o uso do HTML para reforçar o significado da informação na página e não apenas definir sua estrutura e apresentação. Por exemplo, durante esse tempo todo você fez uso de elementos HTML com as tags html , head , body e form . Esses elementos são exemplos de uso de HTML Semântico , pois cada um tem seu conteúdo com um sentido e propósito definidos:</p>
+    <p>html representa o tipo do documento em questão, que nesse caso é HTML;</p>
+    <p>head representa os metadados do documento HTML , tais como o título do documento, links para arquivos CSS e JavaScript de que o documento precisa;</p>
+    <p>body representa todo o conteúdo visual do documento HTML;</p>
+    <p>form representa um formulário para que o usuário consiga inserir dados.</p>
+    <h2>Aplicando elementos HTML de acordo com o sentido</h2>
+    <p>Ao usar o elemento img , eu estou comunicando que o conteúdo é uma imagem.</p>
+    <p>Qual elemento você usaria para representar uma tabela? Existe um elemento HTML cujo propósito é definir uma tabela, o table.</p>
+    <h2>Elementos de bloco e elementos inline</h2>
+    <p>Para entender como funcionam os elementos de bloco e os elementos inline veja o *vídeo</p>
+    <p>Agora que você já sabe sobre as propriedades display inline e display block , é hora de ver sobre a propriedade display inline-block !</p>
+    <p>Para fixar esse conteúdo, realize o exercício a seguir. Para realizar o exercício, leia atentamente o enunciado. Após entender o que foi pedido, desenvolva a solução e então verifique se você conseguiu cumprir com o que foi solicitado.</p>
+    <h2>Exercício</h2>
+    <p>Para realizar este exercício, faça a implementação das propriedades CSS e, se necessário, faça adições à estrutura HTML existente, para que o resultado final seja similar à imagem referência.</p>
+    <p>Lembre-se que a estrutura da página deve ser mantida para que a semântica do código seja preservada.</p>
+    <section class="ex_01">
+        <header>
+            <h1>Hackathon Results</h1>
+        </header>
+        <section>
+        <ul>
+            <li class="first">1º - Equipe 1</li>
+            <li class="second">2º - Equipe 2</li>
+            <li class="third">3º - Equipe 3</li>
+        </ul>
+        </section>
+        <section class="premio">
+        <h3>Premiação Primeiro Lugar:</h3>
+        <ul>
+            <li>| R$ 1000,00 por integrante da equipe |</li>
+            <li>| Bootcamp de 2 meses com possibilidade de contratação |</li>
+        </ul>
+        <h3>Premiação Segundo Lugar:</h3>
+        <ul>
+            <li>| R$ 600,00 por integrante da equipe |</li>
+            <li>| Participação no processo seletivo para o Bootcamp |</li>
+        </ul>
+        <h3>Premiação Terceiro Lugar:</h3>
+        <ul>
+            <li>| R$ 300,00 por integrante da equipe |</li>
+            <li>| Participação no processo seletivo para o Bootcamp |</li>
+        </ul>
+        </section>
+    </section>
+    <h2>Links de referência para os novos elementos semânticos do HTML 5</h2>
+    <h3>Estes são alguns dos elementos semânticos que você mais utilizará em sua jornada como pessoa desenvolvedora:</h3>
+    <p>header : O elemento header representa um cabeçalho contendo texto introdutório. Clique no link para ler mais sobre o <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/header" target="_blanck">elemento header.</a></p>
+    <p>nav : O elemento nav representa um conjunto de links de navegação. Clique no link para ler mais sobre o <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav" target="_blanck">elemento nav.</a></p>
+    <p>aside : O elemento aside representa um conteúdo à parte. Alguns exemplos de sua utilização são: barras laterais e/ou conteúdos adjacentes à um conteúdo principal. Clique no link para ler mais sobre o <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside" target="_blanck">elemento aside.</a></p>
+    <p>article : O elemento article representa um conteúdo autocontido. Ou seja, todo o conteúdo presente dentro de um article provê as informações necessárias para sua compreensão, podendo ser reusado em outras páginas. Clique no link para ler mais sobre o <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article" target="_blanck">elemento article.</a></p>
+    <p>section : O elemento section representa uma seção do documento, agrupando conteúdos relacionados. Clique no link para ler mais sobre o <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section" target="_blanck">elemento section.</a></p>
+    <p>footer : O elemento footer representa o rodapé do documento e/ou de uma seção. Clique no link para ler mais sobre o <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/footer" target="_blanck">elemento footer.</a></p>
+</body>
+</html>
