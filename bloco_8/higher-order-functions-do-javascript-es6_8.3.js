@@ -305,3 +305,123 @@ const reportStatus = (name, students) => {
 console.log(reportStatus('Natalia', estudantes));
 
 // O código teve uma redução drástica no número de linhas! Primeiro, fizemos um find para buscar e retornar os dados do estudante. O objeto foi retornado e salvo na variável students, depois o map foi usado para percorrer as matérias do objeto retornado e salvar o que se queria em um array da forma desejada.
+
+// coteúdo aulaao vivo
+const cities = [
+  { state: 'AM', name: 'Manaus', region: 'N' },
+  { state: 'PA', name: 'Belém', region: 'N' },
+  { state: 'TO', name: 'Porto Nacional', region: 'N' },
+  { state: 'MG', name: 'Nepomuceno', region: 'SE' },
+  { state: 'BA', name: 'Cachoeira', region: 'NE' },
+  { state: 'PR', name: 'Curitiba', region: 'S' },
+  { state: 'SP', name: 'Hortolândia', region: 'SE' },
+  { state: 'RN', name: 'Touros', region: 'NE' },
+  { state: 'CE', name: 'Jericoacoara', region: 'NE' },
+  { state: 'TO', name: 'Três Pedras', region: 'N' },
+  { state: 'MG', name: 'João Pinheiro', region: 'SE' },
+];
+// 1. Encontre todas as cidades da região Nordeste (NE)
+console.log('As cidades que ficam na região Nordeste são: ');
+
+const citiesNe = cities.filter((city) => {
+  return city.region === 'NE';
+});
+console.log(citiesNe);
+
+// 2. Encontre todas as cidades do estado de Tocantins (TO)
+console.log('As cidades do estado de Tocantins são: ');
+
+const citiesTo = cities.filter((city) => {
+  return city.state === 'TO';
+});
+console.log(citiesTo);
+
+// 3. Encontre todas as cidades que comecem com a letra (C)
+console.log('As cidades que começam com a letra C são: ');
+
+const citiesC = cities.filter((city) => {
+  return city.name.startsWith('C');
+});
+console.log(citiesC);
+
+// Extra, entenda como seria criar um 'filter'
+const numbers = [1, 2, 3, 4];
+const filter = (array, callback) => {
+  let newArray = [];
+  for (let index = 0; index < array.length; index += 1) {
+    if (callback(array[index])) {
+      newArray.push(array[index]);
+    }
+  }
+  return newArray;
+}
+console.log(filter(numbers, (number) => number <= 2));
+// -------------------------------------------
+
+
+const states = [
+  { short: 'AM', name: 'Amazonas' },
+  { short: 'PA', name: 'Pará' },
+  { short: 'TO', name: 'Tocantins' },
+  { short: 'MG', name: 'Minas Gerais' },
+  { short: 'BA', name: 'Bahia' },
+  { short: 'PR', name: 'Paraná' },
+  { short: 'SP', name: 'São Paulo' },
+  { short: 'RN', name: 'Rio Grande do Norte' },
+  { short: 'CE', name: 'Ceará' }
+];
+
+const regions = [
+  { short: 'N', name: 'Norte' },
+  { short: 'NE', name: 'Nordeste' },
+  { short: 'CW', name: 'Centroeste' },
+  { short: 'SE', name: 'Sudeste' },
+  { short: 'S', name: 'Sul' }
+];
+
+const cities = [
+  { state: 'AM', name: 'Manaus', region: 'N' },
+  { state: 'PA', name: 'Belém', region: 'N' },
+  { state: 'TO', name: 'Porto Nacional', region: 'N' },
+  { state: 'MG', name: 'Lavras', region: 'SE' },
+  { state: 'BA', name: 'Feira de Santana', region: 'NE' },
+  { state: 'PR', name: 'Cascavél', region: 'S' },
+  { state: 'SP', name: 'Presidente Prudente', region: 'SE' },
+  { state: 'RN', name: 'Touros', region: 'NE' },
+  { state: 'CE', name: 'Jericoacoara', region: 'NE' }
+];
+// 1. Transforme o array de objetos cities em um array de strings com o seguinte formato:
+console.log('Formato: ${nomeDaCidade} - ${siglaDoEstado}');
+// a) "${nomeDaCidade} - ${siglaDoEstado}"
+const citiesAndStates = cities.map((city) => {
+  return `${city.name} - ${city.state}`;
+});
+console.log(citiesAndStates);
+
+// b) "A cidade de ${nomeDaCidade} fica no estado de(o) ${nomeDoEstado}"
+console.log('Formato: A cidade de ${nomeDaCidade} fica no estado de(o) ${nomeDoEstado}');
+const citiesAndStatesNames = cities.map((city) => {
+  const findState = states.find((state) => {
+    return state.short === city.state;
+  });
+  return `A cidade de ${city.name} fica no estado de(o) ${findState.name}`;
+});
+console.log(citiesAndStatesNames);
+
+// 2. transforme o array de objeto cities em um array de objetos no seguinte formato:
+// {
+//   state: "Amazonas",
+//   city: "Manaus",
+//   region: "Norte"
+// }
+const arrayCities = cities.map((city) => {
+  const findState = states.find((state) => state.short === city.state);
+  const findRegion = regions.find((region) => region.short === city.region);
+  return {
+    state: findState.name,
+    city: city.name,
+    region: findRegion.name
+  }
+});
+
+console.log(arrayCities);
