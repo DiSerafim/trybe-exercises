@@ -523,7 +523,7 @@ function formatedBookNames() {
   const nameFormated = books.map((book) => {
     return `${book.name} - ${book.genre} - ${book.author.name}`;
   });
-  console.log(nameFormated);
+  // console.log(nameFormated);
 }
 assert.deepStrictEqual(formatedBookNames(), expectedResult);
 
@@ -567,11 +567,12 @@ const expectedResult = [
 function nameAndAge() {
   // escreva seu código aqui
   const booksInObject = books.map((objectBook) => {
-    return {
-      age: objectBook.releaseYear - objectBook.author.birthYear,
-      author: objectBook.name,
+     return {
+      age: objectBook.releaseYear - objectBook.author.birthYear, 
+      author: objectBook.author.name,
     }
   });
-  console.log(booksInObject);
+  // console.log(booksInObject);
+  return booksInObject.sort((a, b) => a.age - b.age);
 }
 assert.deepStrictEqual(nameAndAge(), expectedResult);
