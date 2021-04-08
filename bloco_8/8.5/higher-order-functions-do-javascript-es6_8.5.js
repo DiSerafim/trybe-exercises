@@ -359,9 +359,138 @@ console.log(multiply(8));
 
 
 
-// coteúdo aulaao vivo
+// coteúdo aula ao vivo
+// EX 01 - spread operator
+const assert = require('assert');
+
+const onlineGames = ['Dota', 'Lol', 'CS:GO', 'Tibia'];
+const offlineGames = ['Simcity', 'San Andreas', 'Mario', 'Stardew Valley'];
+
+// resultado usando 'concat'
+let awesomeGames;
+awesomeGames = onlineGames.concat(offlineGames);
+console.log(awesomeGames);
+
+// resultado usando 'spread operator'
+const awesomeGames = [...onlineGames, ...offlineGames];
+console.log(awesomeGames);
+
+assert.deepEqual(
+    awesomeGames,
+    ['Dota', 'Lol', 'CS:GO', 'Tibia', 'Simcity', 'San Andreas', 'Mario', 'Stardew Valley']
+)
+
+// EX 02 - spread operator
+const assert = require('assert');
+
+const point = [1.0, 2.2, -6.6, 1, 2];
+const otherPoint = [0.1, 3.5, -99.6];
+
+const printPointCoordinates = (x, y, z) =>
+`Point coordinates are x = ${x}, y = ${y} and z = ${z}`;
+
+const result = printPointCoordinates(...point);
+console.log(result);
+assert.strictEqual(
+    result,
+    'Point cordinates are x = 1, y = 2.2 and z = -6.6',
+);
+assert.strictEqual(
+    printPointCoordinates(...otherPoint),
+    'Point coordinates are x = 0.1, y = 3.5 and z = -99.6',
+);
+
+// EX 03 - parâmetro rest;
+const assert = require('assert');
+
+const sumAll = (... numbers) => numbers.reduce((a, b) => a + b, 0);
+
+assert.strictEqual(sumAll(1, 2), 3);
+assert.strictEqual(sumAll(1, 2, 3), 6);
+assert.strictEqual(sumAll(1, 2, 3, 4, 5), 15);
 
 
+// EX 04 - destructuring;
+const assert = require('assert');
+
+const bbbParticipant = {
+  name: 'Gilberto',
+  birthplace: 'Jaboatão - Pernambuco',
+  nickname: 'Gil do Vigor',
+  jobs: [
+    'Economista',
+    'Missionário',
+    'Futuro ex BBB',
+    'Digital Influencer',
+    'Blogueiro',
+  ],
+};
+
+// const { name, nickname } = bbbParticipant;
+// console.log(`${name} também conhecido como ${nickname}`);
+
+const { name, nickname, jobs } = bbbParticipant;
+const [firstJob, secondJob, thirdJob, ...rest] = jobs;
+// console.log(`Possui uma nobre carreira como ${firstJob}, ${secondJob}, ${thirdJob}, etc`);
+console.log(rest);
+
+assert.strictEqual(
+  `${name} também conhecido como ${nickname}`,
+  'Gilberto também conhecido como Gil do Vigor',
+);
+assert.strictEqual(
+  `Possui uma nobre carreira como ${firstJob}, ${secondJob}, ${thirdJob}, etc`,
+  'Possui uma nobre carreira como Economista, Missionário, Futuro ex BBB, etc',
+);
+
+// EX 05 - destructuring;
+const assert = require('assert');
+
+const lion = {
+  name: 'Panthera leo',
+  commonName: 'Lion',
+  weightRange: {
+    min: 186.55,
+    max: 225,
+    measurementUnit: 'kg'
+  }
+};
+
+const blueWhale = {
+  name: 'Balaenoptera musculus',
+  commonName: 'Blue whale',
+  weightRange: {
+      min: 45,
+      max: 173,
+      measurementUnit: 't',
+  },
+};
+
+const polarBear = {
+  name: 'Ursus maritimus',
+  commonName: 'Polar Bear',
+  weightRange: {
+      min: 350,
+      max: 700,
+  },
+};
+
+const animalDescription = ({
+  name, commonName, weightRange: { min, max, measurementUnit = 'kg'},
+}) => `${commonName} (${name}) weighs around ${min}-${max} ${measurementUnit}`;
+
+assert.strictEqual(
+  animalDescription(lion),
+  'Lion (Panthera leo) weighs around 186.55-225 kg',
+);
+assert.strictEqual(
+  animalDescription(blueWhale),
+  'Blue whale (Balaenoptera musculus) weighs around 45-173 t',
+);
+assert.strictEqual(
+  animalDescription(polarBear),
+  'Polar Bear (Ursus maritimus) weighs around 350-700 kg',
+);
 
 // Exercícios para finalizar o dia
 // Hora de por a mão na massa!
