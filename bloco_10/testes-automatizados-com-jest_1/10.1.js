@@ -2,6 +2,96 @@
 // Bloco 10 - Testes automatizados com Jest
 // Primeiros passos no Jest
 
+// Conteúdos
+// Documentação oficial >> https://jestjs.io/docs/expect
+
+// Vá para 'sum.test.js'
+
+// Expect e matchers
+//  documentação oficial >> https://jestjs.io/docs/en/expect
+
+// toBe
+// igualdade estrita >> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness
+
+// expect(5).toBe("5")
+
+// toEqual
+let name = "Pedro";
+let firstName = name;
+
+name = "Carol";
+
+console.log(name); // Carol
+console.log(firstName); // Pedro
+
+// ------------------------
+
+let myName = { firstName: "Pedro" };
+let identity = myName;
+
+myName.firstName = "Carol";
+
+console.log(myName.firstName); // Carol
+console.log(identity.firstName); // Carol
+
+// ---------------------------
+// Veja o resultado em sum.test.js
+test('array and object equality', () => {
+  const arr = [1, 2 ,3];
+  const obj = { a: 1, b: 2, c: 3};
+
+  expect(arr).toBe([1, 2, 3]); // fails
+  expect(obj).toBe({ a: 1, b: 2, c: 3}); // fails
+  expect(arr).toEqual([1, 2, 3]); // OK
+  expect(obj).toEqual({ a: 1, b: 2, c: 3}); // OK
+});
+
+
+// not
+// Veja o resultado em sum.test.js
+const workDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const weekDays = ['Sunday', ...workDays, 'Saturday'];
+
+test('Sunday is a week day', () => {
+  expect(weekDays).toContain('Sunday');
+});
+
+test('Sunday is not a workday', () => {
+  expect(workDays).not.toContain('Sunday');
+});
+
+// Valores booleanos
+// documentação do Jest >> https://jestjs.io/docs/en/using-matchers#truthiness
+
+// Números
+// documentação do Jest >> https://jestjs.io/docs/pt-BR/using-matchers#n%C3%BAmeros
+
+// Strings
+// documentação do Jest >> https://jestjs.io/docs/pt-BR/expect#tomatchregexporstring
+
+
+// Exceções
+// toThrow >> https://jestjs.io/docs/pt-BR/expect#tothrowerror
+const multiplyByTwo = (number) => {
+  if (!number) {
+    throw new Error('number é indefinido')
+  }
+  return number * 2;
+};
+multiplyByTwo(4);
+
+test('testa se multiplyByTwo retorna o resultado da multiplicação', () => {
+  expect(multiplyByTwo(4)).toBe(8);
+});
+test('testa se é lançado um erro quando number é indefinido', () => {
+  expect(() => { multiplyByTwo() }).toThrow();
+});
+test('testa se a mensagem de erro é "number é indefinido"', () => {
+  expect(() => { multiplyByTwo() }).toThrowError(new Error('number é indefinido'));
+});
+
+
+
 // Agora a prática
 // Exercício
 
