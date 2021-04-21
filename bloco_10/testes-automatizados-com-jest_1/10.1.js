@@ -2,16 +2,137 @@
 // Bloco 10 - Testes automatizados com Jest
 // Primeiros passos no Jest
 
+// Conteúdos
+// Documentação oficial >> https://jestjs.io/docs/expect
+
+// Vá para 'sum.test.js'
+
+// Expect e matchers
+//  documentação oficial >> https://jestjs.io/docs/en/expect
+
+// toBe
+// igualdade estrita >> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness
+
+// expect(5).toBe("5")
+
+// toEqual
+let name = "Pedro";
+let firstName = name;
+
+name = "Carol";
+
+console.log(name); // Carol
+console.log(firstName); // Pedro
+
+// ------------------------
+
+let myName = { firstName: "Pedro" };
+let identity = myName;
+
+myName.firstName = "Carol";
+
+console.log(myName.firstName); // Carol
+console.log(identity.firstName); // Carol
+
+// ---------------------------
+// Veja o resultado em sum.test.js
+test('array and object equality', () => {
+  const arr = [1, 2 ,3];
+  const obj = { a: 1, b: 2, c: 3};
+
+  expect(arr).toBe([1, 2, 3]); // fails
+  expect(obj).toBe({ a: 1, b: 2, c: 3}); // fails
+  expect(arr).toEqual([1, 2, 3]); // OK
+  expect(obj).toEqual({ a: 1, b: 2, c: 3}); // OK
+});
+
+
+// not
+// Veja o resultado em sum.test.js
+const workDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const weekDays = ['Sunday', ...workDays, 'Saturday'];
+
+test('Sunday is a week day', () => {
+  expect(weekDays).toContain('Sunday');
+});
+
+test('Sunday is not a workday', () => {
+  expect(workDays).not.toContain('Sunday');
+});
+
+// Valores booleanos
+// documentação do Jest >> https://jestjs.io/docs/en/using-matchers#truthiness
+
+// Números
+// documentação do Jest >> https://jestjs.io/docs/pt-BR/using-matchers#n%C3%BAmeros
+
+// Strings
+// documentação do Jest >> https://jestjs.io/docs/pt-BR/expect#tomatchregexporstring
+
+
+// Exceções
+// toThrow >> https://jestjs.io/docs/pt-BR/expect#tothrowerror
+const multiplyByTwo = (number) => {
+  if (!number) {
+    throw new Error('number é indefinido')
+  }
+  return number * 2;
+};
+multiplyByTwo(4);
+
+test('testa se multiplyByTwo retorna o resultado da multiplicação', () => {
+  expect(multiplyByTwo(4)).toBe(8);
+});
+test('testa se é lançado um erro quando number é indefinido', () => {
+  expect(() => { multiplyByTwo() }).toThrow();
+});
+test('testa se a mensagem de erro é "number é indefinido"', () => {
+  expect(() => { multiplyByTwo() }).toThrowError(new Error('number é indefinido'));
+});
+
+
+
 // Agora a prática
 // Exercício
 
 // Parte I
 
-// 1. Refaça os exercícios 1 a 5 do conteúdo de Testes unitários em JavaScript , dessa vez utilizando Jest .
+// 1. Refaça os exercícios 1 a 5 do conteúdo de Testes unitários em JavaScript, dessa vez utilizando Jest.
+
+// ---------------------------------------------------------------------------------------------------------
+// 1. Faça as modificações necessárias na função para que o seu comportamento respeite o escopo no qual cada variável foi declarada.
+// - Modifique a estrutura da função para que ela seja uma arrow function .
+// - Modifique as concatenações para template literals .
+
+function testingScope(escopo) {
+  if (escopo === true) {
+    var ifScope = 'Não devo ser utilizada fora do meu escopo (if)';
+    ifScope = ifScope + ' ótimo, fui utilizada no escopo !';
+    console.log(ifScope);
+  } else {
+    var elseScope = 'Não devo ser utilizada fora meu escopo (else)';
+    console.log(elseScope);
+  }
+  console.log(ifScope + ' o que estou fazendo aqui ? :O'); // Se necessário esta linha pode ser removida.
+}
+
+testingScope(true);
+
+// 2. faça uma função que retorne o array oddsAndEvens em ordem crescente.
+// - Utilize template literals para que a chamada console.log(oddsAndEvens); retorne "Os números 2,3,4,7,10,13 se encontram ordenados de forma crescente!".
+// - Bônus (opcional): tente fazer o mesmo exercício utilizando o método array.sort() . Spoiler: É possível realizar uma função que ordene qualquer array de números.
+
+const oddsAndEvens = [13, 3, 4, 10, 7, 2];
+
+// Seu código aqui.
+
+console.log(oddsAndEvens);
+
+// -------------------------------------
 
 // Parte II
 
-// No Bloco 4 você desenvolveu um projeto para testar os seus conhecimentos em Javascript e lógica de programação: o Playground functions . Nos exercícios a seguir, você irá trabalhar com os testes para algumas funções que você criou! Aproveite para refatorá-las e usar todos os recursos que já aprendemos até aqui, como as Higher Order Functions e as features do Javascript ES6.
+// No Bloco 4 você desenvolveu um projeto para testar os seus conhecimentos em Javascript e lógica de programação: o Playground functions. Nos exercícios a seguir, você irá trabalhar com os testes para algumas funções que você criou! Aproveite para refatorá-las e usar todos os recursos que já aprendemos até aqui, como as Higher Order Functions e as features do Javascript ES6.
 
 // 1. Para as funções encode e decode crie os seguintes testes:
 
