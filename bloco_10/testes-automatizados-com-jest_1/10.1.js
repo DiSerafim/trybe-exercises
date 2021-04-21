@@ -90,19 +90,7 @@ test('testa se a mensagem de erro é "number é indefinido"', () => {
   expect(() => { multiplyByTwo() }).toThrowError(new Error('number é indefinido'));
 });
 
-
-
-// Agora a prática
-// Exercício
-
-// Parte I
-
-// 1. Refaça os exercícios 1 a 5 do conteúdo de Testes unitários em JavaScript, dessa vez utilizando Jest.
-
-// ---------------------------------------------------------------------------------------------------------
-// 1. Faça as modificações necessárias na função para que o seu comportamento respeite o escopo no qual cada variável foi declarada.
-// - Modifique a estrutura da função para que ela seja uma arrow function .
-// - Modifique as concatenações para template literals .
+// 
 
 function testingScope(escopo) {
   if (escopo === true) {
@@ -129,8 +117,18 @@ const oddsAndEvens = [13, 3, 4, 10, 7, 2];
 console.log(oddsAndEvens);
 
 // -------------------------------------
+// Agora a prática
+// Exercício-----------------------------------------------------------------
 
-// Parte II
+// Parte I <<<<<
+
+// 1. Refaça os exercícios 1 a 5 do conteúdo de Testes unitários em JavaScript, dessa vez utilizando Jest.
+// Faça as modificações necessárias na função para que o seu comportamento respeite o escopo no qual cada variável foi declarada.
+// - Modifique a estrutura da função para que ela seja uma arrow function.
+// - Modifique as concatenações para template literals.
+// Veja 'sum1.js' <<<<<<<<<<<<<<<<
+
+// Parte II <<<<<
 
 // No Bloco 4 você desenvolveu um projeto para testar os seus conhecimentos em Javascript e lógica de programação: o Playground functions. Nos exercícios a seguir, você irá trabalhar com os testes para algumas funções que você criou! Aproveite para refatorá-las e usar todos os recursos que já aprendemos até aqui, como as Higher Order Functions e as features do Javascript ES6.
 
@@ -148,12 +146,12 @@ console.log(oddsAndEvens);
 
 
 // 2. A função techList recebe como parâmetros um array contendo uma lista de tecnologias e uma string com um nome. Para cada tecnologia no array a função cria, em ordem alfabética, um objeto com a seguinte estrutura:
-
+/*
 {
   tech: 'nomeTecnologia',
   name: name,
 }
-
+*/
 // Implemente a função techList a partir dos testes abaixo. Experimente refatorar a função que você criou para esse projeto! É importante nunca alterar os testes ou as variáveis já escritas no código .
 
 const techList = require('./techList.js');
