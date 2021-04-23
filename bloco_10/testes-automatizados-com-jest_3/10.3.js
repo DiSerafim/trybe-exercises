@@ -63,3 +63,11 @@ jest.spyOn();
 
 // Para fixar
 // Utilize as funções do arquivo 'math.js' para realizar os exercícios:
+
+// ----------------Aula ao vivo----------------------------
+// exemplos criados
+
+// gus-generator.js
+// gus-generator.test.js
+
+// numbers.js
