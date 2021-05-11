@@ -58,4 +58,4 @@ function CardList() {
   );
 }
 
-ReactDOM.render(<CardList />, document.getElementById('root'))
+ReactDOM.render(<CardList />, document.getElementById('root'));
