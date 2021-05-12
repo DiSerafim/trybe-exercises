@@ -2,7 +2,9 @@ import React from 'react';
 
 function HelloMyFriends() {
   return (
-    <p>Hello My Friends!!!</p>
+    <p>
+      Hello My Friends!!!
+    </p>
   );
 }
 
