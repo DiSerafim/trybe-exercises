@@ -1,8 +1,12 @@
 // Crie um componente com composição
+import React from 'react';
+
 const ChildComponent = () => {
   return (
     <div>
+      <p>'// Crie um componente com composição'</p>
       <p>I am the child</p>
+      <hr />
     </div>
   );
 };
@@ -24,3 +28,5 @@ class ParentComponent extends React.Component {
     );
   }
 };
+
+export default ParentComponent;
