@@ -5,197 +5,196 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redux basic example</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
 </head>
 <body>
-  <div>
-      Contador: <span id="value">0</span>
-      <button id="increment">+</button>
-      <button id="decrement">-</button>
-
-      Incrementa em: <input type="number" id="incrementCounter" />
-      Decrementa em: <input type="number" id="decrementCounter" />
-      Número de cliques: <span id="counterClicks">X</span>
-      Valor add: <span id="addedValues">X</span>
-  </div>
-  <script>
-      const INCREMENT = 'INCREMENT';
-      const DECREMENT = 'DECREMENT';
-      const INCREMENT_VALUE = 'INCREMENT_VALUE';
-      const DECREMENT_VALUE = 'DECREMENT_VALUE';
-      const INITIAL_STATE = {
-        contador: 0,
-        incrementValue: 0,
-        decrementValue: 0,
-        clickCount: 0,
-        addedValues: [],
-      }
-
-      function changeState(state, action) {
-        const valor = action.type === 'INCREMENT' ? state.incrementValue : state.decrementValue;
-        console.log(valor);
-        return {
-          ...state,
-          contador: state.contador + valor,
-          addedValues: [...state.addedValues, valor],
-          clickCount: state.clickCount + 1,
-        }
-      }
-      
-      // Cria o Reducer
-      const counterReducer = (state = INITIAL_STATE, action) => {
-        switch(action.type) {
-          case INCREMENT:
-            return changeState(state, action);
-          case DECREMENT:
-            return changeState(state, action);
-          case INCREMENT_VALUE:
-            return { ...state, incrementValue: action.value };
-          case DECREMENT_VALUE:
-            return { ...state, decrementValue: action.value }
-          default:
-            return state;
-        }
-      }
-      
-      // Configurar a store
-      const store = Redux.createStore(counterReducer,
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-      );
-      
-      // Seleciona os botões de tela para add o clique
-      // INCREMENT
-      const buttonIncrement = document.getElementById('increment');
-      buttonIncrement.addEventListener('click', () => {
-        const action = {
-          type: INCREMENT,
-        }
-        store.dispatch(action);
-      });
-
-      // DECREMENT
-      const buttonDecrement = document.getElementById('decrement');
-      buttonDecrement.addEventListener('click', () => {
-        const action = {
-          type: DECREMENT,
-          }
-        store.dispatch(action);
-      });
-
-      document.getElementById('incrementCounter').addEventListener('change', () => {
-        const action = {
-          type: INCREMENT_VALUE,
-          value: parseInt(event.target.value)
-        }
-        store.dispatch(action);
-      })
-
-      document.getElementById('decrementCounter').addEventListener('change', () => {
-        const action = {
-          type: DECREMENT_VALUE,
-          value: parseInt(`-${event.target.value}`)
-        }
-        store.dispatch(action)
-      });
-
-      // Ler o dado da store global
-      store.subscribe(() => {
-        const span = document.getElementById('value');
-        span.innerText = store.getState().contador;
-        const clicks = document.getElementById('counterClicks');
-        clicks.innerText = store.getState().clickCount;
-        const values = document.getElementById('addedValues');
-        values.innerText = store.getState().addedValues;
-      })
-  </script>
-</body>
-</html>
-<!-- 
-    <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redux basic example</title>
-    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
-</head>
-<body>
-  <div>
-      Clicked: <span id="value">0</span> times
+  <section class="container">
+    <header>
+      <h1>Aula ao vivo</h1>
+    </header>
+    <div class="card">
+      <p>Clicked: <span id="value">0</span> times</p>
       <button id="increment">+</button>
       <button id="decrement">-</button>
       <button id="increment-10">Adiciona +10</button>
-  </div>
-  <script>
-      const INCREMENT = 'INCREMENT';
-      const DECREMENT = 'DECREMENT';
-      
-      // Cria o Reducer
-      function counterReducer(state = { clicks: 0, likes: 0 }, action) {
-        switch(action.type) {
-          case INCREMENT:
-            return {
-              ...state,
-              clicks: state.clicks + action.payload.amount,
-            }
-          case DECREMENT:
-            return {
-              ...state,
-              clicks: state.clicks - action.payload.amount,
-            }
-          default:
-            return state;
-        }
-      }
-      
-      // Configurar a store
-      const store = Redux.createStore(
-        counterReducer,
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-      );
-      
-      // Seleciona os botões de tela para add o clique
-      // INCREMENT
-      const buttonIncrement = document.getElementById('increment');
-      buttonIncrement.addEventListener('click', () => {
-        const incrementAction = {
-          type: INCREMENT,
-          payload: {
-            amount: 1,
-          },
-        };
-        store.dispatch(incrementAction);
-      });
-      // DECREMENT
-      const buttonDecrement = document.getElementById('decrement');
-      buttonDecrement.addEventListener('click', () => {
-        const decrementAction = {
-          type: DECREMENT,
-          payload: {
-            amount: 1,
+    </div>
+    <script>
+    const INCREMENT = 'INCREMENT';
+    const DECREMENT = 'DECREMENT';
+    
+    // Cria o Reducer
+    function counterReducer(state = { clicks: 0, likes: 0 }, action) {
+      switch(action.type) {
+        case INCREMENT:
+          return {
+            ...state,
+            clicks: state.clicks + action.payload.amount,
           }
-        };
-        store.dispatch(decrementAction);
-      });
-      // INREMENT-10
-      const buttonIncrement10 = document.getElementById('increment-10');
-      buttonIncrement10.addEventListener('click', () => {
-        const incrementAction = {
-          type: INCREMENT,
-          payload: {
-            amount: 10,
-          },
-        };
-        store.dispatch(incrementAction);
-      });
+        case DECREMENT:
+          return {
+            ...state,
+            clicks: state.clicks - action.payload.amount,
+          }
+        default:
+          return state;
+      }
+    }
+    
+    // Configurar a store
+    const store = Redux.createStore(
+      counterReducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+    
+    // Seleciona os botões de tela para add o clique
+    // INCREMENT
+    const buttonIncrement = document.getElementById('increment');
+    buttonIncrement.addEventListener('click', () => {
+      const incrementAction = {
+        type: INCREMENT,
+        payload: {
+          amount: 1,
+        },
+      };
+      store.dispatch(incrementAction);
+    });
+    // DECREMENT
+    const buttonDecrement = document.getElementById('decrement');
+    buttonDecrement.addEventListener('click', () => {
+      const decrementAction = {
+        type: DECREMENT,
+        payload: {
+          amount: 1,
+        }
+      };
+      store.dispatch(decrementAction);
+    });
+    // INREMENT-10
+    const buttonIncrement10 = document.getElementById('increment-10');
+    buttonIncrement10.addEventListener('click', () => {
+      const incrementAction = {
+        type: INCREMENT,
+        payload: {
+          amount: 10,
+        },
+      };
+      store.dispatch(incrementAction);
+    });
 
-      // Ler o dado da store global
-      store.subscribe(() => {
-        const valueSpan = document.getElementById('value');
-        valueSpan.innerHTML = store.getState().clicks;
-      })
-  </script>
+    // Ler o dado da store global
+    store.subscribe(() => {
+      const valueSpan = document.getElementById('value');
+      valueSpan.innerHTML = store.getState().clicks;
+    })
+    </script>
+  </section>
+
+  <!-- Exercicio bônus -->
+  <section class="container1">
+    <header>
+      <h1>Exercício Bônus</h1>
+    </header>
+    <div class="card">
+        <p>Contador: <span id="valuere">0</span></p>
+        <button id="incremente">+</button>
+        <button id="decremente">-</button>
+
+        <p id="incrementCounter">Incrementa em: <input type="number" id="incrementCounter" /></p>
+        <p id="decrementCounter">Decrementa em: <input type="number" id="decrementCounter" /></p>
+        <p id="counterClicks">N° de cliques: <span id="counterClicks">X</span></p>
+        <p id="addedValues">Valor add: <span id="addedValues">X</span></p>
+    </div>
+    <script>
+        const INCREMENTE = 'INCREMENTE';
+        const DECREMENTE = 'DECREMENTE';
+        const INCREMENT_VALUE = 'INCREMENT_VALUE';
+        const DECREMENT_VALUE = 'DECREMENT_VALUE';
+        const INITIAL_STATE = {
+          contador: 0,
+          incrementValue: 0,
+          decrementValue: 0,
+          clickCount: 0,
+          addedValues: [],
+        }
+
+        function changeState(state, action) {
+          const valor = action.type === 'INCREMENTE' ? state.incrementValue : state.decrementValue;
+          console.log(valor);
+          return {
+            ...state,
+            contador: state.contador + valor,
+            addedValues: [...state.addedValues, valor],
+            clickCount: state.clickCount + 1,
+          }
+        }
+        
+        // Cria o Reducer
+        const counterReduce = (state = INITIAL_STATE, action) => {
+          switch(action.type) {
+            case INCREMENTE:
+              return changeState(state, action);
+            case DECREMENTE:
+              return changeState(state, action);
+            case INCREMENT_VALUE:
+              return { ...state, incrementValue: action.value };
+            case DECREMENT_VALUE:
+              return { ...state, decrementValue: action.value }
+            default:
+              return state;
+          }
+        }
+        
+        // Configurar a store
+        const storer = Redux.createStore(counterReduce,
+          window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        );
+        
+        // Seleciona os botões de tela para add o clique
+        // INCREMENT
+        const buttonIncremente = document.getElementById('incremente');
+        buttonIncremente.addEventListener('click', () => {
+          const action = {
+            type: INCREMENTE,
+          }
+          storer.dispatch(action);
+        });
+
+        // DECREMENT
+        const buttonDecremente = document.getElementById('decremente');
+        buttonDecremente.addEventListener('click', () => {
+          const action = {
+            type: DECREMENTE,
+            }
+          storer.dispatch(action);
+        });
+
+        document.getElementById('incrementCounter').addEventListener('change', () => {
+          const action = {
+            type: INCREMENT_VALUE,
+            value: parseInt(event.target.value)
+          }
+          storer.dispatch(action);
+        })
+
+        document.getElementById('decrementCounter').addEventListener('change', () => {
+          const action = {
+            type: DECREMENT_VALUE,
+            value: parseInt(`-${event.target.value}`)
+          }
+          storer.dispatch(action)
+        });
+
+        // Ler o dado da store global
+        storer.subscribe(() => {
+          const span = document.getElementById('valuere');
+          span.innerText = storer.getState().contador;
+          const clicks = document.getElementById('counterClicks');
+          clicks.innerText = storer.getState().clickCount;
+          const values = document.getElementById('addedValues');
+          values.innerText = storer.getState().addedValues;
+        })
+    </script>
+  </section>
 </body>
 </html>
- -->
