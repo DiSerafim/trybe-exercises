@@ -5,9 +5,30 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #303030;
+  color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+}
+
+.Header {
+  top: 0;
+  width: 100vw;
+  height: 40px;
+  background-color: rgb(163, 46, 46);
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
