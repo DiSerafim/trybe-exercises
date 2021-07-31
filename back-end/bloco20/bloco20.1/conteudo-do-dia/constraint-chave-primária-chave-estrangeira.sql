@@ -1,4 +1,5 @@
--- Conteúdo do dia ---------------------------------------------------------------------------------
+-- > CONTEÚDO do dia --------- <---/ INICIO --------------------------------------//
+
 -- Constraints (restrições), chaves primárias e chaves estrangeiras
 
 -- TABELA-address (address_id/ address/ address2/ district/ city_id/ postal_code/ phone)
@@ -40,4 +41,4 @@
 -- R-> CREATE DATABASE seu_nome_aqui;
 -- R-> USE seu_nome_aqui;
 
-
+-- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
