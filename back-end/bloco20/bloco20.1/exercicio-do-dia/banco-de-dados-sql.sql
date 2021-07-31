@@ -1,3 +1,5 @@
+-- > EXECÍCIO do dia --------- <---/ INICIO --------------------------------------//
+
 -- Ex 1: Descubra como fazer uma pesquisa em qualquer tabela sem utilizar uma linha de código usando o MySql Workbench.
 -- R-> Basta clicar com botão direito na tabela e clicar em "select rows - limit 1000"
 
@@ -24,3 +26,5 @@
 
 -- Ex 7: Abra tabela por tabela do banco sakila e encontre no mínimo 3 exemplos de um relacionamentos 1:N ou N:1.
 -- R-> store -> staff / language -> film / film -> language
+
+-- > EXECÍCIO do dia --------- <---/ FIM -----------------------------------------//
