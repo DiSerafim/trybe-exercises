@@ -1,6 +1,12 @@
 -- > Back-end ------------- <---/ Back-end -------------------------- Back-end -//
 
 -- > BLOCO - 20.1 ------------ <---/ INICIO --------------------------------------//
+-- * Criar condicionais no SQL usando IF e CASE;
+-- * Manipular strings no SQL;
+-- * Usar as diversas funções matemáticas do MySQL;
+-- * Extrair informações específicas sobre datas de uma tabela;
+-- * Utilizar as funções de agregação AVG , MIN , MAX , SUM e COUNT;
+-- * Exibir e filtrar dados de forma agrupada com GROUP BY e HAVING.
 
 -- > CONTEÚDO do dia --------- <---/ INICIO --------------------------------------//
 
@@ -48,7 +54,17 @@
 -- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
 
 -- > AULA ao VIVO ------------ <---/ INICIO --------------------------------------//
--- Explicação Técnica
+
+-- seleciona todas as colunas da tabela address
+SELECT * FROM sakila.address;
+
+-- seleciona as 2 colunas da tabela address
+SELECT district, city_id FROM sakila.address;
+
+-- seleciona um linha especifica da tabela
+SELECT * FROM sakila.address WHERE address_id = 603;
+-- 
+-- 
 -- > AULA ao VIVO ------------ <---/ FIM -----------------------------------------//
 
 -- > EXECÍCIO do dia --------- <---/ INICIO --------------------------------------//
@@ -83,20 +99,8 @@
 -- > EXECÍCIO do dia --------- <---/ FIM -----------------------------------------//
 
 
--- > BLOCO - 20.1 ------------ <---/ INICIO --------------------------------------//
--- > CONTEÚDO do dia --------- <---/ INICIO --------------------------------------//
--- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
-
--- > AULA ao VIVO ------------ <---/ INICIO --------------------------------------//
--- > AULA ao VIVO ------------ <---/ FIM -----------------------------------------//
-
--- > EXECÍCIO do dia --------- <---/ INICIO --------------------------------------//
--- > EXECÍCIO do dia --------- <---/ FIM -----------------------------------------//
-
---> BLOCO - 20.1 ------------- <---/ FIM -----------------------------------------//
-
-
 -- > BLOCO - 20.2 ------------ <---/ INICIO --------------------------------------//
+
 -- > CONTEÚDO do dia --------- <---/ INICIO --------------------------------------//
 -- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
 
