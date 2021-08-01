@@ -13,15 +13,15 @@
 
 -- SELECT
 
--- SELECT 'Olá, bem-vindo ao SQL'; # 'Olá, bem-vindo ao SQL'
--- SELECT 10; # 10
--- SELECT now(); # '2021-07-31 16:51:01'
--- SELECT 20 * 2; # '40'
--- SELECT 50 / 2; # '25.0000'
--- SELECT 18 AS idade; # idade '18'
--- SELECT 2019 AS ano; # ano 2019
--- SELECT 'RAfael', 'Martins', 25, 'Desenvolvedor Web'; # 'RAfael', 'Martins', '25', 'Desenvolvedor Web'
--- SELECT 'RAfael' AS nome, 'Martins' AS sobrenome, '25' AS idade, 'Desenvolvedor Web' AS 'Área de atuação'; # nome 'RAfael', sobrenome 'Martins', idade '25', Área de atuação 'Desenvolvedor Web'
+SELECT 'Olá, bem-vindo ao SQL'; # 'Olá, bem-vindo ao SQL'
+SELECT 10; # 10
+SELECT now(); # '2021-07-31 16:51:01'
+SELECT 20 * 2; # '40'
+SELECT 50 / 2; # '25.0000'
+SELECT 18 AS idade; # idade '18'
+SELECT 2019 AS ano; # ano 2019
+SELECT 'RAfael', 'Martins', 25, 'Desenvolvedor Web'; # 'RAfael', 'Martins', '25', 'Desenvolvedor Web'
+SELECT 'RAfael' AS nome, 'Martins' AS sobrenome, '25' AS idade, 'Desenvolvedor Web' AS 'Área de atuação'; # nome 'RAfael', sobrenome 'Martins', idade '25', Área de atuação 'Desenvolvedor Web'
 
 -- Vamos praticar
 
@@ -93,13 +93,13 @@ SELECT DISTINCT Idade FROM Escola.Alunos;
 
 -- COUNT (Contando resultados)
 
--- SELECT COUNT(*) FROM sakila.actor; # '200'
--- SELECT COUNT(first_name) FROM sakila.actor; # '200'
--- SELECT COUNT(DISTINCT first_name) FROM sakila.actor; # '128'
--- SELECT COUNT(DISTINCT first_name, last_name) FROM sakila.actor; # '199'
--- SELECT COUNT(district) FROM sakila.address; # '603'
--- SELECT COUNT(district) FROM sakila.address WHERE district = 'Alberta'; # '2'
--- SELECT COUNT(address2) FROM sakila.address WHERE address2 = ''; # '599'
+SELECT COUNT(*) FROM sakila.actor; # '200'
+SELECT COUNT(first_name) FROM sakila.actor; # '200'
+SELECT COUNT(DISTINCT first_name) FROM sakila.actor; # '128'
+SELECT COUNT(DISTINCT first_name, last_name) FROM sakila.actor; # '199'
+SELECT COUNT(district) FROM sakila.address; # '603'
+SELECT COUNT(district) FROM sakila.address WHERE district = 'Alberta'; # '2'
+SELECT COUNT(address2) FROM sakila.address WHERE address2 = ''; # '599'
 
 -- Essa é a tabela staff do banco de dados sakila. Como você poderia responder às seguintes questões?
 -- Quantas senhas temos cadastradas nessa tabela?
