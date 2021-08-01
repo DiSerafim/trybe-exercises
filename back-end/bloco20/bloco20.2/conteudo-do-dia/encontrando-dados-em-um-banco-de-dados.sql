@@ -13,15 +13,15 @@
 
 -- SELECT
 
-SELECT 'Olá, bem-vindo ao SQL'; # 'Olá, bem-vindo ao SQL'
-SELECT 10; # 10
-SELECT now(); # '2021-07-31 16:51:01'
-SELECT 20 * 2; # '40'
-SELECT 50 / 2; # '25.0000'
-SELECT 18 AS idade; # idade '18'
-SELECT 2019 AS ano; # ano 2019
-SELECT 'RAfael', 'Martins', 25, 'Desenvolvedor Web'; # 'RAfael', 'Martins', '25', 'Desenvolvedor Web'
-SELECT 'RAfael' AS nome, 'Martins' AS sobrenome, '25' AS idade, 'Desenvolvedor Web' AS 'Área de atuação'; # nome 'RAfael', sobrenome 'Martins', idade '25', Área de atuação 'Desenvolvedor Web'
+-- SELECT 'Olá, bem-vindo ao SQL'; # 'Olá, bem-vindo ao SQL'
+-- SELECT 10; # 10
+-- SELECT now(); # '2021-07-31 16:51:01'
+-- SELECT 20 * 2; # '40'
+-- SELECT 50 / 2; # '25.0000'
+-- SELECT 18 AS idade; # idade '18'
+-- SELECT 2019 AS ano; # ano 2019
+-- SELECT 'RAfael', 'Martins', 25, 'Desenvolvedor Web'; # 'RAfael', 'Martins', '25', 'Desenvolvedor Web'
+-- SELECT 'RAfael' AS nome, 'Martins' AS sobrenome, '25' AS idade, 'Desenvolvedor Web' AS 'Área de atuação'; # nome 'RAfael', sobrenome 'Martins', idade '25', Área de atuação 'Desenvolvedor Web'
 
 -- Vamos praticar
 
@@ -93,13 +93,13 @@ SELECT DISTINCT Idade FROM Escola.Alunos;
 
 -- COUNT (Contando resultados)
 
-SELECT COUNT(*) FROM sakila.actor; # '200'
-SELECT COUNT(first_name) FROM sakila.actor; # '200'
-SELECT COUNT(DISTINCT first_name) FROM sakila.actor; # '128'
-SELECT COUNT(DISTINCT first_name, last_name) FROM sakila.actor; # '199'
-SELECT COUNT(district) FROM sakila.address; # '603'
-SELECT COUNT(district) FROM sakila.address WHERE district = 'Alberta'; # '2'
-SELECT COUNT(address2) FROM sakila.address WHERE address2 = ''; # '599'
+-- SELECT COUNT(*) FROM sakila.actor; # '200'
+-- SELECT COUNT(first_name) FROM sakila.actor; # '200'
+-- SELECT COUNT(DISTINCT first_name) FROM sakila.actor; # '128'
+-- SELECT COUNT(DISTINCT first_name, last_name) FROM sakila.actor; # '199'
+-- SELECT COUNT(district) FROM sakila.address; # '603'
+-- SELECT COUNT(district) FROM sakila.address WHERE district = 'Alberta'; # '2'
+-- SELECT COUNT(address2) FROM sakila.address WHERE address2 = ''; # '599'
 
 -- Essa é a tabela staff do banco de dados sakila. Como você poderia responder às seguintes questões?
 -- Quantas senhas temos cadastradas nessa tabela?
@@ -120,14 +120,39 @@ SELECT * FROM sakila.rental LIMIT 10; # 10 row(s) returned
 SELECT * FROM sakila.rental LIMIT 10 OFFSET 3; # 10 row(s) returned, apartir do ID 4
 SELECT * FROM sakila.actor LIMIT 10 OFFSET 4;
 
+-- ORDER BY (organizando)
 
+-- ordem crescente
+SELECT * FROM sakila.address ORDER BY address ASC;
+-- ordem decrescente
+SELECT * FROM sakila.address ORDER BY address DESC;
+-- ordem decrescente
+SELECT * FROM sakila.address ORDER BY address DESC, district;
 
+-- Para os exercícios a seguir, vamos usar a tabela sakila.film
+-- Escreva uma query que exiba todos os filmes cadastrados no banco de dados.
+SELECT * FROM sakila.film;
+-- Escreva uma query que exiba apenas o nome dos filmes, seu ano de lançamento e sua classificação.
+SELECT title, release_year, rating FROM sakila.film;
+-- Quantos filmes temos cadastrados?
+SELECT COUNT(*) FROM sakila.film;
 
-
+-- Para os exercícios a seguir, vamos usar a tabela sakila.actor
+SELECT * FROM sakila.actor; # 200
+-- Escreva uma query que exiba apenas os sobrenomes únicos cadastrados.
+SELECT DISTINCT last_name FROM sakila.actor; # 121 row(s) returned
+-- Quantos sobrenomes únicos temos na tabela?
+SELECT COUNT(DISTINCT last_name) FROM sakila.actor; # 121
+-- Ordene os valores na tabela em ordem crescente de sobrenomes e em ordem decrescente de nome.
+SELECT * FROM sakila.actor ORDER BY last_name ASC, first_name DESC;
+-- Vá até a tabela language do sakila e crie uma pesquisa que mostre os 5 idiomas cadastrados, mas não mostre o idioma english.
+SELECT * FROM sakila.language; # para exibir a tabela
+SELECT name FROM sakila.language LIMIT 10 OFFSET 1;
+-- Vá até a tabela film e selecione todos os dados da tabela. Pronto, fez isso?
+SELECT * FROM sakila.film;
+-- Crie uma query para encontrar os 20 primeiros filmes, incluindo título, ano de lançamento, duração, classificação indicativa e o custo de substituição. 
+-- Ordene os resultados pelos filmes com a maior duração e depois pelo menor custo de substituição.
+SELECT title, release_year, length, rating, replacement_cost FROM sakila.film ORDER BY length DESC, replacement_cost ASC LIMIT 20;
 -- 
--- 
--- 
-
-
 
 -- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
