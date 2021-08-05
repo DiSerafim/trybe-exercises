@@ -1,4 +1,12 @@
 -- 20.2
+-- Encontrando dados
+
+-- QUERY
+-- DISTINCT
+-- LIMIT
+-- OFFSET
+-- COUNT
+-- ORDER BY
 
 SELECT * FROM sakila.country LIMIT 10 OFFSET 8;
 
