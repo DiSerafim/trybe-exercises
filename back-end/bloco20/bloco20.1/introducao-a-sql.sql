@@ -1,5 +1,6 @@
 -- > Back-end ------------- <---/ Back-end -------------------------- Back-end -//
 
+####################################################################################
 -- > BLOCO - 20.1 ------------ <---/ INICIO --------------------------------------//
 -- * Criar condicionais no SQL usando IF e CASE;
 -- * Manipular strings no SQL;
@@ -7,7 +8,7 @@
 -- * Extrair informações específicas sobre datas de uma tabela;
 -- * Utilizar as funções de agregação AVG , MIN , MAX , SUM e COUNT;
 -- * Exibir e filtrar dados de forma agrupada com GROUP BY e HAVING.
-
+##########
 -- > CONTEÚDO do dia --------- <---/ INICIO --------------------------------------//
 
 -- Constraints (restrições), chaves primárias e chaves estrangeiras
@@ -53,6 +54,7 @@
 
 -- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
 
+##########
 -- > AULA ao VIVO ------------ <---/ INICIO --------------------------------------//
 
 -- seleciona todas as colunas da tabela address
@@ -67,6 +69,7 @@ SELECT * FROM sakila.address WHERE address_id = 603;
 -- 
 -- > AULA ao VIVO ------------ <---/ FIM -----------------------------------------//
 
+##########
 -- > EXECÍCIO do dia --------- <---/ INICIO --------------------------------------//
 
 -- Ex 1: Descubra como fazer uma pesquisa em qualquer tabela sem utilizar uma linha de código usando o MySql Workbench.
@@ -97,10 +100,12 @@ SELECT * FROM sakila.address WHERE address_id = 603;
 -- R-> store -> staff / language -> film / film -> language
 
 -- > EXECÍCIO do dia --------- <---/ FIM -----------------------------------------//
---> BLOCO - 20.1 ------------- <---/ FIM -----------------------------------------//
+-- > BLOCO - 20.1 ------------- <---/ FIM -----------------------------------------//
 
-
+####################################################################################
 -- > BLOCO - 20.2 ------------ <---/ INICIO --------------------------------------//
+
+##########
 -- > CONTEÚDO do dia --------- <---/ INICIO --------------------------------------//
 -- 20.2
 -- * Compreender o que é uma query SQL e quais são seus tipos de comando
@@ -259,8 +264,18 @@ SELECT title, release_year, length, rating, replacement_cost FROM sakila.film OR
 -- 
 -- > CONTEÚDO do dia --------- <---/ FIM -----------------------------------------//
 
+##########
 -- > AULA ao VIVO ------------ <---/ INICIO --------------------------------------//
 -- 20.2
+-- Encontrando dados
+
+-- QUERY
+-- DISTINCT
+-- LIMIT
+-- OFFSET
+-- COUNT
+-- ORDER BY
+
 SELECT * FROM sakila.country LIMIT 10 OFFSET 8;
 
 SELECT COUNT(DISTINCT city_id) FROM sakila.address;
@@ -272,8 +287,10 @@ SELECT * FROM sakila.customer ORDER BY store_id;
 SELECT * FROM sakila.customer ORDER BY store_id DESC;
 
 SELECT * FROM sakila.customer ORDER BY first_name, last_name;
+
 -- > AULA ao VIVO ------------ <---/ FIM -----------------------------------------//
 
+##########
 -- > EXECÍCIO do dia --------- <---/ INICIO --------------------------------------//
 -- 20.2
 -- Agora, a prática:
@@ -354,7 +371,7 @@ SELECT COUNT(Provider) FROM PiecesProviders.Provides WHERE Piece = 1;
 # ... + https://sqlzoo.net/wiki/SELECT_from_WORLD_Tutorial
 -- > EXECÍCIO do dia --------- <---/ FIM -----------------------------------------//
 
---> BLOCO - 20.2 ------------- <---/ FIM -----------------------------------------//
+-- > BLOCO - 20.2 ------------- <---/ FIM -----------------------------------------//
 
 
 -- > BLOCO - 20.3 ------------ <---/ INICIO --------------------------------------//
