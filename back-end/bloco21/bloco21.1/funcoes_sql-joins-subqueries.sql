@@ -213,6 +213,149 @@ SELECT FLOOR(39.494); # '39'
 -- 4 Temos uma taxa de inscrição de 85.234% no curso de fotografia para iniciantes. Qual é o valor aproximado para cima dessa média?
 SELECT CEIL(85.234); # 86
 
+-- Trabalhando com datas
+
+# data
+SELECT CURRENT_DATE(); # '2021-08-09'
+# data e hora
+SELECT NOW(); # '2021-08-09 07:43:06'
+
+# diferença em dias entre duas datas
+
+# A primeira data é 30 dias depois da segunda
+SELECT DATEDIFF('2020-01-31', '2020-01-01'); # 30
+# A primeira data é 30 dias antes da segunda
+SELECT DATEDIFF('2020-01-01', '2020-01-31'); # -30
+
+# diferença de tempo entre dois horários
+
+# 1 hora de diferença entre os horários
+SELECT TIMEDIFF('08:30:10', '09:30:10'); # '-01:00:00'
+# 1 hora de diferença entre os horários
+SELECT TIMEDIFF('09:30:10', '08:30:10'); # '01:00:00'
+
+-- Extrair qualquer parte de uma data
+
+SELECT DATE(data_cadastro); -- YYYY-MM-DD
+SELECT YEAR(data_cadastro); -- Ano
+SELECT MONTH(data_cadastro); -- Mês
+SELECT DAY(data_cadastro); -- Dia
+SELECT HOUR(data_cadastro); -- Hora
+SELECT MINUTE(data_cadastro); -- Minuto
+SELECT SECOND(data_cadastro); -- Segundo
+
+-- CURRENT_DATE() e NOW()
+
+SELECT YEAR(CURRENT_DATE()); # '2021' retorna o ano atual
+SELECT HOUR(NOW()); # '8' retorna a hora atual
+
+-- Para Fixar
+
+-- 1 Monte uma query que exiba a diferença de dias entre '2030-01-20' e hoje.
+SELECT DATEDIFF('2030-01-20', '2021-08-09'); # '3086'
+SELECT DATEDIFF('2030-01-20', NOW()); # '3086'
+SELECT DATEDIFF('2030-01-20', CURRENT_DATE()); # '3086'
+-- 2 Monte uma query exiba a diferença de horas entre '10:25:45' e '11:00:00'.
+SELECT TIMEDIFF('10:25:45', '11:00:00'); # '-00:34:15'
+
+-- Utilizando as funções de agregação (AVG, MIN, MAX, SUM e COUNT)
+
+SELECT * FROM sakila.film;
+-- Usando a coluna replacement_cost (valor de substituição) vamos encontrar:
+SELECT AVG(replacement_cost) AS media FROM sakila.film; # 19.984000 (Média entre todos registros)
+SELECT MIN(replacement_cost) AS valor_minimo FROM sakila.film; # 9.99 (Menor valor encontrado)
+SELECT MAX(replacement_cost) AS valor_maximo FROM sakila.film; # 29.99 (Maior valor encontrado)
+SELECT SUM(replacement_cost) AS soma_total FROM sakila.film; # 19984.00 (Soma de todos registros)
+SELECT COUNT(replacement_cost) AS total_registros FROM sakila.film; # 1000 registros encontrados (Quantidade)
+
+-- Para Fixar
+
+-- 1 Monte um query que exiba:
+SELECT * FROM sakila.film;
+# A média de duração dos filmes e dê o nome da coluna de 'Média de Duração';
+SELECT AVG(length) AS 'Média de Duração' FROM sakila.film; # '115.2720'
+# A duração mínima dos filmes como 'Duração Mínima';
+SELECT MIN(length) AS 'Duração Mínima' FROM sakila.film; # '46'
+# A duração máxima dos filmes como 'Duração Máxima';
+SELECT MAX(length) AS 'Duração Máxima' FROM sakila.film; # '185'
+# A soma de todas as durações como 'Tempo de Exibição Total';
+SELECT SUM(length) AS 'Tempo de Exibição Total' FROM sakila.film; # '115272'
+# A quantidade total de filmes cadastrados na tabela sakila.film como 'Filmes Registrados'.
+SELECT COUNT(*) AS 'Filmes Registrados' FROM sakila.film; # '1000'
+
+-- Exibindo e filtrando dados de forma agrupada (GROUP BY e HAVING)
+
+# GROUP BY - remove duplicações, retornando apenas um valor na coluna usada no agrupamento.
+SELECT coluna(s) FROM tabela GROUP BY coluna(s);
+
+SELECT * FROM sakila.actor; # 200 row(s) returned
+SELECT first_name FROM sakila.actor GROUP BY first_name; # 128 row(s) returned
+SELECT first_name FROM sakila.actor; # 200 row(s) returned
+
+# GROUP BY - em conjunto com (AVG , MIN, MAX, SUM ou COUNT)
+
+-- Quantos registros existem na tabela de cada nome registrado, podemos usar o COUNT()
+SELECT * FROM sakila.actor;
+SELECT first_name, COUNT(*) AS repeticoes FROM sakila.actor GROUP BY first_name;
+
+-- Média de duração de filmes agrupados por classificação indicativa
+SELECT * FROM sakila.film;
+SELECT rating, AVG(length) AS duracao FROM sakila.film GROUP BY rating;
+
+-- Valor mínimo de substituição dos filmes agrupados por classificação indicativa
+SELECT rating, MIN(replacement_cost) AS 'Valor mínimo de substituição' FROM sakila.film GROUP BY rating;
+
+-- Valor máximo de substituição dos filmes agrupados por classificação indicativa
+SELECT rating, MAX(replacement_cost) AS 'Valor máximo de substituição' FROM sakila.film GROUP BY rating;
+
+-- Custo total de substituição de filmes agrupados por classificação indicativa
+SELECT rating, SUM(replacement_cost) AS 'Custo total de substituição' FROM sakila.film GROUP by rating;
+
+-- Praticando GROUP BY
+
+# 1 Monte uma query que exiba a quantidade de clientes cadastrados na tabela sakila.customer que estão ativos e a quantidade que estão inativos.
+SELECT * FROM sakila.customer;
+SELECT `active`, COUNT(*) AS tudo FROM sakila.customer GROUP BY `active`; # '1' = '584' & '0' = '15'
+SELECT `active`, COUNT(*) AS ativos FROM sakila.customer WHERE `active` = 1 GROUP BY `active`; # '584'
+SELECT `active`, COUNT(*) AS inativos FROM sakila.customer WHERE `active` = 0 GROUP BY `active`; # '15'
+# 2 Monte uma query para a tabela sakila.customer que exiba a quantidade de clientes ativos e inativos por loja. Os resultados devem conter o ID da loja , o status dos clientes (ativos ou inativos) e a quantidade de clientes por status.
+SELECT store_id, `active`, COUNT(*) AS 'clientes ativos e inativos por loja' FROM sakila.customer GROUP BY store_id, `active`; # 4 row(s) returned
+SELECT store_id, `active`, COUNT(*) AS 'clientes ativos por loja' FROM sakila.customer WHERE `active` = 1 GROUP BY store_id, `active`; # 2 row(s) returned
+SELECT store_id, `active`, COUNT(*) AS 'clientes inativos por loja' FROM sakila.customer WHERE `active` = 0 GROUP BY store_id, `active`; # 3 row(s) returned
+# 3 Monte uma query que exiba a média de duração de locação por classificação indicativa(rating) dos filmes cadastrados na tabela sakila.film. Os resultados devem ser agrupados pela classificação indicativa e ordenados da maior média para a menor.
+SELECT * FROM sakila.film;
+SELECT AVG(rental_duration) AS 'média de duração', rating FROM sakila.film GROUP BY rating ORDER BY 'média de duração' DESC;
+# 4 Monte uma query para a tabela sakila.address que exiba o nome do distrito e a quantidade de endereços registrados nele. Os resultados devem ser ordenados da maior quantidade para a menor.
+SELECT * FROM sakila.address;
+SELECT district, COUNT(*) AS 'quantidade de endereços registrados' FROM sakila.address GROUP BY district ORDER BY COUNT(*) DESC;
+
+-- 
+SELECT * FROM sakila.address; # 603 row(s) returned
+SELECT district FROM sakila.address GROUP BY district; # 378 row(s) returned
+SELECT district, COUNT(*) FROM sakila.address GROUP BY district; # 378 row(s) returned mostrando a quantidade de repetições
+SELECT district FROM sakila.address GROUP BY district HAVING COUNT(*) > 5; # mostra somente os que se repetem mais de 5x
+
+-- Filtrando Resultados do GROUP BY com HAVING
+# HAVING - filtra resultados agrupados
+SELECT * FROM sakila.actor;
+
+SELECT first_name, COUNT(*) FROM sakila.actor GROUP BY first_name HAVING COUNT(*) > 2;
+-- Ou, melhor ainda, usando o AS para dar nomes às colunas de agregação, melhorando a leitura do resultado
+SELECT first_name, COUNT(*) AS nomes_cadastrados FROM sakila.actor GROUP BY first_name HAVING nomes_cadastrados > 2;
+
+-- Observação: o alias não funciona com strings para o HAVING, então use o underline ("_") para separar palavras
+SELECT first_name, COUNT(*) AS nomes_cadastrados FROM sakila.actor GROUP BY first_name HAVING nomes_cadastrados > 2;
+
+-- HAVING - filtra somente os resultados gerados após o GROUP BY ter sido executado.
+
+-- Para Fixar
+
+# 1 Usando a query a seguir, exiba apenas as durações médias que estão entre 115.0 a 121.50. Além disso, dê um alias(apelido) à coluna gerada por AVG(length), de forma que deixe a query mais legível. Finalize ordenando os resultados de forma decrescente.
+    SELECT rating, AVG(length) AS duracoes_medias FROM sakila.film GROUP BY rating HAVING duracoes_medias BETWEEN 115.0 AND 121.50 ORDER BY duracoes_medias DESC;
+# 2 Usando a query a seguir, exiba apenas os valores de custo de substituição que estão acima de $3950.50. Dê um alias que faça sentido para SUM(replacement_cost) , de forma que deixe a query mais legível. Finalize ordenando os resultados de forma crescente.
+    SELECT rating, SUM(replacement_cost) AS custo_de_substituicao FROM sakila.film GROUP by rating HAVING custo_de_substituicao > 3950.50 ORDER BY custo_de_substituicao;
+
+
 
 
 
