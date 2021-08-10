@@ -441,14 +441,86 @@ db.bios.find().limit(10).skip(5)
 # corresponde à seguinte consulta no SQL :
 SELECT * FROM bios LIMIT 10 OFFSET 5;
 
-
-
-
 -- > CONTEÚDO do dia - 23.1 -- <---/ FIM -----------------------------------------//
 ##############################
 -- > AULA ao VIVO - 23.1 ----- <---/ INICIO --------------------------------------//
 
+-- MongoDB
 
+# Open Source
+# Tem foco em Alta Disponibilidade e Alta Escalabilidade
+# Guarda os dados em formato de documentos(BSON)
+
+-- MongoDB        =     -- Mysql
+# Database        =     # Database
+# Collections     =     # Tables
+# Documentos      =     # Rows
+# Fields          =     # Columns
+
+-- Principais comndos
+# show dbs
+# use nomeDoBanco
+# show collections
+
+-- Criando e usando um banco
+
+# terminal
+# mongo
+# verifica todos os dbs
+> show dbs
+# escolhe o db ou cria o comando serve pra ambos
+> use test;
+# mostra oque tem no db
+> show collections
+# vamos inserir dados
+# insertOne() - insere 1
+> db.inventory.insertOne({item: "celular", qty: 25, status: "A"});
+> db.inventory.insertOne({item: "notebook", qty: 25, status: "A"});
+> db.inventory.insertOne({item: "teste", qtd: 15, status: "A"});
+
+# insertMany() - insere vários
+> db.inventory.insertMany([
+  {item: "paper", qty: 100, status: "D"},
+  {item: "planner", qty: 75, status: "D"},
+  {item: "postcard", qty: 45, status: "A"}
+]);
+
+# mostra somente o 1°
+> db.inventory.findOne();
+# mostra tudo
+> db.inventory.find();
+
+# Filtrar todos que tem como status o 'D'
+> db.inventory.find({status: "D"}).pretty();
+# Filtrar mais de 1 item
+> db.inventory.find({status: "A", item: "celular"}).pretty();
+# pular um registro e pegar um registro
+> db.inventory.find({status: "A"}).skip(1).limit(1);
+
+# criando e inserindo no banco 'users'
+> db.users.insertOne({
+...   _id: "joe",
+...   name: "joe bookre",
+...   address: {
+...     street: "123, endereço",
+...     city: "Facetorn",
+...     state: "Ma",
+...     zip: "1234"
+...   }
+... });
+# ver resultado
+> db.users.find().pretty();
+
+# Buscando através do ID
+> db.users.find({_id: 'joe'}).pretty();
+# buscar por endereço dentro do estado
+> db.users.find({"address.state": "Ma"}).pretty();
+# filtrar campos
+> db.users.find({}, {name: 1});
+# filtrar campos sem o ID
+> db.users.find({}, {name: 1, _id: 0}).pretty();
+# filtrando pelo nome
+> db.users.find({name: 'joe bookre'}, {name: 1, _id: 0}).pretty();
 
 -- > AULA ao VIVO - 23.1 ----- <---/ FIM -----------------------------------------//
 ##############################
@@ -489,7 +561,6 @@ SELECT * FROM bios LIMIT 10 OFFSET 5;
   class> db.books.find({}, {_id: 0, title: 1, isbn: 1, pageCount: 1}).limit(3).pretty()
 # 10 Pule 5 documentos e exiba os atributos _id, title, authors e status dos livros com o status = "MEAP", limitando-se a 10 documentos.
   class> db.books.find({status: "MEAP"}, {title: 1, authors: 1, status: 1}).skip(5).limit(10).pretty()
-
 
 -- > EXERCÍCIO do dia - 23.1 -- <---/ FIM -----------------------------------------//
 ############################## Introdução ao MongoDB - NoSQL
