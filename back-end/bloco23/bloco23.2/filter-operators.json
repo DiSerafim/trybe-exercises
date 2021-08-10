@@ -2,14 +2,14 @@
 -- > CONTEÚDO do dia - 23.2 -- <---/ INICIO --------------------------------------//
 
 // Utilizar os operadores de comparação
-# $lt ( less than , menor que, <)
-# $lte ( less than or equal , menor ou igual a, <=)
-# $gt ( greater than , maior que, >)
-# $gte ( greater than or equal , maior ou igual a, >=)
-# $eq ( equal , igual a, =)
-# $ne ( not equal , diferente de, !=, <>)
-# $in ( in , dentro de)
-# $nin ( not in , não está dentro de)
+# $lt (less than , menor que, <)
+# $lte (less than or equal , menor ou igual a, <=)
+# $gt (greater than , maior que, >)
+# $gte (greater than or equal , maior ou igual a, >=)
+# $eq (equal , igual a, =)
+# $ne (not equal , diferente de, !=, <>)
+# $in (in , dentro de)
+# $nin (not in , não está dentro de)
 
 // Utilizar os operadores lógicos
 # $and ( and , se todas as condições forem verdadeiras retorna true )
@@ -65,29 +65,106 @@ db.inventory.find({ qty: { $in: [ 5, 15 ] } })
 db.inventory.find( { qty: { $nin: [ 5, 15 ] } } )
 # Essa consulta seleciona todos os documentos da coleção inventory em que o valor do atributo qty é diferente de 5 e 15
 
+# Operadores de Comparação
 // Vamos praticar !
-#Agora que aprendemos sobre os operadores de comparação, vamos sedimentar esses conhecimentos com alguns exercícios de fixação. Para isso, vamos criar um novo banco de dados chamado business com uma coleção chamada restaurants :
-Clique neste link ;
-Copie todo o conteúdo do link e depois abra o MongoDB Shell ;
-Utilize o comando use business para criar e utilizar este banco de dados;
-Cole todo o conteúdo no terminal do MongoDB Shell e confirme com ENTER ou baixe o arquivo e o execute usando o comando mongo exercise-filter-operators.js .
+# Para isso, vamos criar um novo banco de dados chamado business com uma coleção chamada restaurants:
+# Copie todo o conteúdo do link e depois abra o MongoDB Shell;
+# https://s3.us-east-2.amazonaws.com/assets.app.betrybe.com/back-end/mongodb/exercise-filter-operators-e8e55183a5af1418a8f0d355ad895d13.js
+# Utilize o comando use business para criar e utilizar este banco de dados;
+  > use business
+# Cole todo o conteúdo no terminal do MongoDB Shell e confirme com ENTER ou baixe o arquivo e o execute usando o comando mongo exercise-filter-operators.js .
+  > #colar
+# teste
+db.restaurants.count()
 
+// 60, é a quantidade de documentos nesta coleção.
+# 1 Selecione e faça a contagem dos restaurantes presentes nos bairros Queens, Staten Island e Bronx. (utilizando o atributo borough)
+# # $in (dentro de)
+> db.restaurants.find({borough: {$in: ["Queens", "Staten Island", "Bronx"] }}).count(); // 20
+# 2 Selecione e faça a contagem dos restaurantes que não possuem culinária do tipo American. (utilizando o atributo cuisine)
+# $ne (not equal, diferente de, !=, <>)
+> db.restaurants.find({cuisine: {$ne: "American"}}).count(); // 40
+# 3 Selecione e faça a contagem dos restaurantes que possuem avaliação maior ou igual a 8. (utilizando o atributo rating)
+# $gte (maior ou igual a, >=)
+> db.restaurants.find({rating: {$gte: 8}}).count(); // 18
+# 4 Selecione e faça a contagem dos restaurantes que possuem avaliação menor que 4.
+# $lt (menor que, <)
+> db.restaurants.find({rating: {$lt: 4}}).count(); // 13
+# 5 Selecione e faça a contagem dos restaurantes que não possuem as avaliações 5, 6 e 7.
+# $nin (not in, não está dentro de)
+> db.restaurants.find({rating: {$nin: [5, 6, 7]}}).count(); // 55
 
+## Operadores Lógicos
 
+// Operador $not
+{ campo: { $not: { <operador ou expressão> } } }
+# $not - executa uma operação lógica de NEGAÇÃO no < operador ou expressão >
+db.inventory.find({ price: { $not: { $gt: 1.99 } } })
+# seleciona todos os documentos na coleção inventory em que o valor do atributo price é menor ou igual a 1.99
 
+// Operador $or
+{ $or: [{ <expression1> }, { <expression2> }, ... , { <expressionN> }] }
+# $or - executa a operação lógica OU em um array de uma ou mais expressões e seleciona os que satisfaçam ao menos uma das expressões.
+db.inventory.find({ $or: [{ qty: { $lt: 20 } }, { price: 10 }] })
+# seleciona todos os documentos da coleção inventory em que o valor do atributo qty é menor do que 20 ou o valor do atributo price é igual a 10.
 
+// Operador $nor
+# $nor - executa uma operação lógica de NEGAÇÃO em um array de uma ou mais expressões, e seleciona os documentos em que todas essas expressões falhem
+{ $nor: [ { <expressão1> }, { <expressão2> }, ...  { <expressãoN> } ] }
+# retorna todos os documentos da coleção inventory que:
+# Contêm o atributo price com o valor diferente de 1.99 e o atributo sale com o valor diferente de true;
+# Ou contêm o atributo price com valor diferente de 1.99 e não contêm o atributo sale;
+# Ou não contêm o atributo price e contêm o atributo sale com valor diferente de true;
+# Ou não contêm o atributo price e nem o atributo sale.
+db.inventory.find({ $nor: [{ price: 1.99 }, { sale: true }] })
 
+// Operador $and
+# $and - executa a operação lógica 'E' num array de uma ou mais expressões e seleciona os documentos que satisfaçam todas as expressões no array.
+{ $and: [{ <expressão1> }, { <expressão2> } , ... , { <expressãoN> }] }
+# seleciona todos os documentos da coleção inventory em que o valor do atributo price é diferente de 1.99 e o atributo price existe.
+db.inventory.find({$and: [{price: {$ne: 1.99}}, {price: {$exists: true}}]});
 
+// Múltiplas expressões especificando o mesmo operador
+# essa expressão é equivalente a (price > 0.99 E price < 1.99) (onde o E está implícito na vírgula aqui { $gt: 0.99, $lt: 1.99 } ) E (sale = true OU qty < 20).
+db.inventory.find({
+  $and: [
+    { price: { $gt: 0.99, $lt: 1.99 } },
+    {
+      $or: [
+        { sale : true },
+        { qty : { $lt : 20 } }
+      ]
+    }
+  ]
+})
 
+# Operadores Lógicos
+// Vamos praticar !
+# Utilize a coleção restaurants.
 
+# 1 Selecione e faça a contagem dos restaurantes que não possuem avaliação menor ou igual a 5, essa consulta também deve retornar restaurantes que não possuem o campo avaliação.
+# $not (inverte o resultado da expressão)
+# $lte (menor ou igual a, <=)
+  > db.restaurants.find({rating: {$not: {$lte: 5}}}).count(); // 38
 
+# 2 Selecione e faça a contagem dos restaurantes em que a avaliação seja maior ou igual a 6, ou restaurantes localizados no bairro Brooklyn.
+# $or (se apenas uma condição for verdadeira retorna true)
+# $gte (maior ou igual a, >=)
+> db.restaurants.find({$or: [{rating: {$gte: 6}}, {borough: "Brooklyn"}]}).count(); // 39
 
+# 3 Selecione e faça a contagem dos restaurantes localizados nos bairros Queens, Staten Island e Broklyn e possuem avaliação maior que 4.
+# $and (se todas as condições forem verdadeiras retorna true)
+# $in (dentro de)
+# $gt (maior que, >)
+> db.restaurants.find({$and: [{borough: {$in: ['Queens', 'Staten Island', 'Broklyn']}}, {rating: {$gt: 4}}, ], }).count(); // 8
 
+# 4 Selecione e faça a contagem dos restaurantes onde nem o campo avaliação seja igual a 1, nem o campo culinária seja do tipo American.
+# $nor (semelhante ao or , porém trabalha com a condição false )
+# $eq (igual a, =)
+db.restaurants.find({$nor: [{rating: {$eq: 1}}, {cuisine: "American"}]}).count(); // 39
 
-
-
-
-
+# 5 Selecione e faça a contagem dos resturantes em que a avaliação seja maior que 6 ou menor que 10, E esteja localizado no bairro Brooklyn, OU não possuem culinária do tipo Delicatessen.
+> db.restaurants.find({$and: [{$or: [{rating: {$gt: 6, $lt: 10}}]}, {$or: [{borough: 'Brooklyn'}, {cuisine: {$ne: 'Delicatessen'}}]}, ], }).count(); // 18
 
 
 
