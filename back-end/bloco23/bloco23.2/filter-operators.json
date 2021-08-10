@@ -1,0 +1,116 @@
+############################## Filter Operators
+-- > CONTEÚDO do dia - 23.2 -- <---/ INICIO --------------------------------------//
+
+// Utilizar os operadores de comparação
+# $lt ( less than , menor que, <)
+# $lte ( less than or equal , menor ou igual a, <=)
+# $gt ( greater than , maior que, >)
+# $gte ( greater than or equal , maior ou igual a, >=)
+# $eq ( equal , igual a, =)
+# $ne ( not equal , diferente de, !=, <>)
+# $in ( in , dentro de)
+# $nin ( not in , não está dentro de)
+
+// Utilizar os operadores lógicos
+# $and ( and , se todas as condições forem verdadeiras retorna true )
+# $or ( or , se apenas uma condição for verdadeira retorna true )
+
+// Compor filtros avançados com
+# $not ( not , inverte o resultado da expressão)
+# $nor ( not or , semelhante ao or , porém trabalha com a condição false )
+
+// Utilizar o operador
+# $exists ( exists , verifica a existência de um atributo)
+
+// Utilizar o método
+# sort() ( sort , ordenar)
+
+// Operadores de Comparação
+
+# find(),count(), update() e o distinct() aceitam filtros de comparação.
+{ <campo>: { <operador>: <valor> } }
+
+// Operador $lt
+# $lt - seleciona os documentos em que o valor filtrado é menor do que (<) o valor especificado.
+db.inventory.find({ qty: { $lt: 20 } })
+
+// Operador $lte
+# $lte - seleciona os documentos em que o valor filtrado é menor ou igual (<=) ao valor especificado.
+db.inventory.find({ qty: { $lte: 20 } })
+
+// Operador $gt
+# $gt - seleciona os documentos em que o valor filtrado é maior do que (>) o valor especificado.
+db.inventory.find({ qty: { $gt: 20 } })
+
+// Operador $gte
+# $gte - seleciona os documentos em que o valor filtrado é maior ou igual (>=) ao valor especificado.
+db.inventory.find({ qty: { $gte: 20 } })
+
+// Operador $eq
+# $eq - seleciona os documentos em que o valor filtrado é igual ao valor especificado.
+db.inventory.find({ qty: { $eq: 20 } })
+# equivalente a:
+db.inventory.find({ qty: 20 })
+
+// Operador $ne
+# $ne - os documentos em que o valor do atributo filtrado não é igual ao valor especificado(!=).
+db.inventory.find({ qty: { $ne: 20 } })
+
+// Operador $in
+# $in - para executar comparações de igualdade com mais de um valor no mesmo atributo.
+db.inventory.find({ qty: { $in: [ 5, 15 ] } })
+
+// Operador $nin
+# $nin - seleciona os documentos em que o valor do atributo filtrado não é igual ao especificado no array, ou não existe.
+db.inventory.find( { qty: { $nin: [ 5, 15 ] } } )
+# Essa consulta seleciona todos os documentos da coleção inventory em que o valor do atributo qty é diferente de 5 e 15
+
+// Vamos praticar !
+#Agora que aprendemos sobre os operadores de comparação, vamos sedimentar esses conhecimentos com alguns exercícios de fixação. Para isso, vamos criar um novo banco de dados chamado business com uma coleção chamada restaurants :
+Clique neste link ;
+Copie todo o conteúdo do link e depois abra o MongoDB Shell ;
+Utilize o comando use business para criar e utilizar este banco de dados;
+Cole todo o conteúdo no terminal do MongoDB Shell e confirme com ENTER ou baixe o arquivo e o execute usando o comando mongo exercise-filter-operators.js .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- > CONTEÚDO do dia - 23.2 -- <---/ FIM -----------------------------------------//
+##############################
+-- > AULA ao VIVO - 23.2 ----- <---/ INICIO --------------------------------------//
+
+
+
+-- > AULA ao VIVO - 23.2 ----- <---/ FIM -----------------------------------------//
+##############################
+-- > EXERCÍCIO do dia - 23.2 -- <---/ INICIO --------------------------------------//
+
+
+
+-- > EXERCÍCIO do dia - 23.2 -- <---/ FIM -----------------------------------------//
+############################## Filter Operators
