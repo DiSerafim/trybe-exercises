@@ -430,9 +430,7 @@ db.bios.find().limit(5).pretty()
 
 -- "Pulando" documentos
 
-## skip(<número>)
-
-"Pulando" documentos skip(<número>)
+## skip() - Pula documentos skip(n°)
 
 # na coleção bios pulará os dois primeiros documentos e retornará o cursor a partir daí
 db.bios.find().skip(2)
@@ -456,6 +454,41 @@ SELECT * FROM bios LIMIT 10 OFFSET 5;
 ##############################
 -- > EXERCÍCIO do dia - 23.1 -- <---/ INICIO --------------------------------------//
 
+-- Agora, a prática!
+
+## O MongoDB possui diversas ferramentas como, por exemplo, mongo, mongosh, Compass e outras ferramentas de terceiros. Você pode utilizar o que achar melhor para executar as queries , o importante é realizá-las.
+## Utilizando a coleção bios , construa queries para retornar os seguintes itens:
+
+# 1 Retorne o documento com o _id igual a 8.
+  > db.bios.find({_id: 8})
+# 2 Retorne o documento com o _id igual a 8, mas só exiba os atributos: _id e name.
+  > db.bios.find({_id: 8}, {name: 1})
+# 3 Retorne apenas os atributos name e birth do documento com o _id igual a 8.
+  > db.bios.find({_id: 8}, {name: 1, birth: 1, _id: 0})
+# 4 Retorne todos os documentos em que o atributo name.first seja igual a John, utilizando o método pretty().
+# pretty() - aplica uma indentação na exibição dos resultados no console
+  > db.bios.find({"name.first": "John"}).pretty()
+# 5 Retorne os 3 primeiros documentos da coleção bios utilizando o método pretty().
+# limit() - limita o número de documentos retornados
+# pretty() - aplica uma indentação na exibição dos resultados no console
+  > db.bios.find({}).limit(3).pretty()
+# 6 Retorne 2 documentos da coleção bios pulando os 5 primeiros documentos.
+# skip() - Pula documentos skip(n°)
+  > db.bios.find({}).skip(5).limit(2).pretty()
+
+# Utilizando o mongoimport, importe o arquivo books.json para a sua instância local do MongoDB e utilize a coleção books para construir as seguintes consultas:
+  # o import tem que ser feito no terminal comum 
+  > mongoimport --db class --collection books https://s3.us-east-2.amazonaws.com/assets.app.betrybe.com/back-end/mongodb/books-48d15e4d8924badc2308cc4a62eb3ea4.json
+  > use class
+# 7 Retorne a quantidade de documentos da coleção books.
+# count() retorna o número de documentos de uma coleção
+  class> db.books.count()
+# 8 Conte quantos livros existem com o status = "PUBLISH".
+  class> db.books.count({status: "PUBLISH"})
+# 9 Exiba os atributos title, isbn e pageCount dos 3 primeiros livros. NÃO retorne o atributo _id.
+  class> db.books.find({}, {_id: 0, title: 1, isbn: 1, pageCount: 1}).limit(3).pretty()
+# 10 Pule 5 documentos e exiba os atributos _id, title, authors e status dos livros com o status = "MEAP", limitando-se a 10 documentos.
+  class> db.books.find({status: "MEAP"}, {title: 1, authors: 1, status: 1}).skip(5).limit(10).pretty()
 
 
 -- > EXERCÍCIO do dia - 23.1 -- <---/ FIM -----------------------------------------//
