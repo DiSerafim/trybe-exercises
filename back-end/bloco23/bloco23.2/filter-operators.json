@@ -166,10 +166,104 @@ db.restaurants.find({$nor: [{rating: {$eq: 1}}, {cuisine: "American"}]}).count()
 # 5 Selecione e faça a contagem dos resturantes em que a avaliação seja maior que 6 ou menor que 10, E esteja localizado no bairro Brooklyn, OU não possuem culinária do tipo Delicatessen.
 > db.restaurants.find({$and: [{$or: [{rating: {$gt: 6, $lt: 10}}]}, {$or: [{borough: 'Brooklyn'}, {cuisine: {$ne: 'Delicatessen'}}]}, ], }).count(); // 18
 
+// Operador $exists
+{ campo: { $exists: <boolean> } }
+# Quando <boolean> é verdadeiro, o operador $exists encontra os documentos que contêm o atributo, incluindo atributos igual a null. Se o <boolean> é (false), a consulta retorna somente os documentos que não contêm o atributo.
 
+# retorna todos os documentos da coleção inventory em que o atributo qty existe.
+> db.inventory.find({qty: {$exists: true}}).pretty();
 
+# também pode combinar operadores
 
+# seleciona todos os documentos da coleção inventory em que o atributo qty existe E seu valor é diferente de 5 e 15.
+> db.inventory.find({qty: {$exists: true, $nin: [5, 15]}}).pretty();
 
+// Método sort()
+db.colecao.find().sort({ "campo": "1 ou -1"})
+# ordenar os documentos por algum atributo.
+# Positivo(1) como valor do atributo, os documentos são ordenados de forma crescente ou alfabética.
+# Negativo(-1), os documentos de saída estarão em ordem decrescente ou contra alfabética.
+db.example.find({}, { value, name }).sort({ value: -1 }, { name: 1 })
+
+# sort() - só pode ser usado se tiver algum resultado de busca antes
+db.colecao.find().sort({ nomeDoAtributo: 1 }) // certo
+db.colecao.sort({ nomeDoAtributo: 1 }) // errado
+
+# cria a tabela example
+db.example.insertMany([
+  { "name": "Mandioquinha Frita", "price": 14 },
+  { "name": "Litrão", "price": 8 },
+  { "name": "Torresmo", "price": 16 }
+]);
+
+# teste 1
+> db.example.find().sort({ "price": 1 }).pretty()
+// Resultado:
+{
+  "_id" : ObjectId("6113b8525feecc07d28e3281"),
+  "name" : "Litrão",
+  "price" : 8
+}
+{
+  "_id" : ObjectId("6113b8525feecc07d28e3280"),
+  "name" : "Mandioquinha Frita",
+  "price" : 14
+}
+{
+  "_id" : ObjectId("6113b8525feecc07d28e3282"),
+  "name" : "Torresmo",
+  "price" : 16
+}
+
+# teste 2
+> db.example.find().sort({ "price": -1 }, { "name" : 1 }).pretty()
+// Resultado
+{
+  "_id" : ObjectId("6113b8525feecc07d28e3282"),
+  "name" : "Torresmo",
+  "price" : 16
+}
+{
+  "_id" : ObjectId("6113b8525feecc07d28e3280"),
+  "name" : "Mandioquinha Frita",
+  "price" : 14
+}
+{
+  "_id" : ObjectId("6113b8525feecc07d28e3281"),
+  "name" : "Litrão",
+  "price" : 8
+}
+
+// Vamos praticar !
+#sort() - utilizando a coleção restaurants
+
+# 1 Ordene alfabeticamente os restaurantes pelo nome(atributo name).
+> db.restaurants.find().sort({name: 1}).pretty();
+# 2 Ordene os restaurantes de forma descrescente baseado nas avaliações.
+> db.restaurants.find().sort({rating: -1}).pretty();
+
+// Removendo documentos (deleteOne(), deleteMany())
+
+# deleteOne() - remove apenas um documento
+# Se nenhum valor for passado como parâmetro, a operação removerá o primeiro documento da coleção.
+> db.inventory.deleteOne({ status: "D" });
+# resultado
+{ "acknowledged" : true, "deletedCount" : 1 }
+
+# deleteMany() - remove todos os documentos
+# Para remover todos, basta não passar nenhum parâmetro para o método deleteMany():
+> db.inventory.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 5 }
+
+// Vamos praticar !
+# utilize a coleção restaurants.
+
+# 1 Remova o primeiro restaurante que possua culinária do tipo Ice Cream, Gelato, Yogurt, Ices.
+> db.restaurants.deleteOne({cuisine: "Ice Cream, Gelato, Yogurt, Ices"});
+{ "acknowledged" : true, "deletedCount" : 1 }
+# 2 Remova todos os restaurantes que possuem culinária do tipo American.
+> db.restaurants.deleteMany({cuisine: "American"});
+{ "acknowledged" : true, "deletedCount" : 20 }
 
 
 
