@@ -1,0 +1,283 @@
+############################## Updates Simples e Complexos
+-- > CONTEÚDO do dia - 24.1 -- <---/ INICIO --------------------------------------//
+
+# Utilizar o método updateOne() ;
+# Utilizar o método updateMany() ;
+# Utilizar os operadores $set , $mul , $inc , $min , $max e $currentDate ;
+# Renomear campos;
+# Remover campos.
+
+// update
+db.colecao.updateOne(<filtro>, <update>, <opcoes>);
+db.colecao.updateMany(<filtro>, <update>, <opcoes>);
+// Alterando um único documento
+# db.colecao.updateOne() altera o 1° documento na coleção inventory, item = "paper":
+> db.inventory.updateOne(
+  { item: "paper" },
+  { $set: { "size.uom": "cm", status: "P" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# Note que dois parâmetros foram passados no método:
+# 1 filtro
+# 2 operação de update.
+# $set - operador de atualização
+
+// Alterando múltiplos documentos
+# db.colecao.updateMany() alterar os documentos da coleção inventory, qty < 50:
+> db.inventory.updateMany(
+  { "qty": { $lt: 50 } },
+  { $set: { "size.uom": "in", status: "P" } }
+);
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }
+# $set alterar o valor do campo 'size.uom' para 'in' e 'status' para 'P'.
+
+// Operador $set
+# altera o valor de um campo específico.
+# Se o campo não existir, o operador $set adiciona um novo campo com o valor especificado.
+
+> db.products.insertOne({
+  _id: 100,
+  sku: "abc123",
+  quantity: 250,
+  instock: true,
+  reorder: false,
+  details: { model: "14Q2", make: "xyz" },
+  tags: [ "apparel", "clothing" ],
+  ratings: [ { by: "ijk", rating: 4 } ]
+})
+{ "acknowledged" : true, "insertedId" : 100 }
+
+# Exemplo 1: Alterando campos no primeiro nível (top-level)
+
+# altera o valor de quantity para 500, details para um novo documento embedado e tags para um novo array.
+db.products.update(
+  { _id: 100 },
+  { $set: {
+      quantity: 500,
+      details: { model: "14Q3", make: "xyz" },
+      tags: [ "coats", "outerwear", "clothing" ]
+    }
+  }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# Exemplo 2: Alterando campos em documentos embedados
+
+# altera o valor do campo make dentro do subdocumento details em que o campo _id seja igual a 100 :
+db.products.update(
+  { _id: 100 },
+  { $set: { "details.make": "zzz" } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# Exemplo 3: Alterando valores em arrays
+
+# altera o segundo elemento(índice 1) do array tags e o campo rating no primeiro elemento (índice 0 ) do array ratings
+> db.products.update(
+  { _id: 100 },
+  { $set: {
+      "tags.1": "rain gear",
+      "ratings.0.rating": 2
+    }
+  }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+// Operador $mul - multiplica o valor de um campo por um número especificado
+
+> db.products.insertOne(
+  { "_id": 1, "item": "ABC", "price": NumberDecimal("10.99"), "qty": 25 }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# utilizando o operador $mul para multiplicar os valores dos campos price e qty:
+> db.products.update(
+  { _id: 1 },
+  { $mul: { price: NumberDecimal("1.25"), qty: 2 } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 
+# resultado
+> db.products.find();
+{ "_id": 1, "item": "ABC", "price": NumberDecimal("13.7375"), "qty": 50 }
+
+# $mul - em um campo que não exista no documento. O operador criará o campo e atribuirá a ele o valor 0 do mesmo tipo numérico do multiplicador.
+> db.products.insertOne(
+  { _id: 2, item: "Unknown" }
+);
+{ "acknowledged" : true, "insertedId" : 2 }
+
+# 'update' no documento, aplicando o operador '$mul' no campo price, que não existe neste documento:
+> db.products.update(
+  { _id: 2 },
+  { $mul: { price: NumberLong("100") } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado, temos o campo price criado no documento com valor 0 mesmo tipo numérico do multiplicador. Nesse caso, o tipo é NumberLong:
+> db.products.find().pretty();
+{ "_id" : 2, "item" : "Unknown", "price" : NumberLong(0) }
+
+# multiplicar valores com tipos diferentes.
+> db.products.insertOne(
+  { _id: 3,  item: "XYZ", price: NumberLong("10") }
+);
+{ "acknowledged" : true, "insertedId" : 3 }
+
+# multiplicando o valor do campo price, tipo NumberLong("10"), por NumberInt(5)
+> db.products.update(
+  { _id: 3 },
+  { $mul: { price: NumberInt(5) } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.products.find().pretty();
+{ "_id": 3, "item": "XYZ", "price": NumberLong(50) }
+
+// Operador $inc - incrementa ou decrementa valores em um campo específico
+
+db.increment.insertOne(
+  {
+    _id: 1,
+    sku: "abc123",
+    quantity: 10,
+    metrics: {
+      orders: 2,
+      ratings: 3.5
+    }
+  }
+)
+# $inc é utilizado para decrementar o valor do campo qty em 2(-2) e incrementar o valor do campo metrics.orders em 1
+db.increment.update(
+{ sku: "abc123" },
+{ $inc: { quantity: -2, "metrics.orders": 1 } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.increment.find().pretty();
+{
+  "_id" : 1,
+  "sku" : "abc123",
+  "quantity" : 8,
+  "metrics" : {
+          "orders" : 3,
+          "ratings" : 3.5
+  }
+}
+
+// Operadores $min e $max
+# $min : altera o valor se esse valor especificado é menor do que o atual valor do campo;
+# $max : altera o valor do campo se o valorfor maior do que o atual valor do campo.
+
+# cria
+> db.collection.insertMany([{ _id: 1, campo: 25 }, { _id: 2, campo: 50 }, { _id: 3, campo: 100}]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+# verifica
+> db.collection.find();
+{ "_id" : 1, "campo" : 25 }
+{ "_id" : 2, "campo" : 50 }
+{ "_id" : 3, "campo" : 100 }
+
+// $max
+// Atualizando todos os valores do atributo "campo"
+// para 75 caso sejam menores
+db.collection.updateMany({}, {$max: {campo: 75}});
+# resultado
+> db.collection.find();
+{ "_id" : 1, "campo" : 75 }
+{ "_id" : 2, "campo" : 75 }
+{ "_id" : 3, "campo" : 100 }
+
+// $min
+// Atualizando todos os valores do atributo "campo"
+// para 42 caso sejam maiores
+db.collection.updateMany({}, { $min: { campo: 42 } });
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+# resultado
+> db.collection.find();
+{ "_id" : 1, "campo" : 42 }
+{ "_id" : 2, "campo" : 42 }
+{ "_id" : 3, "campo" : 42 }
+
+// coleção scores
+> use conteudo_trybe;
+switched to db conteudo_trybe
+> db.scores.insertOne(
+...   { _id: 1, highScore: 800, lowScore: 200 }
+... );
+{ "acknowledged" : true, "insertedId" : 1 }
+
+# teste
+> db.scores.find();
+{ "_id" : 1, "highScore" : 800, "lowScore" : 200 }
+
+# Exemplo 1: Comparando números
+# $min - para comparar 200 com o 150 e altera o valor do lowscore para 150
+> db.scores.update({ _id: 1 }, { $min: { lowScore: 150 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# $max - compara 800 e o valor especificado 950, altera o valor do campo highscore para 950
+> db.scores.update({ _id: 1 }, { $max: { highScore: 950 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# Exemplo 2: Comparando datas
+> use conteudo_trybe;
+switched to db conteudo_trybe
+> db.tags.insertOne(
+  {
+    _id: 1,
+    desc: "crafts",
+    dateEntered: ISODate("2019-10-01T05:00:00Z"),
+    dateExpired: ISODate("2019-10-01T16:38:16Z")
+  }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# $min para comparar o valor do campo dateEntered e altera seu valor
+# $max para comparar o valor do campo dateExpired e altera esse valor
+> db.tags.update(
+  { _id: 1 },
+    {
+      min: { dateEntered: new Date("2019-09-25") },
+      max: { dateExpired: new Date("2019-10-02") }
+    }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.tags.find().pretty();
+{
+  "_id" : 1,
+  "min" : { "dateEntered" : ISODate("2019-09-25T00:00:00Z") },
+  "max" : { "dateExpired" : ISODate("2019-10-02T00:00:00Z") }
+}
+
+// Operador $currentDate - atribui ao valor de um campo a data corrente, tipo Date ou timestamp
+{ $currentDate: { <campo>: <typeSpecification>, ... } }
+# typeSpecification:
+# booleano true para atribuir o valor da data corrente ao campo utilizando o tipo Date
+# documento que especifica o tipo do campo. {$type: "timestamp"} ou {$type: "date"}.
+
+// $currentDate
+use conteudo_trybe;
+db.customers.insertOne(
+  { _id: 1, status: "a", lastModified: ISODate("2013-10-02T01:11:18.965Z") }
+);
+
+
+
+
+
+
+
+
+
+-- > CONTEÚDO do dia - 24.1 -- <---/ FIM -----------------------------------------//
+##############################
+-- > AULA ao VIVO - 24.1 ----- <---/ INICIO --------------------------------------//
+
+
+
+-- > AULA ao VIVO - 24.1 ----- <---/ FIM -----------------------------------------//
+##############################
+-- > EXERCÍCIO do dia - 24.1 -- <---/ INICIO --------------------------------------//
+
+
+
+-- > EXERCÍCIO do dia - 24.1 -- <---/ FIM -----------------------------------------//
+############################## Updates Simples e Complexos
