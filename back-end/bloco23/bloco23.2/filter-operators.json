@@ -265,6 +265,82 @@ db.example.insertMany([
 > db.restaurants.deleteMany({cuisine: "American"});
 { "acknowledged" : true, "deletedCount" : 20 }
 
+// Bora treinar tudo!
+# lt, lte, gt, 
+
+# Iniciando..
+# sudo service mongod start - starta o mongo
+# mongo                     - entra no mongo
+# show dbs                  - mostra todos os bancos
+# use dataFlights           - selecionao o banco dataFlights
+# db.voos.find()            - mostra toda a tabela voos de dataFlights
+
+> db.voos.findOne()
+
+# $lt (<)
+> db.voos.find({ ano: { $lt: 2017 } }).pretty(); // < 2017
+> db.voos.count({ ano: { $lt: 2017 } }); // 39461
+
+# $lte (<=)
+> db.voos.find({ ano: { $lte: 2017 } }).pretty(); // <= 2017
+> db.voos.count({ ano: { $lte: 2017 } }); // 78875
+
+# $gt (>)
+> db.voos.find({ ano: { $gt: 2017 } }).pretty(); // > 2017
+> db.voos.count({ ano: { $gt: 2017 } }); // 77730
+
+# $gte (>=)
+> db.voos.find({ ano: { $gte: 2017 } }).pretty(); // >= 2017
+> db.voos.count({ ano: { $gte: 2017 } }); // 117144
+
+# $eq (=)
+> db.voos.find({ ano: { $eq: 2017 } }).pretty(); // = 2017
+> db.voos.count({ ano: { $eq: 2017 } }); // 39414
+
+# $ne (!=)
+> db.voos.find({ ano: { $ne: 2017 } }).pretty(); // != 2017
+> db.voos.count({ ano: { $ne: 2017 } }); // 117191
+
+# $in (Dentro)
+> db.voos.find({ ano: { $in: [2017, 2018] } }).pretty(); // = 2017 & 2018
+> db.voos.count({ ano: { $in: [2017, 2018] } }); // 79067
+
+# $nin (Fora)
+> db.voos.find({ ano: { $nin: [2017, 2018] } }).pretty(); // != 2017 & 2018
+> db.voos.count({ ano: { $nin: [2017, 2018] } }); // 77538
+
+# sort() - ordenação
+
+# sort(1) - ordenação Crescente
+> db.voos.find().sort({ ano: 1 }).limit(3).pretty();
+> db.voos.find().sort({ ano: 1 }).count(); // 156605
+
+# sort(-1) - ordenação Decrescente
+> db.voos.find().sort({ ano: -1 }).limit(3).pretty();
+
+# delete (deleteOne & deleteMany)
+
+# deleteOne
+> db.voos.deleteOne({ ano: 2017 }); // deleta o 1° encontrado
+{ "acknowledged" : true, "deletedCount" : 1 }
+
+# deleteMany
+> db.voos.deleteMany({ ano: { $lt: 2017 } }); // deleta todos <2017
+{ "acknowledged" : true, "deletedCount" : 39461 }
+
+# dropDatabase - apaga o banco todo
+> db.dropDatabase();
+
+
+
+
+
+
+
+
+
+
+
 
 
 
