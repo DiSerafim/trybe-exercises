@@ -254,18 +254,265 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 # documento que especifica o tipo do campo. {$type: "timestamp"} ou {$type: "date"}.
 
 // $currentDate
-use conteudo_trybe;
-db.customers.insertOne(
+> use conteudo_trybe;
+> db.customers.insertOne(
   { _id: 1, status: "a", lastModified: ISODate("2013-10-02T01:11:18.965Z") }
 );
+{ "acknowledged" : true, "insertedId" : 1 }
+# altera o valor do campo lastModified para a data corrente, criar o campo cancellation.date com o timestamp corrente, utilizando o operador $currentDate, altera o campo status para D, criar o campo cancellation.reason com o valor "user request", utilizando o operador $set
+> db.customers.updateOne(
+  { _id: 1 },
+  { $currentDate: {
+      lastModified: true,
+      "cancellation.date": { $type: "timestamp" }
+    },
+    $set: {
+      "cancellation.reason": "user request",
+      status: "D"
+    }
+  }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount"
+// resultado
+> db.customers.find().pretty();
+{
+  "_id" : 1,
+  "status" : "D",
+  "lastModified" : ISODate("2021-08-12T20:49:926Z"),
+  "cancellation" : {
+          "date" : Timestamp(1628801385, 1),
+          "reason" : "user request"
+  }
+}
 
+// Renomeando campos com o operador ($rename)
+# $rename - utilizado com os métodos updateOne() ou updateMany()
+> use conteudo_trybe;
+switched to db conteudo_trybe
+> db.fruits.insertOne(
+  { _id: 100, name: "Banana", quantity: 100, inStock: true }
+);
+{ "acknowledged" : true, "insertedId" : 100 }
+# altera o nome do campo name para productName no documento em que o valor do campo name seja igual a Banana:
+> db.fruits.updateOne(
+  { name: "Banana" },
+  { $rename: {
+    "name": "productName"
+  } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.fruits.find().pretty();
+{
+        "_id" : 100,
+        "quantity" : 100,
+        "inStock" : true,
+        "productName" : "Banana"
+}
 
+// Removendo campos com o operador ($unset)
+# $unset - remover um ou mais campos de um documento
+# fruits:
+{
+  _id: 100,
+  productName: "Banana",
+  quantity: 100,
+  inStock: true
+}
+# remove o campo quantity do documento em que o valor do campo productName seja igual a Banana:
+> db.fruits.updateMany(
+  { productName: "Banana" },
+  { $unset: { quantity: "" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.fruits.find().pretty();
+{
+  "_id" : 100,
+  "inStock" : true,
+  "productName" : "Banana"
+}
 
+// Exemplos de alguns operadores
+# $set / $inc / $currentDate / $rename / $unset
 
+> db.lanches.insertOne(
+  {
+    "_id:": 3,
+    "nome": "Big-Mac",
+    "qtd": 38974,
+    "menu": true,
+    "combo": ["lanche", "bebida", "batata"]
+  }
+);
+{
+  "acknowledged" : true,
+  "insertedId" : ObjectId("6115938bc0a902ae90f46691")
+}
+// $set
+# altera a quantidade(qtd)
+> db.lanches.update({ "_id:": 3 }, { $set: { "qtd": 26789 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+#resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 38974,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata"
+  ]
+}
+# acrescenta mais 1 item ao combo
+> db.lanches.update({ "_id:": 3 }, { $set: { "combo.3": "sorvete" } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 26789,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ]
+}
+# cria o atributo, caso ele não exista
+> db.lanches.update(
+  { "_id:": 3 },
+  { $set: { "brinquedo": "hulk" } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 26789,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk"
+}
 
+// $inc - incrementa / decrementa
 
+# $inc - incrementa (10)
+> db.lanches.update({ "_id:": 3 }, { $inc: { "qtd": 10 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 26799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk"
+}
 
+# $inc - Decrementa (-1000)
+> db.lanches.update({ "_id:": 3 }, { $inc: { "qtd": -1000 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk"
+}
 
+// $currentDate - data atual 
+# lastUpdate: true - lastUpdate recebe a data atual
+> db.lanches.update({ "_id:": 3 }, { $currentDate: { lastUpdate: true } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk",
+  "lastUpdate" : ISODate("2021-08-12T22:10:46.816Z")
+}
+
+// $rename - renomeia
+> db.lanches.update({ "_id:": 3 }, { $rename: { "_id:": "id" } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk",
+  "lastUpdate" : ISODate("2021-08-12T22:10:46.816Z"),
+  "id" : 3
+}
+
+// $unset - apaga um atributo
+# basta deixar o atributo vazio ("menu": "")
+> db.lanches.update({ "id": 3 }, { $unset: { "menu": "" } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk",
+  "lastUpdate" : ISODate("2021-08-12T22:10:46.816Z"),
+  "id" : 3
+}
 
 -- > CONTEÚDO do dia - 24.1 -- <---/ FIM -----------------------------------------//
 ##############################
