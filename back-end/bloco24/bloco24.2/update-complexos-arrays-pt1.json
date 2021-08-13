@@ -1,0 +1,555 @@
+############################## Updates Complexos - Arrays - Parte 1
+-- > CONTEÚDO do dia - 24.2 -- <---/ INICIO --------------------------------------//
+
+# Incorporar dados aos documentos através de arrays;
+# Utilizar os operadores $pop, $pull e $push;
+# Utilizar o operador $addToSet;
+# Utilizar os operadores $each, $slice e $sort.
+
+// Operador $push - adiciona um valor a um array ou cria um novo.
+{ $push: { <campo1>: <valor1>, ... } }
+# junto com $push, pode utilizar modificadores
+
+# $each - Adiciona múltiplos valores a um array;
+# $slice - Limita o número de elementos do array. Requer o uso do $each;
+# $sort - Ordena os elementos do array. Requer o uso do $each;
+# $position - Especifica a posição do elemento que está sendo inserido no array. requer o $each. Sem o  $position, o $push adiciona o elemento no final do array.
+
+## o processo de $push ocorre na ordem
+# 1 Altera o array para adicionar os elementos na posição correta;
+# 2 Aplica a ordenação($sort), especificada;
+# 3 Limita o array($slice), especificado;
+# 4 Armazena o array.
+
+// Adicionando um valor a um array (DB-sales)
+# para fazer o insert, usamos a opção 'upsert: true' para já adicionar o elemento ao mesmo tempo que o $push.
+> use sales;
+> db.supplies.updateOne(
+  { _id: 1 },
+  {
+    push: {
+      items: {
+        "name": "notepad",
+        "price":  35.29,
+        "quantity": 2,
+      },
+    },
+  },
+  { upsert: true },
+);
+
+// Adicionando múltiplos valores a um array
+# utilizando $push, necessário adicionar $each.
+db.supplies.updateOne(
+  {},
+  {
+    push: {
+      items: {
+        each: [
+          {
+            "name": "pens",
+            "price": 56.12,
+            "quantity": 5,
+          },
+          {
+            "name": "envelopes",
+            "price": 19.95,
+            "quantity": 8,
+          },
+        ],
+      },
+    },
+  },
+  { upsert: true },
+);
+
+// Múltiplos modificadores
+# modificadores:
+# $each adicionar múltiplos documentos ao array items;
+# $sort ordenar os elementos alterados no array items pelo campo quantity em ordem descendente;
+# $slice mantem apenas os dois primeiros elementos ordenados no array items.
+
+> db.supplies.updateOne(
+  { _id: 1 },
+  {
+    push: {
+      items: {
+        each: [
+          {
+            "name" : "notepad",
+            "price" : 35.29,
+            "quantity" : 2,
+          },
+          {
+            "name": "envelopes",
+            "price": 19.95,
+            "quantity": 8,
+          },
+          {
+            "name": "pens",
+            "price": 56.12,
+            "quantity": 5,
+          },
+        ],
+        sort: { quantity: -1 },
+        slice: 2,
+      },
+    },
+  },
+  { upsert: true },
+);
+
+## mantém no array items apenas os dois documentos com(campo quantity) mais alto.
+> {
+    _id : 1,
+    items : [
+    {
+      "name" : "envelopes",
+      "price" : 19.95,
+      "quantity" : 8,
+    },
+    {
+      "name" : "pens",
+      "price" : 56.12,
+      "quantity" : 5,
+    },
+  ],
+}
+
+// Operador $pop - remove o primeiro ou o último elemento
+# Passando o valor -1 removerá o primeiro elemento.
+# Passando o valor 1 removerá o último elemento.
+> use sales;
+> db.supplies.insertMany([
+  {
+    _id: 1,
+    items: [
+      {
+        "name" : "notepad",
+        "price" : 35.29,
+        "quantity" : 2,
+      },
+      {
+        "name": "envelopes",
+        "price": 19.95,
+        "quantity": 8,
+      },
+      {
+        "name": "pens",
+        "price": 56.12,
+        "quantity": 5,
+      },
+    ],
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1 ] }
+
+# Removendo o primeiro item de um array
+> db.supplies.updateOne(
+  { _id: 1 },
+  { $pop: { items: -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.supplies.find().pretty();
+{
+  "_id" : 1,
+  "items" : [
+    {
+      "name" : "envelopes",
+      "price" : 19.95,
+      "quantity" : 8
+    },
+    {
+      "name" : "pens",
+      "price" : 56.12,
+      "quantity" : 5
+    }
+  ]
+}
+
+# Removendo o último item de um array
+> db.supplies.updateOne(
+  { _id: 1 },
+  { $pop: { items: 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.supplies.find().pretty();
+{
+  "_id" : 1,
+  "items" : [
+    {
+      "name" : "envelopes",
+      "price" : 19.95,
+      "quantity" : 8
+    }
+  ]
+}
+
+// Operador $pull - remove todos os elementos com um ou mais valores.
+# Removendo todos os itens iguais a um valor
+# cria o banco
+> use sales
+> db.supplies.insertMany([
+  {
+    _id: 2,
+    items: [
+      {
+        "name" : "notepad",
+        "price" : 35.29,
+        "quantity" : 2,
+      },
+      {
+        "name": "envelopes",
+        "price": 19.95,
+        "quantity": 8,
+      },
+      {
+        "name": "pens",
+        "price": 56.12,
+        "quantity": 5,
+      },
+    ],
+  },
+  {
+    _id: 3,
+    items: [
+      {
+        "name" : "pencil",
+        "price" : 5.29,
+        "quantity" : 2,
+      },
+      {
+        "name": "envelopes",
+        "price": 19.95,
+        "quantity": 8,
+      },
+      {
+        "name": "backpack",
+        "price": 80.12,
+        "quantity": 1,
+      },
+      {
+        "name": "pens",
+        "price": 56.12,
+        "quantity": 5,
+      },
+    ],
+  }
+]);
+
+# remova do array items os elementos pens e envelopes:
+# $pull combinado com o operador $in para alterar o array items
+> db.supplies.updateMany(
+  {},
+  {
+    $pull: {
+      items:  {
+        name: { $in: ["pens", "envelopes"] }
+      },
+    },
+  },
+);
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+# resultado
+> db.supplies.find().pretty();
+
+# Removendo todos itens que atendem a uma condição no $pull
+> use profiles;
+> db.votos.insertOne(
+  { _id: 1, votes: [3, 5, 6, 7, 7, 8] }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# remova os elementos do array, maior ou igual a ($gte)6.
+> db.votos.updateOne(
+  { _id: 1 },
+  { $pull: { votes: { $gte: 6 } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.votos.find().pretty();
+{ "_id" : 1, "votes" : [ 3, 5 ] }
+
+// Removendo itens em um array de Documentos
+use survey;
+db.survey.insertMany([
+  {
+    _id: 1, results: [
+      { item: "A", score: 5 },
+      { item: "B", score: 8, comment: "Strongly agree" },
+    ],
+  },
+  {
+    _id: 2, results: [
+      { item: "C", score: 8, comment: "Strongly agree" },
+      { item: "B", score: 4 },
+    ],
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2 ] }
+
+# remove do results os elementos que contenham o score = 8 e o campo item = "B".
+db.
+> db.survey.updateMany(
+  {},
+  { $pull: { results: { score: 8, item: "B" } } }
+);
+# resultado
+> db.survey.find().pretty();
+{ 
+  "_id" : 1, "results" : [
+    { "item" : "A", "score" : 5 } 
+  ] 
+}
+{
+  "_id" : 2, "results" : [
+    { "item" : "C", "score" : 8, "comment" : "Strongly agree" },
+    { "item" : "B", "score" : 4 }
+  ]
+}
+
+// operadores $push , $pop e $pull.
+> use pokedex;
+> db.pokemon.insertMany([
+  {
+    "number": 001,
+    "name": "Bulbasaur",
+    "category": "Seed",
+    "weight": 6.9,
+    "evolutions": ["Ivysaur", "Venusaur"]
+  },
+  {
+    "number": 004,
+    "name": "Charmander",
+    "category": "Lizard",
+    "weight": 8.5,
+    "evolutions": ["Charmeleon", "Charizard"]
+  },
+  {
+    "number": 007,
+    "name": "Squirtle",
+    "category": "Tiny Turtle",
+    "weight": 9,
+    "evolutions": ["Wartortle"]
+  },
+  {
+    "number": 010,
+    "name": "Caterpie",
+    "category": "Worm",
+    "weight": 2.9,
+    "evolutions": ["Meowth", "Metapod", "Butterfree", "Pikachu"]
+  }
+]);
+"acknowledged" : true,
+
+// $push - Adiciona valores
+# adicionando valores ao evolutions do number 007
+> db.pokemon.updateOne(
+  { "number": 007 },
+  { $push: { "evolutions": "Blastoise" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.pokemon.find().pretty();
+
+// $pop - Remove o 1° valor
+# removendo valores de evolutions do number 008
+> db.pokemon.updateOne(
+  { "number": 8 },
+  { $pop: { "evolutions": -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.pokemon.find().pretty();
+// $pop - Remove o ultimo valor
+> db.pokemon.updateOne(
+  { "number": 8 },
+  { $pop: { "evolutions": 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.pokemon.find().pretty();
+
+// $pull - remove valores específicos
+# remove os valores do array (Venusaur, Charizard)
+> db.pokemon.updateMany(
+  {},
+  { $pull: { "evolutions": { $in: ["Venusaur", "Charizard"] } } }
+);
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 2 }
+
+// Operador $addToSet - garante que os valores de um array não sejam duplicados.
+# $addToSet:
+# Se não existe no documento alterado, ele criará.
+# Se já existir no documento, e não for um array, a operação não funcionará;
+# Considerará como duplicado se um documento existente no array for exatamente igual ao documento a ser adicionado.
+
+> use inventory;
+> db.inventory.insertOne(
+  {
+    _id: 1,
+    item: "polarizing_filter",
+    tags: ["electronics", "camera"]
+  }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+
+# Adicionando ao array
+# adiciona o elemento "accessories" ao array tags desde que "accessories" não exista no array:
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "accessories" } },
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.inventory.find().pretty();
+{
+  "_id" : 1,
+  "item" : "polarizing_filter",
+  "tags" : ["electronics", "camera", "accessories"]
+}
+
+# Se o valor existir
+# adiciona "camera" ao array tags. se o elemento já existir, não terá efeito.
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "camera" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
+# resultado
+> db.inventory.find().pretty();
+
+# Com o modificador $each
+# $addToSet combinado com $each. Permite que adicione múltiplos valores a um array.
+> db.inventory.insertOne(
+  {
+    _id: 2,
+    item: "cable",
+    tags: ["electronics", "supplies"]
+  }
+);
+{ "acknowledged" : true, "insertedId" : 2 }
+# $addToSet e o modificador $each para adicionar alguns elementos a mais no array tags:
+> db.inventory.updateOne(
+  { _id: 2 },
+  { 
+    $addToSet: {
+      tags: { $each: ["camera", "electronics", "accessories"] }
+    } 
+  }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+// Array Filters - filtra documentos dentro de um array de objetos.
+> db.recipes.insertMany([
+  {
+    title: "Panqueca Simples",
+    ingredients: [
+      { name: "Farinha", quantity: 2},
+      { name: "Oleo", quantity: 4 },
+      { name: "Leite", quantity: 1 },
+    ],
+  },
+  {
+    title: "Bolo de Cenoura",
+    ingredients: [
+      { name: "Farinha", quantity: 2},
+      { name: "Oleo", quantity: 1, unit: "xícara" },
+      { name: "Ovo", quantity: 3},
+      { name: "Cenoura", quantity: 3},
+      { name: "Fermento", quantity: 1},
+    ],
+  },
+]);
+"acknowledged" : true,
+
+> db.recipes.updateOne(
+  { title: "Panqueca Simples" },
+  { $set: { "ingredients.1.unit": "xícara" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.recipes.find().pretty();
+{
+  "_id" : ObjectId("6116de101c5a32ed90c0d204"),
+  "title" : "Panqueca Simples",
+  "ingredients" : [
+    { "name": "Farinha", "quantity": 2 },
+    { "name": "Oleo", "quantity": 4, "unit": "xícara" },
+    { "name": "Leite", "quantity": 1 }
+  ]
+}
+{
+  "_id" : ObjectId("6116de101c5a32ed90c0d205"),
+  "title" : "Bolo de Cenoura",
+  "ingredients": [
+    { "name": "Farinha", "quantity": 2 },
+    { "name": "Oleo", "quantity": 1, "unit": "xícara" },
+    { "name": "Ovo", "quantity": 3 },
+    { "name": "Cenoura", "quantity": 3 },
+    { "name": "Fermento", "quantity": 1 }
+  ]
+}
+# altera dinamicamente todas as receitas que usam farinha, para usarem farinha integral e que a unit seja xícara.
+> db.recipes.updateOne(
+  { title: "Panqueca Simples" },
+  { 
+    $set: { "ingredients.$[elemento].name": "Farinha Integral" }
+  },
+  { arrayFilters: [{ "elemento.name": "Farinha" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# adicionar "xícara" ao campo unit do objeto com name igual a "Farinha Integral"
+> db.recipes.updateOne(
+  { title: "Panqueca Simples" },
+  {
+    $set: { "ingredients.$[elemento].unit": "xícara" }
+  },
+  { arrayFilters: [{ "elemento.name": "Farinha Integral" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# troca todos os ingredientes da coleção que são "Farinha" por "Farinha Integral" e "xícara" como valor de unit.
+## passos
+// Passamos de updateOne para 'updateMany'.
+// Retiramos a restrição do título '{}'.
+// Setamos `unit` como "xícara",
+// `name` como "Farinha Integral".
+// Filtramos os arrays que o valor da propriedade `name` seja "Farinha".
+
+> db.recipes.updateMany(
+  {},
+  {
+    $set: {
+      "ingredients.$[elemento].unit": "xícara",
+      "ingredients.$[elemento].name": "Farinha Integral"
+    }
+  },
+  { arrayFilters: [{ "elemento.name": "Farinha" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 1 }
+# resultado
+> db.recipes.find().pretty();
+
+
+
+
+
+
+
+
+
+-- > CONTEÚDO do dia - 24.2 -- <---/ FIM -----------------------------------------//
+##############################
+-- > AULA ao VIVO - 24.2 ----- <---/ INICIO --------------------------------------//
+
+
+
+-- > AULA ao VIVO - 24.2 ----- <---/ FIM -----------------------------------------//
+##############################
+-- > EXERCÍCIO do dia - 24.2 -- <---/ INICIO --------------------------------------//
+
+
+
+-- > EXERCÍCIO do dia - 24.2 -- <---/ FIM -----------------------------------------//
+############################## Updates Complexos - Arrays - Parte 1
