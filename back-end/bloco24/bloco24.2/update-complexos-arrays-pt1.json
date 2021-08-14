@@ -535,6 +535,212 @@ db.
 ##############################
 -- > AULA ao VIVO - 24.2 ----- <---/ INICIO --------------------------------------//
 
+> use school
+switched to db school
+> show collections
+> db.students.insertOne(
+  { _id: 1, name: "Alex" }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+
+// $push - adiciona ou cria componentes
+> db.students.updateOne(
+  { _id: 1 },
+  { $push: { score: 89 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.students.find().pretty();
+{ "_id" : 1, "name" : "Alex", "score" : [ 89 ] }
+# resultado
+> db.students.updateOne(
+  { _id: 1 },
+  { $push: { score: 90 } }
+);
+# resultado
+> db.students.find().pretty();
+{ "_id" : 1, "name" : "Alex", "score" : [ 89, 90 ] }
+
+// $push + $each (Adiciona vários)
+> db.students.updateOne(
+  { _id: 1 },
+  { $push: { score: { $each: [89, 90, 91, 92, 95, 93] } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.students.find().pretty();
+{
+  "_id" : 1,
+  "name" : "Alex",
+  "score" : [89, 90, 89, 90, 91, 92, 95, 93]
+}
+
+# DB-dataFlights
+> use dataFlights
+> show collections
+# resumoVoos
+# voos
+> db.voos.find().pretty();
+// $push
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    categoria: "bebida",
+    item: "coca-cola",
+    quantidade: 50
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.findOne({ vooId: 782805 }, { servicoDeBordo: 1 });
+{
+  "_id" : ObjectId("5e53b461ad99121020395f2e"),
+  "servicoDeBordo" : [
+    {
+      "categoria" : "bebida",
+      "item" : "coca-cola",
+      "quantidade" : 50
+    }
+  ]
+}
+// $push + $each
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    $each: [
+      { categoria: "Bebida", item: "guaraná", quantidade: 40 },
+      { categoria: "Bebida", item: "vinho", quantidade: 35 },
+      { categoria: "Bebida", item: "água", quantidade: 150 },
+      { categoria: "Bebida", item: "leite", quantidade: 100 },
+      { categoria: "Bebida", item: "café", quantidade: 200 },
+      { categoria: "Comida", item: "macarrão", quantidade: 80 },
+      { categoria: "Comida", item: "frango", quantidade: 60 }
+    ]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.findOne({ vooId: 782805 }, { servicoDeBordo: 1 });
+# ou
+> db.voos.findOne({ vooId: 782805 }, { "servicoDeBordo.item": 1 });
+
+# DB school
+> use school
+> db.students.insertOne(
+  { name: "Jennifer", quizzes: [
+    { wk: 1, score: 10 },
+    { wk: 2, score: 8 },
+    { wk: 3, score: 5 },
+    { wk: 4, score: 6 },
+  ] }
+);
+"acknowledged" : true,
+# resultado
+> db.students.find().pretty();
+# ou 
+> db.students.findOne({ name: "Jennifer" });
+
+# inserindo valores em "jennifer"
+# $sort(-1) - organiza os itens em ordem decrescente
+# $slice - limita os itens exibidos(elimina os demais)
+
+> db.students.updateOne(
+  { name: "Jennifer" },
+  { $push: { quizzes: {
+    $each: [
+      { wk: 5, score: 8 },
+      { wk: 6, score: 7 },
+      { wk: 7, score: 6 }
+    ],
+    $sort: { score: -1 },
+    $slice: 3
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.students.findOne({ name: "Jennifer" });
+
+# organizando com $sort de forma crescente
+> db.students.updateOne(
+  { name: "Jennifer" },
+  { $push: { quizzes: {
+    $each: [],
+    $sort: { score: 1 }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.students.findOne({ name: "Jennifer" });
+
+> show dbs
+> use dataFlights
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    $each: [
+      { categoria: "comida", item: "carne", quantidade: 180 },
+      { categoria: "bebida", item: "sprite", quantidade: 5 }
+    ],
+    $sort: { categoria: 1, item: 1 }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.findOne({ vooId: 782805 }, { "servicoDeBordo": 1 });
+
+# organiza no padrão pt-br(collation: { locale: "pt" })
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    $each: [],
+    $sort: { categoria: 1, item: 1 }
+  } } },
+  { collation: { locale: "pt" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+// $pop(remove itens -1(inicio) e 1(fim))
+> use superMarketBrand
+> db.stores.insertMany([
+  {
+    _id: 1,
+    fruits: ["apples", "pears", "oranges", "grapes", "bananas"],
+    vegetables: ["carrots", "celery", "squash", "carrots"]
+  },
+  {
+    _id: 2,
+    fruits: ["plums", "kiwis", "oranges", "bananas", "apples"],
+    vegetables: ["broccoli", "zucchini", "carrots", "onions"]
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2 ] }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -- > AULA ao VIVO - 24.2 ----- <---/ FIM -----------------------------------------//
@@ -711,14 +917,6 @@ db.
 { "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
 # resultado
 > db.movies.find().pretty();
-
-
-
-
-
-
-
-
 
 -- > EXERCÍCIO do dia - 24.2 -- <---/ FIM -----------------------------------------//
 ############################## Updates Complexos - Arrays - Parte 1
