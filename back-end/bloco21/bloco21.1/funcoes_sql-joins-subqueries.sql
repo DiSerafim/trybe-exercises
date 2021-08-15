@@ -359,7 +359,144 @@ SELECT first_name, COUNT(*) AS nomes_cadastrados FROM sakila.actor GROUP BY firs
 ##############################
 -- > AULA ao VIVO - 21.1 ----- <---/ INICIO --------------------------------------//
 
+# Foco de hoje
 
+# if/case
+# strings
+# Operadores Matemáticos
+# Operações com datas
+# Funções de Agregação
+# Agrupamentos
+# Filtro de Agrupamento(Having)
+
+-- IF / CASE
+## IF
+SET @idade = 22;
+SELECT IF(@idade >= 18, 'De maior', 'De menor'); # De maior
+
+## CASE
+SELECT * FROM sakila.film;
+
+SELECT title, release_year, length,
+CASE
+	WHEN length <= 60 THEN 'Curto'
+	WHEN length > 60 AND length < 150 THEN 'Medio'
+	ELSE 'Longo'
+END AS 'Tipo do filme' FROM sakila.film;
+
+-- strings
+## LENGTH(tamanho)
+SELECT LENGTH('Curso BeTrybe'); # '13'
+
+## UCASE(tudo em maiúscula)
+SELECT UCASE('Curso BeTrybe'); # 'CURSO BETRYBE'
+
+## LCASE(tudo em minusculas)
+SELECT LCASE('Curso BeTrybe'); # 'curso betrybe'
+
+## REPLACE(Substitui, troca as strings)
+SELECT REPLACE('Curso BeTrybe', 'C', 'X'); # 'Xurso BeTrybe'
+
+## LEFT(Pega parte da esquerda da string)
+SELECT LEFT('Curso BeTrybe', 5); # 'Curso'
+
+## RIGHT(Pega parte da direita da string)
+SELECT RIGHT('Curso BeTrybe', 5); # 'Trybe'
+
+## SUBSTRING(Pega parte do meio da string)
+SELECT SUBSTRING('Curso BeTrybe', 6); # ' BeTrybe'
+
+## SUBSTRING(começa na posição 2 e pega 4)
+SELECT SUBSTRING('Curso BeTrybe', 6); # 'urso'
+
+-- Operadores Matemáticos
+SELECT 5/5; # '1.0000'
+
+# DIV - pega somente os inteiros
+SELECT 20 DIV 3; # 6
+
+# MOD - pega o resto da divisão
+SELECT 20 MOD 3; # '2'
+
+# ROUND - arredonda valores pra cima ou pra baixo
+SELECT ROUND(20.49); # '20'
+SELECT ROUND(20.50); # '21'
+# Arredondando manualmente
+SELECT ROUND(20.55555, 2); #'20.56'
+
+# CEIL(arredonda para cima)
+SELECT CEIL(20.49); # '21'
+
+# FLOOR(Arredonda para baixo)
+SELECT FLOOR(20.51); # '20'
+
+# POW(Potência)
+# 2 a 5ª
+SELECT POW(2, 5); # '32'
+
+# SQRT(Raiz quadrada)
+SELECT SQRT(16); # '4'
+SELECT SQRT(-1); # NULL
+
+# RAND(gera numeros aleatorios de 0.0 a 0.999...)
+SELECT RAND(); # '0.5217345939220251'
+SELECT ROUND(RAND() * 100); # '34'
+
+-- Operações com datas
+# Data e Hora atual
+SELECT NOW(); # '2021-08-15 19:23:49'
+
+# somente Data
+SELECT CURRENT_DATE(); # '2021-08-15'
+
+# diferenca de dias
+SELECT DATEDIFF('2021-08-15', '2021-12-31'); # '-138'
+SELECT DATEDIFF('2021-12-31', '2021-08-15'); # '138'
+
+# diferença de tempo
+SELECT TIMEDIFF('22:28:00', '23:00:00'); # '-00:32:00'
+
+-- Funções de Agregação
+# MIN(pega o menor)
+SELECT * FROM sakila.film;
+# menor tempo de aluguel
+SELECT MIN(rental_duration) FROM sakila.film; # '3'
+# menor duração
+SELECT MIN(length) FROM sakila.film; # '46'
+
+# MAX(pega o maior)
+# maior tempo de aluguel
+SELECT MAX(rental_duration) FROM sakila.film; # '7'
+# Maior duração
+SELECT MAX(length) FROM sakila.film; # '185'
+
+# AVG(pega a media do duração dos filmes)
+SELECT AVG(length) FROM sakila.film; # '115.2720'
+
+# SUM(soma valores)
+ SELECT SUM(length) FROM sakila.film; # '115272'
+
+# COUNT(conta a quantidade)
+SELECT COUNT(*) FROM sakila.film; # '1000'
+
+-- Agrupamentos
+## GROUP BY
+SELECT * FROM sakila.customer;
+# quantas lojas tem
+SELECT store_id FROM sakila.customer GROUP BY store_id; # 1 & 2
+# quantos clientes tem cada loja
+SELECT store_id, COUNT(*) FROM sakila.customer GROUP BY store_id; #  1/326 & 2/273
+# quantos entereços de cada distrito
+SELECT district, COUNT(*) FROM address GROUP BY district;
+
+-- Filtro de Agrupamento(Having)
+## HAVING
+# filtrando os distritos com mais de 2 endereços
+SELECT district, COUNT(*) AS 'conta distritos' FROM sakila.address GROUP BY district HAVING COUNT(*) > 2;
+# OU
+SELECT district, COUNT(*) AS conta_distritos FROM sakila.address GROUP BY district HAVING conta_distritos > 2;
+# maior que 2 e diferente de vázio
+SELECT district, COUNT(*) AS 'conta distritos' FROM sakila.address GROUP BY district HAVING `conta distritos` > 2 AND district <> '';
 
 -- > AULA ao VIVO - 21.1 ----- <---/ FIM -----------------------------------------//
 ##############################
@@ -387,7 +524,6 @@ SELECT MAX(SALARY) - MIN(SALARY) FROM hr.employees; # '21900.00'
 # 3. Escreva uma query que exiba a média salarial de cada JOB_ID, ordenando pela média salarial em ordem decrescente.
 SELECT JOB_ID, AVG(SALARY) AS 'média salarial' FROM hr.employees
 GROUP BY JOB_ID ORDER BY 'média salarial' DESC; # 19 row(s) returned
-
 
 # 4. Escreva uma query que exiba a quantidade de dinheiro necessária para realizar o pagamento de todas as pessoas funcionárias.
 SELECT SUM(SALARY) FROM hr.employees; # '691400.00'
