@@ -283,7 +283,7 @@ INSERT INTO Pixar.BoxOffice (movie_id, rating, domestic_sales, international_sal
 DELETE FROM Pixar.BoxOffice WHERE movie_id = 11; # id WALL-E
 DELETE FROM Pixar.Movies WHERE title = 'WALL-E';
 -- Exercício 7 : Exclua da tabela Movies todos os filmes dirigidos por "Andrew Staton".
-SELECT id FROM Pixar.Movies WHERE director = 'Andrew Staton'; # pega os id's '2, 9'
+SELECT id FROM Pixar.Movies WHERE director = 'Andrew Staton'; # pega os ids 2, 9;
 SELECT * FROM Pixar.BoxOffice;
 DELETE FROM Pixar.BoxOffice WHERE movie_id IN (2, 9);
 SELECT * FROM Pixar.Movies;
