@@ -1,0 +1,1053 @@
+############################## Updates Complexos - Arrays - Parte 1
+-- > CONTEÚDO do dia - 24.2 -- <---/ INICIO --------------------------------------//
+
+# Incorporar dados aos documentos através de arrays;
+# Utilizar os operadores $pop, $pull e $push;
+# Utilizar o operador $addToSet;
+# Utilizar os operadores $each, $slice e $sort.
+
+// Operador $push - adiciona um valor a um array ou cria um novo.
+{ $push: { <campo1>: <valor1>, ... } }
+# junto com $push, pode utilizar modificadores
+
+# $each - Adiciona múltiplos valores a um array;
+# $slice - Limita o número de elementos do array. Requer o uso do $each;
+# $sort - Ordena os elementos do array. Requer o uso do $each;
+# $position - Especifica a posição do elemento que está sendo inserido no array. requer o $each. Sem o  $position, o $push adiciona o elemento no final do array.
+
+## o processo de $push ocorre na ordem
+# 1 Altera o array para adicionar os elementos na posição correta;
+# 2 Aplica a ordenação($sort), especificada;
+# 3 Limita o array($slice), especificado;
+# 4 Armazena o array.
+
+// Adicionando um valor a um array (DB-sales)
+# para fazer o insert, usamos a opção 'upsert: true' para já adicionar o elemento ao mesmo tempo que o $push.
+> use sales;
+> db.supplies.updateOne(
+  { _id: 1 },
+  {
+    push: {
+      items: {
+        "name": "notepad",
+        "price":  35.29,
+        "quantity": 2,
+      },
+    },
+  },
+  { upsert: true },
+);
+
+// Adicionando múltiplos valores a um array
+# utilizando $push, necessário adicionar $each.
+db.supplies.updateOne(
+  {},
+  {
+    push: {
+      items: {
+        each: [
+          {
+            "name": "pens",
+            "price": 56.12,
+            "quantity": 5,
+          },
+          {
+            "name": "envelopes",
+            "price": 19.95,
+            "quantity": 8,
+          },
+        ],
+      },
+    },
+  },
+  { upsert: true },
+);
+
+// Múltiplos modificadores
+# modificadores:
+# $each adicionar múltiplos documentos ao array items;
+# $sort ordenar os elementos alterados no array items pelo campo quantity em ordem descendente;
+# $slice mantem apenas os dois primeiros elementos ordenados no array items.
+
+> db.supplies.updateOne(
+  { _id: 1 },
+  {
+    push: {
+      items: {
+        each: [
+          {
+            "name" : "notepad",
+            "price" : 35.29,
+            "quantity" : 2,
+          },
+          {
+            "name": "envelopes",
+            "price": 19.95,
+            "quantity": 8,
+          },
+          {
+            "name": "pens",
+            "price": 56.12,
+            "quantity": 5,
+          },
+        ],
+        sort: { quantity: -1 },
+        slice: 2,
+      },
+    },
+  },
+  { upsert: true },
+);
+
+## mantém no array items apenas os dois documentos com(campo quantity) mais alto.
+> {
+    _id : 1,
+    items : [
+    {
+      "name" : "envelopes",
+      "price" : 19.95,
+      "quantity" : 8,
+    },
+    {
+      "name" : "pens",
+      "price" : 56.12,
+      "quantity" : 5,
+    },
+  ],
+}
+
+// Operador $pop - remove o primeiro ou o último elemento
+# Passando o valor -1 removerá o primeiro elemento.
+# Passando o valor 1 removerá o último elemento.
+> use sales;
+> db.supplies.insertMany([
+  {
+    _id: 1,
+    items: [
+      {
+        "name" : "notepad",
+        "price" : 35.29,
+        "quantity" : 2,
+      },
+      {
+        "name": "envelopes",
+        "price": 19.95,
+        "quantity": 8,
+      },
+      {
+        "name": "pens",
+        "price": 56.12,
+        "quantity": 5,
+      },
+    ],
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1 ] }
+
+# Removendo o primeiro item de um array
+> db.supplies.updateOne(
+  { _id: 1 },
+  { $pop: { items: -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.supplies.find().pretty();
+{
+  "_id" : 1,
+  "items" : [
+    {
+      "name" : "envelopes",
+      "price" : 19.95,
+      "quantity" : 8
+    },
+    {
+      "name" : "pens",
+      "price" : 56.12,
+      "quantity" : 5
+    }
+  ]
+}
+
+# Removendo o último item de um array
+> db.supplies.updateOne(
+  { _id: 1 },
+  { $pop: { items: 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.supplies.find().pretty();
+{
+  "_id" : 1,
+  "items" : [
+    {
+      "name" : "envelopes",
+      "price" : 19.95,
+      "quantity" : 8
+    }
+  ]
+}
+
+// Operador $pull - remove todos os elementos com um ou mais valores.
+# Removendo todos os itens iguais a um valor
+# cria o banco
+> use sales
+> db.supplies.insertMany([
+  {
+    _id: 2,
+    items: [
+      {
+        "name" : "notepad",
+        "price" : 35.29,
+        "quantity" : 2,
+      },
+      {
+        "name": "envelopes",
+        "price": 19.95,
+        "quantity": 8,
+      },
+      {
+        "name": "pens",
+        "price": 56.12,
+        "quantity": 5,
+      },
+    ],
+  },
+  {
+    _id: 3,
+    items: [
+      {
+        "name" : "pencil",
+        "price" : 5.29,
+        "quantity" : 2,
+      },
+      {
+        "name": "envelopes",
+        "price": 19.95,
+        "quantity": 8,
+      },
+      {
+        "name": "backpack",
+        "price": 80.12,
+        "quantity": 1,
+      },
+      {
+        "name": "pens",
+        "price": 56.12,
+        "quantity": 5,
+      },
+    ],
+  }
+]);
+
+# remova do array items os elementos pens e envelopes:
+# $pull combinado com o operador $in para alterar o array items
+> db.supplies.updateMany(
+  {},
+  {
+    $pull: {
+      items:  {
+        name: { $in: ["pens", "envelopes"] }
+      },
+    },
+  },
+);
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+# resultado
+> db.supplies.find().pretty();
+
+# Removendo todos itens que atendem a uma condição no $pull
+> use profiles;
+> db.votos.insertOne(
+  { _id: 1, votes: [3, 5, 6, 7, 7, 8] }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# remova os elementos do array, maior ou igual a ($gte)6.
+> db.votos.updateOne(
+  { _id: 1 },
+  { $pull: { votes: { $gte: 6 } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.votos.find().pretty();
+{ "_id" : 1, "votes" : [ 3, 5 ] }
+
+// Removendo itens em um array de Documentos
+use survey;
+db.survey.insertMany([
+  {
+    _id: 1, results: [
+      { item: "A", score: 5 },
+      { item: "B", score: 8, comment: "Strongly agree" },
+    ],
+  },
+  {
+    _id: 2, results: [
+      { item: "C", score: 8, comment: "Strongly agree" },
+      { item: "B", score: 4 },
+    ],
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2 ] }
+
+# remove do results os elementos que contenham o score = 8 e o campo item = "B".
+db.
+> db.survey.updateMany(
+  {},
+  { $pull: { results: { score: 8, item: "B" } } }
+);
+# resultado
+> db.survey.find().pretty();
+{ 
+  "_id" : 1, "results" : [
+    { "item" : "A", "score" : 5 } 
+  ] 
+}
+{
+  "_id" : 2, "results" : [
+    { "item" : "C", "score" : 8, "comment" : "Strongly agree" },
+    { "item" : "B", "score" : 4 }
+  ]
+}
+
+// operadores $push , $pop e $pull.
+> use pokedex;
+> db.pokemon.insertMany([
+  {
+    "number": 001,
+    "name": "Bulbasaur",
+    "category": "Seed",
+    "weight": 6.9,
+    "evolutions": ["Ivysaur", "Venusaur"]
+  },
+  {
+    "number": 004,
+    "name": "Charmander",
+    "category": "Lizard",
+    "weight": 8.5,
+    "evolutions": ["Charmeleon", "Charizard"]
+  },
+  {
+    "number": 007,
+    "name": "Squirtle",
+    "category": "Tiny Turtle",
+    "weight": 9,
+    "evolutions": ["Wartortle"]
+  },
+  {
+    "number": 010,
+    "name": "Caterpie",
+    "category": "Worm",
+    "weight": 2.9,
+    "evolutions": ["Meowth", "Metapod", "Butterfree", "Pikachu"]
+  }
+]);
+"acknowledged" : true,
+
+// $push - Adiciona valores
+# adicionando valores ao evolutions do number 007
+> db.pokemon.updateOne(
+  { "number": 007 },
+  { $push: { "evolutions": "Blastoise" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.pokemon.find().pretty();
+
+// $pop - Remove o 1° valor
+# removendo valores de evolutions do number 008
+> db.pokemon.updateOne(
+  { "number": 8 },
+  { $pop: { "evolutions": -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.pokemon.find().pretty();
+// $pop - Remove o ultimo valor
+> db.pokemon.updateOne(
+  { "number": 8 },
+  { $pop: { "evolutions": 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.pokemon.find().pretty();
+
+// $pull - remove valores específicos
+# remove os valores do array (Venusaur, Charizard)
+> db.pokemon.updateMany(
+  {},
+  { $pull: { "evolutions": { $in: ["Venusaur", "Charizard"] } } }
+);
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 2 }
+
+// Operador $addToSet - garante que os valores de um array não sejam duplicados.
+# $addToSet:
+# Se não existe no documento alterado, ele criará.
+# Se já existir no documento, e não for um array, a operação não funcionará;
+# Considerará como duplicado se um documento existente no array for exatamente igual ao documento a ser adicionado.
+
+> use inventory;
+> db.inventory.insertOne(
+  {
+    _id: 1,
+    item: "polarizing_filter",
+    tags: ["electronics", "camera"]
+  }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+
+# Adicionando ao array
+# adiciona o elemento "accessories" ao array tags desde que "accessories" não exista no array:
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "accessories" } },
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.inventory.find().pretty();
+{
+  "_id" : 1,
+  "item" : "polarizing_filter",
+  "tags" : ["electronics", "camera", "accessories"]
+}
+
+# Se o valor existir
+# adiciona "camera" ao array tags. se o elemento já existir, não terá efeito.
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "camera" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
+# resultado
+> db.inventory.find().pretty();
+
+# Com o modificador $each
+# $addToSet combinado com $each. Permite que adicione múltiplos valores a um array.
+> db.inventory.insertOne(
+  {
+    _id: 2,
+    item: "cable",
+    tags: ["electronics", "supplies"]
+  }
+);
+{ "acknowledged" : true, "insertedId" : 2 }
+# $addToSet e o modificador $each para adicionar alguns elementos a mais no array tags:
+> db.inventory.updateOne(
+  { _id: 2 },
+  { 
+    $addToSet: {
+      tags: { $each: ["camera", "electronics", "accessories"] }
+    } 
+  }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+// Array Filters - filtra documentos dentro de um array de objetos.
+> db.recipes.insertMany([
+  {
+    title: "Panqueca Simples",
+    ingredients: [
+      { name: "Farinha", quantity: 2},
+      { name: "Oleo", quantity: 4 },
+      { name: "Leite", quantity: 1 },
+    ],
+  },
+  {
+    title: "Bolo de Cenoura",
+    ingredients: [
+      { name: "Farinha", quantity: 2},
+      { name: "Oleo", quantity: 1, unit: "xícara" },
+      { name: "Ovo", quantity: 3},
+      { name: "Cenoura", quantity: 3},
+      { name: "Fermento", quantity: 1},
+    ],
+  },
+]);
+"acknowledged" : true,
+
+> db.recipes.updateOne(
+  { title: "Panqueca Simples" },
+  { $set: { "ingredients.1.unit": "xícara" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.recipes.find().pretty();
+{
+  "_id" : ObjectId("6116de101c5a32ed90c0d204"),
+  "title" : "Panqueca Simples",
+  "ingredients" : [
+    { "name": "Farinha", "quantity": 2 },
+    { "name": "Oleo", "quantity": 4, "unit": "xícara" },
+    { "name": "Leite", "quantity": 1 }
+  ]
+}
+{
+  "_id" : ObjectId("6116de101c5a32ed90c0d205"),
+  "title" : "Bolo de Cenoura",
+  "ingredients": [
+    { "name": "Farinha", "quantity": 2 },
+    { "name": "Oleo", "quantity": 1, "unit": "xícara" },
+    { "name": "Ovo", "quantity": 3 },
+    { "name": "Cenoura", "quantity": 3 },
+    { "name": "Fermento", "quantity": 1 }
+  ]
+}
+# altera dinamicamente todas as receitas que usam farinha, para usarem farinha integral e que a unit seja xícara.
+> db.recipes.updateOne(
+  { title: "Panqueca Simples" },
+  { 
+    $set: { "ingredients.$[elemento].name": "Farinha Integral" }
+  },
+  { arrayFilters: [{ "elemento.name": "Farinha" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# adicionar "xícara" ao campo unit do objeto com name igual a "Farinha Integral"
+> db.recipes.updateOne(
+  { title: "Panqueca Simples" },
+  {
+    $set: { "ingredients.$[elemento].unit": "xícara" }
+  },
+  { arrayFilters: [{ "elemento.name": "Farinha Integral" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# troca todos os ingredientes da coleção que são "Farinha" por "Farinha Integral" e "xícara" como valor de unit.
+## passos
+// Passamos de updateOne para 'updateMany'.
+// Retiramos a restrição do título '{}'.
+// Setamos `unit` como "xícara",
+// `name` como "Farinha Integral".
+// Filtramos os arrays que o valor da propriedade `name` seja "Farinha".
+
+> db.recipes.updateMany(
+  {},
+  {
+    $set: {
+      "ingredients.$[elemento].unit": "xícara",
+      "ingredients.$[elemento].name": "Farinha Integral"
+    }
+  },
+  { arrayFilters: [{ "elemento.name": "Farinha" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 1 }
+# resultado
+> db.recipes.find().pretty();
+
+-- > CONTEÚDO do dia - 24.2 -- <---/ FIM -----------------------------------------//
+##############################
+-- > AULA ao VIVO - 24.2 ----- <---/ INICIO --------------------------------------//
+
+> use school
+switched to db school
+> show collections
+> db.students.insertOne(
+  { _id: 1, name: "Alex" }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+
+// $push - adiciona ou cria componentes
+> db.students.updateOne(
+  { _id: 1 },
+  { $push: { score: 89 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.students.find().pretty();
+{ "_id" : 1, "name" : "Alex", "score" : [ 89 ] }
+# resultado
+> db.students.updateOne(
+  { _id: 1 },
+  { $push: { score: 90 } }
+);
+# resultado
+> db.students.find().pretty();
+{ "_id" : 1, "name" : "Alex", "score" : [ 89, 90 ] }
+
+// $push + $each (Adiciona vários)
+> db.students.updateOne(
+  { _id: 1 },
+  { $push: { score: { $each: [89, 90, 91, 92, 95, 93] } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.students.find().pretty();
+{
+  "_id" : 1,
+  "name" : "Alex",
+  "score" : [89, 90, 89, 90, 91, 92, 95, 93]
+}
+
+# DB-dataFlights
+> use dataFlights
+> show collections
+# resumoVoos
+# voos
+> db.voos.find().pretty();
+// $push
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    categoria: "bebida",
+    item: "coca-cola",
+    quantidade: 50
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.findOne({ vooId: 782805 }, { servicoDeBordo: 1 });
+{
+  "_id" : ObjectId("5e53b461ad99121020395f2e"),
+  "servicoDeBordo" : [
+    {
+      "categoria" : "bebida",
+      "item" : "coca-cola",
+      "quantidade" : 50
+    }
+  ]
+}
+// $push + $each
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    $each: [
+      { categoria: "Bebida", item: "guaraná", quantidade: 40 },
+      { categoria: "Bebida", item: "vinho", quantidade: 35 },
+      { categoria: "Bebida", item: "água", quantidade: 150 },
+      { categoria: "Bebida", item: "leite", quantidade: 100 },
+      { categoria: "Bebida", item: "café", quantidade: 200 },
+      { categoria: "Comida", item: "macarrão", quantidade: 80 },
+      { categoria: "Comida", item: "frango", quantidade: 60 }
+    ]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.findOne({ vooId: 782805 }, { servicoDeBordo: 1 });
+# ou
+> db.voos.findOne({ vooId: 782805 }, { "servicoDeBordo.item": 1 });
+
+# DB school
+> use school
+> db.students.insertOne(
+  { name: "Jennifer", quizzes: [
+    { wk: 1, score: 10 },
+    { wk: 2, score: 8 },
+    { wk: 3, score: 5 },
+    { wk: 4, score: 6 },
+  ] }
+);
+"acknowledged" : true,
+# resultado
+> db.students.find().pretty();
+# ou 
+> db.students.findOne({ name: "Jennifer" });
+
+# inserindo valores em "jennifer"
+# $sort(-1) - organiza os itens em ordem decrescente
+# $slice - limita os itens exibidos(elimina os demais)
+
+> db.students.updateOne(
+  { name: "Jennifer" },
+  { $push: { quizzes: {
+    $each: [
+      { wk: 5, score: 8 },
+      { wk: 6, score: 7 },
+      { wk: 7, score: 6 }
+    ],
+    $sort: { score: -1 },
+    $slice: 3
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.students.findOne({ name: "Jennifer" });
+
+# organizando com $sort de forma crescente
+> db.students.updateOne(
+  { name: "Jennifer" },
+  { $push: { quizzes: {
+    $each: [],
+    $sort: { score: 1 }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.students.findOne({ name: "Jennifer" });
+
+> show dbs
+> use dataFlights
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    $each: [
+      { categoria: "comida", item: "carne", quantidade: 180 },
+      { categoria: "bebida", item: "sprite", quantidade: 5 }
+    ],
+    $sort: { categoria: 1, item: 1 }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.findOne({ vooId: 782805 }, { "servicoDeBordo": 1 });
+
+# organiza no padrão pt-br(collation: { locale: "pt" })
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $push: { servicoDeBordo: {
+    $each: [],
+    $sort: { categoria: 1, item: 1 }
+  } } },
+  { collation: { locale: "pt" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+// $pop(remove itens -1(inicio) e 1(fim))
+> use superMarketBrand
+> show collections
+# stores
+> db.stores.insertMany([
+  {
+    _id: 1,
+    fruits: ["apples", "pears", "oranges", "grapes", "bananas"],
+    vegetables: ["carrots", "celery", "squash", "carrots"]
+  },
+  {
+    _id: 2,
+    fruits: ["plums", "kiwis", "oranges", "bananas", "apples"],
+    vegetables: ["broccoli", "zucchini", "carrots", "onions"]
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2 ] }
+> db.stores.find().pretty();
+
+# removendo todas (laranja, maçã)
+> db.stores.updateMany(
+  {},
+  { $pull: {
+    fruits: { $in: ["apples", "oranges" ] },
+    vegetables: "carrots"
+  } }
+);
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+
+# removendo item apontado seus 3 componentes
+> use dataFlights
+# switched to db dataFlights
+> show collections
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    "categoria" : "comida",
+    "item" : "carne",
+    "quantidade" : 180
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+# removendo item apontado apenas 1 componente
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    item: "macarrão"
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.find({ vooId: 782805 }).pretty();
+
+# removendo itens apontado vários componentes
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    item: { $in: ["vinho", "leite"] }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+# removendo pela quantidade de itens '$lte'( < 60)
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    categoria: "bebida",
+    quantidade: { $lte: 60 }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+// $pop
+
+# removendo o 1°
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pop: { servicoDeBordo: -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.find({ vooId: 782805 }).pretty();
+
+# removendo o ultimo item
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pop: { servicoDeBordo: 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.find({ vooId: 782805 }).pretty();
+
+// $addToSet
+> use myWalMart
+> db.inventory.insertOne(
+  {
+    _id: 1,
+    product: "polarizing filter",
+    tags: ["eletronics", "camera"]
+  }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# resultado
+> db.inventory.find().pretty()
+
+# Inserindo elementos
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "accessories" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.inventory.find().pretty()
+
+# Inserindo elemento que já existe
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "accessories" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
+
+# $addToSet + $each (para inserir vários)
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: {
+    $each: ["camera", "accessories", "photography", "camera"]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.inventory.find().pretty()
+
+> use dataFlights
+> db.voos.findOne({ vooId: 782805 });
+
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $addToSet: { servicoDeBordo: {
+    $each: [
+      { categoria: "Bebida", item: "água", quantidade: 150 },
+      { categoria: "comida", item: "macarrão", quantidade: 80 }
+    ]
+  } } }
+);
+
+# atualizando vários
+> db.voos.updateMany(
+  {
+    "empresa.nome": "AMERICAN AIRLINES",
+    "aeroportoOrigem.sigla": "KJFK",
+    "aeroportoDestino.sigla": "SBGR"
+  },
+  { $addToSet: { servicoDeBordo: {
+    $each: [
+      { "categoria" : "Bebida", "item" : "café", "quantidade" : 200 },
+      { "categoria" : "Bebida", "item" : "guaraná", "quantidade" : 40 },
+      { "categoria" : "Bebida", "item" : "água", "quantidade" : 150 },
+      { "categoria" : "comida", "item" : "macarrão", "quantidade" : 80 }
+    ]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 38, "modifiedCount" : 38 }
+# resultado limitado
+> db.voos.find(
+  { "servicoDeBordo": { $exists: true } }
+).limit(1).pretty();
+
+# atualizando item identificado pelo "vooId: 782786".
+> db.voos.updateOne(
+  { vooId: 782786 },
+  { $set: { "servicoDeBordo.$[elemento].quantidade": 200 } },
+  { arrayFilters: [{ "elemento.item": "guaraná" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+-- > AULA ao VIVO - 24.2 ----- <---/ FIM -----------------------------------------//
+##############################
+-- > EXERCÍCIO do dia - 24.2 -- <---/ INICIO --------------------------------------//
+
+// dataset de filmes
+> db.movies.drop();
+> db.movies.insertMany([
+  {
+    title: "Batman",
+    category: ["action", "adventure"],
+    imdbRating: 7.7, budget: 35,
+  },
+  {
+    title: "Godzilla",
+    category: ["action", "adventure", "sci-fi"],
+    imdbRating: 6.6,
+    budget: 1,
+  },
+  {
+    title: "Home Alone",
+    category: ["family", "comedy"],
+    imdbRating: 7.4,
+  },
+]);
+> "acknowledged" : true,
+
+# 1 Adicione a categoria "superhero" ao filme Batman.
+# $push(adiciona um valor ou cria um novo)
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $push: { category: "superhero" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 2 Utilizando $each, adicione as categorias "villain" e "comic-based" ao filme Batman.
+# $each(Adiciona múltiplos valores)
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $push: { category: { $each: ["villain", "comic-based"] } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 3 Remova a categoria "action" do filme Batman.
+# $pull(remove todos os elementos com um ou mais valores)
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $pull: { category: "action" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 4 Remova o primeiro elemento do array category do filme Batman.
+# $pop(remove o primeiro ou o último)
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $pop: { category: -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 5 Remova o último elemento do array category do filme Batman.
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $pop: { category: 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 6 Adicione o elemento "action" ao array category do filme Batman, garantindo que esse valor não se duplique.
+# $addToSet(garante que os valores não sejam duplicados)
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $addToSet: { category: "action" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 7 Adicione a categoria "90's" aos filmes Batman e Home Alone.
+> db.movies.updateMany(
+  { title: { $in: ["Batman", "Home Alone"] } },
+  { $push: { category: "90's" } },
+);
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+# resultado
+> db.movies.find().pretty();
+
+# 8 Crie um array de documentos chamado 'cast' para o filme 'Home Alone' com os seguintes dados:
+> db.movies.updateOne(
+  { title: "Home Alone" },
+  { $push: { cast: { $each: [
+    {
+      "actor": "Macaulay Culkin",
+      "character": "Kevin"
+    },
+    {
+      "actor": "Joe Pesci",
+      "character": "Harry"
+    },
+    {
+      "actor": "Daniel Stern"
+    }
+  ] } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 9 Adicione o campo 'character' com o valor 'Marv' ao array de 'cast' em que o campo actor seja igual a 'Daniel Stern' no filme 'Home Alone'.
+# $(identifica um elemento em uma matriz para atualizar)
+> db.movies.updateOne(
+  { title: "Home Alone", "cast.actor": "Daniel Stern" },
+  { $set: { "cast.$.character": "Marv" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 10 Crie um array de documentos chamado cast para o filme Batman com os seguintes dados:
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $push: { cast: {
+    $each: [
+      { "character": "Batman" },
+      { "character": "Alfred" },
+      { "character": "Coringa" }
+    ]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 11 Produza três querys para o filme Batman
+
+# Adicione o campo 'actor', um array com valor 'Christian Bale', ao 'cast' em que o campo 'character' seja igual a Batman;
+# Adicione o campo 'actor', um array com valor 'Michael Caine', ao 'cast' em que o campo 'character' seja igual a Alfred;
+# Adicione o campo 'actor', um array com valor 'Heath Ledger', ao 'cast' em que o campo 'character' seja igual a Coringa.
+> db.movies.updateOne(
+  { title: "Batman", "cast.character": "Batman" },
+  { $push: { "cast.$.actor": "Christian Bale" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.movies.updateOne(
+  { title: "Batman", "cast.character": "Alfred" },
+  { $push: { "cast.$.actor": "Michael Caine" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.movies.updateOne(
+  { title: "Batman", "cast.character": "Coringa" },
+  { $push: { "cast.$.actor": "Heath Ledger" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+# 12 Adicione aos atores de cast do character Batman do filme Batman os valores "Michael Keaton" , "Val Kilmer" e "George Clooney" , e deixe o array em ordem alfabética.
+> db.movies.updateOne(
+  { title: "Batman", "cast.character": "Batman" },
+  { $push: { "cast.$.actor": { 
+    $each: ["Michael Keaton", "Val Kilmer", "George Clooney"],
+    $sort: 1,
+  } } },
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+-- > EXERCÍCIO do dia - 24.2 -- <---/ FIM -----------------------------------------//
+############################## Updates Complexos - Arrays - Parte 1

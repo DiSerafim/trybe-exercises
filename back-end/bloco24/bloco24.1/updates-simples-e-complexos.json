@@ -1,0 +1,710 @@
+############################## Updates Simples e Complexos
+-- > CONTEÚDO do dia - 24.1 -- <---/ INICIO --------------------------------------//
+
+# Utilizar o método updateOne() ;
+# Utilizar o método updateMany() ;
+# Utilizar os operadores $set , $mul , $inc , $min , $max e $currentDate ;
+# Renomear campos;
+# Remover campos.
+
+// update
+db.colecao.updateOne(<filtro>, <update>, <opcoes>);
+db.colecao.updateMany(<filtro>, <update>, <opcoes>);
+// Alterando um único documento
+# db.colecao.updateOne() altera o 1° documento na coleção inventory, item = "paper":
+> db.inventory.updateOne(
+  { item: "paper" },
+  { $set: { "size.uom": "cm", status: "P" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# Note que dois parâmetros foram passados no método:
+# 1 filtro
+# 2 operação de update.
+# $set - operador de atualização
+
+// Alterando múltiplos documentos
+# db.colecao.updateMany() alterar os documentos da coleção inventory, qty < 50:
+> db.inventory.updateMany(
+  { "qty": { $lt: 50 } },
+  { $set: { "size.uom": "in", status: "P" } }
+);
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }
+# $set alterar o valor do campo 'size.uom' para 'in' e 'status' para 'P'.
+
+// Operador $set
+# altera o valor de um campo específico.
+# Se o campo não existir, o operador $set adiciona um novo campo com o valor especificado.
+
+> db.products.insertOne({
+  _id: 100,
+  sku: "abc123",
+  quantity: 250,
+  instock: true,
+  reorder: false,
+  details: { model: "14Q2", make: "xyz" },
+  tags: [ "apparel", "clothing" ],
+  ratings: [ { by: "ijk", rating: 4 } ]
+})
+{ "acknowledged" : true, "insertedId" : 100 }
+
+# Exemplo 1: Alterando campos no primeiro nível (top-level)
+
+# altera o valor de quantity para 500, details para um novo documento embedado e tags para um novo array.
+db.products.update(
+  { _id: 100 },
+  { $set: {
+      quantity: 500,
+      details: { model: "14Q3", make: "xyz" },
+      tags: [ "coats", "outerwear", "clothing" ]
+    }
+  }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# Exemplo 2: Alterando campos em documentos embedados
+
+# altera o valor do campo make dentro do subdocumento details em que o campo _id seja igual a 100 :
+db.products.update(
+  { _id: 100 },
+  { $set: { "details.make": "zzz" } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# Exemplo 3: Alterando valores em arrays
+
+# altera o segundo elemento(índice 1) do array tags e o campo rating no primeiro elemento (índice 0 ) do array ratings
+> db.products.update(
+  { _id: 100 },
+  { $set: {
+      "tags.1": "rain gear",
+      "ratings.0.rating": 2
+    }
+  }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+// Operador $mul - multiplica o valor de um campo por um número especificado
+
+> db.products.insertOne(
+  { "_id": 1, "item": "ABC", "price": NumberDecimal("10.99"), "qty": 25 }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# utilizando o operador $mul para multiplicar os valores dos campos price e qty:
+> db.products.update(
+  { _id: 1 },
+  { $mul: { price: NumberDecimal("1.25"), qty: 2 } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 
+# resultado
+> db.products.find();
+{ "_id": 1, "item": "ABC", "price": NumberDecimal("13.7375"), "qty": 50 }
+
+# $mul - em um campo que não exista no documento. O operador criará o campo e atribuirá a ele o valor 0 do mesmo tipo numérico do multiplicador.
+> db.products.insertOne(
+  { _id: 2, item: "Unknown" }
+);
+{ "acknowledged" : true, "insertedId" : 2 }
+
+# 'update' no documento, aplicando o operador '$mul' no campo price, que não existe neste documento:
+> db.products.update(
+  { _id: 2 },
+  { $mul: { price: NumberLong("100") } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado, temos o campo price criado no documento com valor 0 mesmo tipo numérico do multiplicador. Nesse caso, o tipo é NumberLong:
+> db.products.find().pretty();
+{ "_id" : 2, "item" : "Unknown", "price" : NumberLong(0) }
+
+# multiplicar valores com tipos diferentes.
+> db.products.insertOne(
+  { _id: 3,  item: "XYZ", price: NumberLong("10") }
+);
+{ "acknowledged" : true, "insertedId" : 3 }
+
+# multiplicando o valor do campo price, tipo NumberLong("10"), por NumberInt(5)
+> db.products.update(
+  { _id: 3 },
+  { $mul: { price: NumberInt(5) } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.products.find().pretty();
+{ "_id": 3, "item": "XYZ", "price": NumberLong(50) }
+
+// Operador $inc - incrementa ou decrementa valores em um campo específico
+
+db.increment.insertOne(
+  {
+    _id: 1,
+    sku: "abc123",
+    quantity: 10,
+    metrics: {
+      orders: 2,
+      ratings: 3.5
+    }
+  }
+)
+# $inc é utilizado para decrementar o valor do campo qty em 2(-2) e incrementar o valor do campo metrics.orders em 1
+db.increment.update(
+{ sku: "abc123" },
+{ $inc: { quantity: -2, "metrics.orders": 1 } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.increment.find().pretty();
+{
+  "_id" : 1,
+  "sku" : "abc123",
+  "quantity" : 8,
+  "metrics" : {
+          "orders" : 3,
+          "ratings" : 3.5
+  }
+}
+
+// Operadores $min e $max
+# $min : altera o valor se esse valor especificado é menor do que o atual valor do campo;
+# $max : altera o valor do campo se o valorfor maior do que o atual valor do campo.
+
+# cria
+> db.collection.insertMany([{ _id: 1, campo: 25 }, { _id: 2, campo: 50 }, { _id: 3, campo: 100}]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+# verifica
+> db.collection.find();
+{ "_id" : 1, "campo" : 25 }
+{ "_id" : 2, "campo" : 50 }
+{ "_id" : 3, "campo" : 100 }
+
+// $max
+// Atualizando todos os valores do atributo "campo"
+// para 75 caso sejam menores
+db.collection.updateMany({}, {$max: {campo: 75}});
+# resultado
+> db.collection.find();
+{ "_id" : 1, "campo" : 75 }
+{ "_id" : 2, "campo" : 75 }
+{ "_id" : 3, "campo" : 100 }
+
+// $min
+// Atualizando todos os valores do atributo "campo"
+// para 42 caso sejam maiores
+db.collection.updateMany({}, { $min: { campo: 42 } });
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+# resultado
+> db.collection.find();
+{ "_id" : 1, "campo" : 42 }
+{ "_id" : 2, "campo" : 42 }
+{ "_id" : 3, "campo" : 42 }
+
+// coleção scores
+> use conteudo_trybe;
+switched to db conteudo_trybe
+> db.scores.insertOne(
+...   { _id: 1, highScore: 800, lowScore: 200 }
+... );
+{ "acknowledged" : true, "insertedId" : 1 }
+
+# teste
+> db.scores.find();
+{ "_id" : 1, "highScore" : 800, "lowScore" : 200 }
+
+# Exemplo 1: Comparando números
+# $min - para comparar 200 com o 150 e altera o valor do lowscore para 150
+> db.scores.update({ _id: 1 }, { $min: { lowScore: 150 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# $max - compara 800 e o valor especificado 950, altera o valor do campo highscore para 950
+> db.scores.update({ _id: 1 }, { $max: { highScore: 950 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+# Exemplo 2: Comparando datas
+> use conteudo_trybe;
+switched to db conteudo_trybe
+> db.tags.insertOne(
+  {
+    _id: 1,
+    desc: "crafts",
+    dateEntered: ISODate("2019-10-01T05:00:00Z"),
+    dateExpired: ISODate("2019-10-01T16:38:16Z")
+  }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# $min para comparar o valor do campo dateEntered e altera seu valor
+# $max para comparar o valor do campo dateExpired e altera esse valor
+> db.tags.update(
+  { _id: 1 },
+    {
+      min: { dateEntered: new Date("2019-09-25") },
+      max: { dateExpired: new Date("2019-10-02") }
+    }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.tags.find().pretty();
+{
+  "_id" : 1,
+  "min" : { "dateEntered" : ISODate("2019-09-25T00:00:00Z") },
+  "max" : { "dateExpired" : ISODate("2019-10-02T00:00:00Z") }
+}
+
+// Operador $currentDate - atribui ao valor de um campo a data corrente, tipo Date ou timestamp
+{ $currentDate: { <campo>: <typeSpecification>, ... } }
+# typeSpecification:
+# booleano true para atribuir o valor da data corrente ao campo utilizando o tipo Date
+# documento que especifica o tipo do campo. {$type: "timestamp"} ou {$type: "date"}.
+
+// $currentDate
+> use conteudo_trybe;
+> db.customers.insertOne(
+  { _id: 1, status: "a", lastModified: ISODate("2013-10-02T01:11:18.965Z") }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# altera o valor do campo lastModified para a data corrente, criar o campo cancellation.date com o timestamp corrente, utilizando o operador $currentDate, altera o campo status para D, criar o campo cancellation.reason com o valor "user request", utilizando o operador $set
+> db.customers.updateOne(
+  { _id: 1 },
+  { $currentDate: {
+      lastModified: true,
+      "cancellation.date": { $type: "timestamp" }
+    },
+    $set: {
+      "cancellation.reason": "user request",
+      status: "D"
+    }
+  }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount"
+// resultado
+> db.customers.find().pretty();
+{
+  "_id" : 1,
+  "status" : "D",
+  "lastModified" : ISODate("2021-08-12T20:49:926Z"),
+  "cancellation" : {
+          "date" : Timestamp(1628801385, 1),
+          "reason" : "user request"
+  }
+}
+
+// Renomeando campos com o operador ($rename)
+# $rename - utilizado com os métodos updateOne() ou updateMany()
+> use conteudo_trybe;
+switched to db conteudo_trybe
+> db.fruits.insertOne(
+  { _id: 100, name: "Banana", quantity: 100, inStock: true }
+);
+{ "acknowledged" : true, "insertedId" : 100 }
+# altera o nome do campo name para productName no documento em que o valor do campo name seja igual a Banana:
+> db.fruits.updateOne(
+  { name: "Banana" },
+  { $rename: {
+    "name": "productName"
+  } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.fruits.find().pretty();
+{
+        "_id" : 100,
+        "quantity" : 100,
+        "inStock" : true,
+        "productName" : "Banana"
+}
+
+// Removendo campos com o operador ($unset)
+# $unset - remover um ou mais campos de um documento
+# fruits:
+{
+  _id: 100,
+  productName: "Banana",
+  quantity: 100,
+  inStock: true
+}
+# remove o campo quantity do documento em que o valor do campo productName seja igual a Banana:
+> db.fruits.updateMany(
+  { productName: "Banana" },
+  { $unset: { quantity: "" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.fruits.find().pretty();
+{
+  "_id" : 100,
+  "inStock" : true,
+  "productName" : "Banana"
+}
+
+// Exemplos de alguns operadores
+# $set / $inc / $currentDate / $rename / $unset
+
+> db.lanches.insertOne(
+  {
+    "_id:": 3,
+    "nome": "Big-Mac",
+    "qtd": 38974,
+    "menu": true,
+    "combo": ["lanche", "bebida", "batata"]
+  }
+);
+{
+  "acknowledged" : true,
+  "insertedId" : ObjectId("6115938bc0a902ae90f46691")
+}
+// $set
+# altera a quantidade(qtd)
+> db.lanches.update({ "_id:": 3 }, { $set: { "qtd": 26789 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+#resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 38974,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata"
+  ]
+}
+# acrescenta mais 1 item ao combo
+> db.lanches.update({ "_id:": 3 }, { $set: { "combo.3": "sorvete" } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 26789,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ]
+}
+# cria o atributo, caso ele não exista
+> db.lanches.update(
+  { "_id:": 3 },
+  { $set: { "brinquedo": "hulk" } }
+);
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 26789,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk"
+}
+
+// $inc - incrementa / decrementa
+
+# $inc - incrementa (10)
+> db.lanches.update({ "_id:": 3 }, { $inc: { "qtd": 10 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 26799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk"
+}
+
+# $inc - Decrementa (-1000)
+> db.lanches.update({ "_id:": 3 }, { $inc: { "qtd": -1000 } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk"
+}
+
+// $currentDate - data atual 
+# lastUpdate: true - lastUpdate recebe a data atual
+> db.lanches.update({ "_id:": 3 }, { $currentDate: { lastUpdate: true } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "_id:" : 3,
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk",
+  "lastUpdate" : ISODate("2021-08-12T22:10:46.816Z")
+}
+
+// $rename - renomeia
+> db.lanches.update({ "_id:": 3 }, { $rename: { "_id:": "id" } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "menu" : true,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk",
+  "lastUpdate" : ISODate("2021-08-12T22:10:46.816Z"),
+  "id" : 3
+}
+
+// $unset - apaga um atributo
+# basta deixar o atributo vazio ("menu": "")
+> db.lanches.update({ "id": 3 }, { $unset: { "menu": "" } });
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+# resultado
+> db.lanches.find().pretty();
+{
+  "_id" : ObjectId("6115938bc0a902ae90f46691"),
+  "nome" : "Big-Mac",
+  "qtd" : 25799,
+  "combo" : [
+    "lanche",
+    "bebida",
+    "batata",
+    "sorvete"
+  ],
+  "brinquedo" : "hulk",
+  "lastUpdate" : ISODate("2021-08-12T22:10:46.816Z"),
+  "id" : 3
+}
+
+-- > CONTEÚDO do dia - 24.1 -- <---/ FIM -----------------------------------------//
+##############################
+-- > AULA ao VIVO - 24.1 ----- <---/ INICIO --------------------------------------//
+
+
+
+-- > AULA ao VIVO - 24.1 ----- <---/ FIM -----------------------------------------//
+##############################
+-- > EXERCÍCIO do dia - 24.1 -- <---/ INICIO --------------------------------------//
+
+# criando o DB
+use class;
+db.movies.insertMany([{
+  "title": "Batman",
+  "category": [ "action", "adventure" ],
+  "imdbRating": 7.6,
+  "budget": 35
+},
+{
+  "title": "Godzilla",
+  "category": [ "action", "adventure", "sci-fi" ],
+  "imdbRating": 6.6
+},
+{
+  "title": "Home Alone",
+  "category": [ "family", "comedy" ],
+  "imdbRating": 7.4
+}]);
+"acknowledged" : true,
+
+# questões
+> db.movies.find().pretty();
+{
+  "_id" : ObjectId("611658c442b99e554ea21546"),
+  "title" : "Batman",
+  "category" : [
+    "action",
+    "adventure"
+  ],
+  "imdbRating" : 7.6,
+  "budget" : 35
+}
+{
+  "_id" : ObjectId("611658c442b99e554ea21547"),
+  "title" : "Godzilla",
+  "category" : [
+    "action",
+    "adventure",
+    "sci-fi"
+  ],
+  "imdbRating" : 6.6
+}
+{
+  "_id" : ObjectId("611658c442b99e554ea21548"),
+  "title" : "Home Alone",
+  "category" : [
+    "family",
+    "comedy"
+  ],
+  "imdbRating" : 7.4
+}
+
+
+# 1 Altere o imdbRating para 7.7 no filme Batman.
+# $set - operador de atualização
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $set: { imdbRating: 7.7 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# ver resultado
+> db.movies.find().pretty();
+
+# 2 Altere budget para 1 no filme Godzilla.
+> db.movies.updateOne(
+  { title: "Godzilla" },
+  { $set: { budget: 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado(como não existia 'budget', então ele foi criado automáticamente).
+> db.movies.find().pretty();
+
+# 3 Altere budget para 15 e imdbRating para 5.5 no filme Home Alone.
+> db.movies.updateOne(
+  { title: "Home Alone" },
+  { $set: { budget: 15, imdbRating: 5.5 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 4 Aumente em 2 o imdbRating do filme Batman.
+# $inc - incrementa ou decrementa
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $inc: { imdbRating: 2 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 5 Aumente em 5 o budget do filme Home Alone.
+> db.movies.updateOne(
+  { title: "Home Alone" },
+  { $inc: { budget: 5 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 6 Multiplique por 4 o imdbRating do filme Batman.
+# $mul - multiplica o valor
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $mul: { imdbRating: 4 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 7 Renomeie o campo budget para estimatedBudget do filme Batman.
+# $rename - renomeia
+> db.movies.updateOne(
+  { title: "Batman" },
+  { $rename: { budget: "estimatedBudget" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 8 Utilize o operador $min para alterar o budget para 5 do filme Home Alone.
+# $min - altera o valor para menor do que o atual
+> db.movies.updateOne(
+  { title: "Home Alone" },
+  { $min: { budget: 5 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 9 Utilize o operador $max para alterar o imdbRating para 8.6 do filme Godzilla. Além disso, altere a categoria "adventure" para "thriller" do filme Godzilla.
+# $max - altera o valor para maior do que o atual
+> db.movies.updateOne(
+  { title: "Godzilla" },
+  {
+    $max: { imdbRating: 8.6 },
+    $set: { "category.1": "thriller" }
+  }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 10 Utilizando o operador $currentDate, crie um campo chamado lastUpdated com o tipo timestamp no filme Home Alone.
+# $currentDate - atribui a data corrente, Date ou timestamp
+# $type - tipo({$type: "timestamp"} ou {$type: "date"})
+> db.movies.updateOne(
+  { title: "Home Alone" },
+  { $currentDate: { lastUpdated: { $type: "timestamp" } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+# 11 Utilizando uma única operação, crie um campo chamado sequels e atribua a ele o valor 0 em todos os documentos.
+> db.movies.updateMany(
+  {},
+  { $set: { sequels: 0 } }
+);
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+# resultado
+> db.movies.find().pretty();
+
+# 12 Utilizando uma única operação, remova os campos budget e estimatedBudget em todos os documentos.
+# $unset - remove
+> db.movies.updateMany(
+  {},
+  { $unset: { budget: "", estimatedBudget: "" } }
+);
+{ "acknowledged" : true, "matchedCount" : 3, "modifiedCount" : 3 }
+# resultado
+> db.movies.find().pretty();
+
+# 13 Para os filmes Batman ou Home Alone, atribua a imdbRating o valor 17, caso o valor de imdbRating seja menor que 17.
+> db.movies.updateMany(
+  { $or: [{ title: "Batman" }, { title: "Home Alone" }] },
+  { $max: { imdbRating: 17 } }
+);
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 1 }
+# resultado
+> db.movies.find().pretty();
+
+-- > EXERCÍCIO do dia - 24.1 -- <---/ FIM -----------------------------------------//
+############################## Updates Simples e Complexos
