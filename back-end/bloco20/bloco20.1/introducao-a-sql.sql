@@ -90,7 +90,7 @@ SELECT * FROM sakila.address WHERE address_id = 603;
 # R-> 1:N
 
 -- Ex 7: Abra tabela por tabela do banco sakila e encontre no mínimo 3 exemplos de um relacionamentos 1:N ou N:1.
-# R-> store -> staff / language -> film / film -> language
+# R-> store -> staff / language -> film / film -> language.
 
 -- > EXERCÍCIO do dia - 20.1 -- <---/ FIM -----------------------------------------//
 ############################## Banco de dados SQL
