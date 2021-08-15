@@ -700,6 +700,8 @@ switched to db school
 
 // $pop(remove itens -1(inicio) e 1(fim))
 > use superMarketBrand
+> show collections
+# stores
 > db.stores.insertMany([
   {
     _id: 1,
@@ -713,35 +715,164 @@ switched to db school
   }
 ]);
 { "acknowledged" : true, "insertedIds" : [ 1, 2 ] }
+> db.stores.find().pretty();
 
+# removendo todas (laranja, maçã)
+> db.stores.updateMany(
+  {},
+  { $pull: {
+    fruits: { $in: ["apples", "oranges" ] },
+    vegetables: "carrots"
+  } }
+);
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
 
+# removendo item apontado seus 3 componentes
+> use dataFlights
+# switched to db dataFlights
+> show collections
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    "categoria" : "comida",
+    "item" : "carne",
+    "quantidade" : 180
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
 
+# removendo item apontado apenas 1 componente
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    item: "macarrão"
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.find({ vooId: 782805 }).pretty();
 
+# removendo itens apontado vários componentes
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    item: { $in: ["vinho", "leite"] }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
 
+# removendo pela quantidade de itens '$lte'( < 60)
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pull: { servicoDeBordo: {
+    categoria: "bebida",
+    quantidade: { $lte: 60 }
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
 
+// $pop
 
+# removendo o 1°
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pop: { servicoDeBordo: -1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.find({ vooId: 782805 }).pretty();
 
+# removendo o ultimo item
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $pop: { servicoDeBordo: 1 } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.voos.find({ vooId: 782805 }).pretty();
 
+// $addToSet
+> use myWalMart
+> db.inventory.insertOne(
+  {
+    _id: 1,
+    product: "polarizing filter",
+    tags: ["eletronics", "camera"]
+  }
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+# resultado
+> db.inventory.find().pretty()
 
+# Inserindo elementos
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "accessories" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.inventory.find().pretty()
 
+# Inserindo elemento que já existe
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: "accessories" } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
 
+# $addToSet + $each (para inserir vários)
+> db.inventory.updateOne(
+  { _id: 1 },
+  { $addToSet: { tags: {
+    $each: ["camera", "accessories", "photography", "camera"]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+# resultado
+> db.inventory.find().pretty()
 
+> use dataFlights
+> db.voos.findOne({ vooId: 782805 });
 
+> db.voos.updateOne(
+  { vooId: 782805 },
+  { $addToSet: { servicoDeBordo: {
+    $each: [
+      { categoria: "Bebida", item: "água", quantidade: 150 },
+      { categoria: "comida", item: "macarrão", quantidade: 80 }
+    ]
+  } } }
+);
 
+# atualizando vários
+> db.voos.updateMany(
+  {
+    "empresa.nome": "AMERICAN AIRLINES",
+    "aeroportoOrigem.sigla": "KJFK",
+    "aeroportoDestino.sigla": "SBGR"
+  },
+  { $addToSet: { servicoDeBordo: {
+    $each: [
+      { "categoria" : "Bebida", "item" : "café", "quantidade" : 200 },
+      { "categoria" : "Bebida", "item" : "guaraná", "quantidade" : 40 },
+      { "categoria" : "Bebida", "item" : "água", "quantidade" : 150 },
+      { "categoria" : "comida", "item" : "macarrão", "quantidade" : 80 }
+    ]
+  } } }
+);
+{ "acknowledged" : true, "matchedCount" : 38, "modifiedCount" : 38 }
+# resultado limitado
+> db.voos.find(
+  { "servicoDeBordo": { $exists: true } }
+).limit(1).pretty();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# atualizando item identificado pelo "vooId: 782786".
+> db.voos.updateOne(
+  { vooId: 782786 },
+  { $set: { "servicoDeBordo.$[elemento].quantidade": 200 } },
+  { arrayFilters: [{ "elemento.item": "guaraná" }] }
+);
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
 
 -- > AULA ao VIVO - 24.2 ----- <---/ FIM -----------------------------------------//
 ##############################
