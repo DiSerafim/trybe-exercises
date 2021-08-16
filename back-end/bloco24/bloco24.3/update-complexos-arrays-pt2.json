@@ -1,0 +1,286 @@
+############################## Updates Complexos - Arrays - Parte 2
+-- > CONTEÚDO do dia - 24.3 -- <---/ INICIO --------------------------------------//
+
+# Utilizar o operador $all para filtrar documentos;
+# Utilizar o operador $elemMatch para filtrar documentos;
+# Utilizar o operador $size para filtrar documentos pelo tamanho de arrays ;
+# Utilizar o operador $expr para criar expressões de agregação;
+# Utilizar expressões regulares e o operador $regex para buscar documentos;
+# Utilizar o índice textual e o operador $text ;
+# Utilizar o operador $mod.
+
+// Operador $all
+# equivalente ao operador $and, pois faz a comparação de todos os valores especificados, porém, para arrays.
+
+# retorna somente os documentos em que o array tags seja exatamente igual ao passado como parâmetro no filtro
+> db.inventory.find({ tags: ["camera", "accessories"] });
+# retorna independentemente da existência de outros valores ou a ordem em que os elementos estejam.
+> db.inventory.find({ tags: { $all: ["camera", "accessories"] } });
+
+# Utilizar o '$all' poupa um pouco de código.
+> db.inventory.find(
+  { tags: { $all: ["electronics", "supplies"] } }
+).pretty();
+# retorno
+{
+  "_id" : 2,
+  "item" : "cable",
+  "tags" : ["electronics", "supplies", "camera", "accessories"]
+}
+// Se usar o $and :
+> db.inventory.find(
+  { $and: [{ tags: "electronics" }, { tags: "supplies" }] }
+).pretty();
+
+// Operador $elemMatch
+# seleciona os documentos que contêm array com pelo menos 1 elemento que satisfaça todos os critérios de seleção especificados.
+
+> use masterchef
+> db.notas.insertMany([
+  { _id: 1, nome: "Henrique", notas: [80, 76, 23, 67] },
+  { _id: 2, nome: "Paola", notas: [99, 32, 56, 88] },
+  { _id: 3, nome: "Erick", notas: [78, 81, 92, 20] },
+  { _id: 4, nome: "Ana", notas: [76, 77, 78, 83] },
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4 ] }
+
+# busca valores >= 80
+> db.notas.find(
+  { notas: { $elemMatch: { $gte: 80 } } }
+).pretty();
+
+# busca valores >= 10, < 30
+> db.notas.find(
+  { notas: { $elemMatch: { $gte: 10, $lt: 30 } } }
+).pretty();
+
+# busca valores >= 100 ()
+> db.notas.find(
+  { notas: { $elemMatch: { $gte: 100 } } }
+).pretty();
+
+> use survey
+> db.survey.insertMany([
+  {
+    _id: 3,
+    results: [
+      { product: "abc", score: 10 },
+      { product: "xyz", score: 5 }
+    ]
+  },
+  {
+    _id: 4,
+    results: [
+      { product: "abc", score: 8 },
+      { product: "xyz", score: 7 }
+    ]
+  },
+  {
+    _id: 5,
+    results: [
+      { product: "abc", score: 7 },
+      { product: "xyz", score: 8 }
+    ]
+  }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 3, 4, 5 ] }
+# resultado
+> db.survey.find().pretty();
+
+# seleciona os documentos em que o array 'results' contenha ao menos 1 elemento subdocumento com o campo 'product' = xyz e o campo 'score' >= a 8:
+> db.survey.find(
+  { results: { $elemMatch: { product: "xyz", score: { $gte: 8 } } } }
+).pretty();
+
+# resultado
+{
+  "_id" : 5,
+  "results" : [
+    { "product" : "abc", "score" : 7 },
+    { "product" : "xyz", "score" : 8 }
+  ]
+}
+
+# não precisa utilizar o operador $elemMatch se estiver utilizando uma condição para apenas "1" campo do documento embedado. 
+> db.survey.find(
+  { results: { $elemMatch: { product: "xyz" } } }
+).pretty();
+
+# a operação acima só tem uma condição, o $elemMatch não se faz necessário, pode utilizar a query abaixo:
+> db.survey.find(
+  { "results.product": "xyz" }
+).pretty();
+
+// Operador $size
+# seleciona documentos em que um array contenha um número de elementos especificado.
+
+> use products
+> db.products.insertMany([
+  { _id: 1, tags: ["red", "green"] },
+  { _id: 2, tags: ["apple", "lime"] },
+  { _id: 3, tags: "fruit" },
+  { _id: 4, tags: ["orange", "lemon", "grapefruit"] }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4 ] }
+
+# apenas os documentos com o _id igual 1 e 2 serão retornados, pois seus campos tags são arrays e contêm exatamente 2 elementos:
+> db.products.find({ tags: { $size: 2 } }).pretty();
+
+# resultado
+{ "_id" : 1, "tags" : [ "red", "green" ] }
+{ "_id" : 2, "tags" : [ "apple", "lime" ] }
+
+# o operador $size aceita apenas valores númericos, não sendo possível, trazer arrays com comprimento > 2 ($gt: 2).
+
+// Operador $where
+# pode ser utilizado para passar uma string contendo uma expressão ou função JavaScript.
+
+# $where não será explorado porque, na versão 3.6 do MongoDB, um outro operador, $expr, que será visto a seguir, passou a suportar expressões de agregação.
+
+// Operador $expr
+# permite que você utilize expressões de agregação e construa queries que comparem campos no mesmo documento.
+
+> use monthlyBudget;
+> db.monthlyBudget.insertMany([
+  { _id: 1, category: "food", budget: 400, spent: 450 },
+  { _id: 2, category: "drinks", budget: 100, spent: 150 },
+  { _id: 3, category: "clothes", budget: 100, spent: 50 },
+  { _id: 4, category: "misc", budget: 500, spent: 300 },
+  { _id: 5, category: "travel", budget: 200, spent: 650 }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5 ] }
+
+# Busque os documentos em que o valor de spent exceda o valor de budget:
+# $gt (>)
+> db.monthlyBudget.find(
+  { $expr: { $gt: ["$spent", "$budget"] } }
+).pretty();
+# resultado
+{ "_id": 1, "category": "food", "budget": 400, "spent": 450 }
+{ "_id": 2, "category": "drinks", "budget": 100, "spent": 150 }
+{ "_id": 5, "category": "travel", "budget": 200, "spent": 650 }
+
+# $expr entende que deve comparar os valores dos 2 campos. O $ é utilizado, indicando que a string entre aspas referencia um campo.
+
+// Operador $regex
+# fornece os "poderes" das expressões regulares para seleção de strings. MongoDB utiliza expressões regulares compatíveis com Perl(PCRE), versão 8.42, e com suporte a UTF-8.
+> use products;
+switched to db products
+> show collections
+products
+> db.products.find().pretty();
+> db.products.insertMany([
+  { _id: 100, sku: "abc123", description: "Single line description." },
+  { _id: 101, sku: "abc789", description: "First line\nSecond line" },
+  { _id: 102, sku: "xyz456", description: "Many spaces before     line" },
+  { _id: 103, sku: "xyz789", description: "Multiple\nline description" }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 100, 101, 102, 103 ] }
+
+# seleciona todos os documentos em que o campo sku "termine" com "789"
+> db.products.find(
+  { sku: { $regex: /789$/ } }
+).pretty();
+# resultado
+{
+  "_id": 103, "sku": "xyz789", "description": "Multiple\nline description"
+}
+
+# ignore letras maiúsculas ou minúsculas.
+> db.products.find(
+  { sku: { $regex: /^ABC/i } }
+).pretty();
+# resultado
+{
+  "_id": 100, "sku": "abc123", "description": "Single line description."
+}
+{ "_id" : 101, "sku" : "abc789", "description" : "First line\nSecond line" }
+# O caractere 'i' ao lado da expressão indica a opção case-insensitive. Dessa forma, apenas os documentos que contenham ABC no campo sku serão retornados,
+
+// Operador $text
+# faz uma busca "textual" em um campo indexado por um text index.
+
+$text tem a seguinte sintaxe:
+{
+  $text:
+    {
+      $search: <string>, // Com os termos que o MongoDB utilizará para fazer o parse e utilizará como filtro(OR)
+      $language: <string>, // (Opcional) determina a lista de stop words(idioma) que será utilizada na tokenização da busca.
+      $caseSensitive: <boolean>, // (Opcional) Recebe um valor booleano para habilitar ou desabilitar buscas case sensitive
+      $diacriticSensitive: <boolean> // (Opcional) Recebe um valor booleano para habilitar ou desabilitar
+    }
+}
+
+> db.articles.createIndex({ subject: "text" });
+> db.articles.insertMany([
+  { _id: 1, subject: "coffee", author: "xyz", views: 50 },
+  { _id: 2, subject: "Coffee Shopping", author: "efg", views: 5 },
+  { _id: 3, subject: "Baking a cake", author: "abc", views: 90  },
+  { _id: 4, subject: "baking", author: "xyz", views: 100 },
+  { _id: 5, subject: "Café Com Leite", author: "abc", views: 200 },
+  { _id: 6, subject: "Сырники", author: "jkl", views: 80 },
+  { _id: 7, subject: "coffee and cream", author: "efg", views: 10 },
+  { _id: 8, subject: "Cafe com Leite", author: "xyz", views: 10 }
+]);
+{ "acknowledged": true, "insertedIds": [1, 2, 3, 4, 5, 6, 7, 8] }
+
+# 1 Procurando um único termo
+# utiliza os operadores $text e $search para buscar todos os documentos que contenham o termo coffee
+> db.articles.find({ $text: { $search: "coffee" } }).pretty();
+# resultado
+{ "_id": 1, "subject": "coffee", "author": "xyz", "views": 50 }
+{ "_id": 7, "subject": "coffee and cream", "author": "efg", "views": 10 }
+{ "_id": 2, "subject": "Coffee Shopping", "author": "efg", "views": 5 }
+
+# 2 Procurando qualquer um dos termos especificados
+# procura por vários termos passando uma string delimitada por espaços. $text fará uma busca lógica(OR) por cada um desses termos.
+> db.articles.find({ $text: { $search: "bake coffee cake" }}).pretty();
+# resultado
+{ "_id": 4, "subject": "baking", "author": "xyz", "views": 100 }
+{ "_id": 3, "subject": "Baking a cake", "author" : "abc", "views": 90 }
+{ "_id": 1, "subject": "coffee", "author": "xyz", "views": 50 }
+{ "_id": 7, "subject": "coffee and cream", "author": "efg", "views": 10 }
+{ "_id": 2, "subject": "Coffee Shopping", "author": "efg", "views": 5 }
+
+# 3 Procurando por uma frase
+# Procura pela frase "coffee shop"
+> db.articles.find({ $text: { $search: "\"coffee shop\"" } }).pretty();
+# resultado
+{ "_id": 2, "subject": "Coffee Shopping", "author": "efg", "views": 5 }
+
+// Operador $mod
+# seleciona todos os documentos em que o valor do campo dividido por um divisor seja igual ao valor especificado
+# encontra o resto da divisão.
+> use inventory
+> db.inventory.insertMany([
+  { _id: 3, item: "abc123", qty: 0 },
+  { _id: 4, item: "xyz123", qty: 5 },
+  { _id: 5, item: "ijk123", qty: 12 }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 3, 4, 5 ] }
+
+# seleciona todos os documentos da coleção em que o valor do campo qty módulo 4 seja 0
+> db.inventory.find({ qty: { $mod: [4, 0] } });
+# resultado
+{ "_id": 3, "item": "abc123", "qty": 0 }
+{ "_id": 5, "item": "ijk123", "qty": 12 }
+
+-- > CONTEÚDO do dia - 24.3 -- <---/ FIM -----------------------------------------//
+##############################
+-- > AULA ao VIVO - 24.3 ----- <---/ INICIO --------------------------------------//
+
+
+
+-- > AULA ao VIVO - 24.3 ----- <---/ FIM -----------------------------------------//
+##############################
+-- > EXERCÍCIO do dia - 24.3 -- <---/ INICIO --------------------------------------//
+
+
+
+Vamos praticar!
+
+Exercícios
+Agora, a prática!
+
+-- > EXERCÍCIO do dia - 24.3 -- <---/ FIM -----------------------------------------//
+############################## Updates Complexos - Arrays - Parte 2
