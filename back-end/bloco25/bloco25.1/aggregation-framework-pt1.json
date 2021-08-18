@@ -1,0 +1,261 @@
+============================== Updates Complexos - Arrays - Parte 2
+-- > CONTEÚDO do dia - 25.1 -- <---/ INICIO --------------------------------------//
+==============================
+
+# Filtrar documentos com o estágio $match ;
+# Limitar os resultados com $limit ;
+# Fazer agrupamentos com o $group ;
+# Controlar a exibição de campos com o $project .
+# Trabalhar com arrays com o $unwind ;
+# Juntar dados de uma ou mais coleções com o $lookup ;
+
+### operações de agregação: (aggregation pipeline, map-reduce function e single purpose aggregation methods)
+
+### aggregation pipeline, o método mais utilizado e recomendado pela MongoDB.
+# processamento de dados por meio de pipelines, ou, um "funil" 
+
+db.orders.aggregate([
+  { $match: { status: "A" } },
+  { $group: { _id: "$cust_id", total: { $sum: "$amount" } } }
+]);
+# Essa operação possui dois estágios:
+
+1° Estágio: O estágio '$match' filtra os documentos pelo campo 'status', e passam para o próximo estágio somente os documentos que têm 'status' igual a "A".
+2° Estágio: O estágio '$group' agrupa os documentos pelo campo 'cust_id' para calcular a soma dos valores do campo 'amount' para cada 'cust_id' único.
+
+# aggregation pipeline pode utilizar índices e tem também uma fase interna de otimização.
+
+### Operador $match
+# filtra os documentos da mesma maneira que os filtros no método find({ $match }) .
+
+> use agg_example
+> db.transactions.insertMany([
+  { value: 5900, from: "Dave America", to: "Ned Flanders", bank: "International" },
+  { value: 1000, from: "Mark Zuck", to: "Edna Krabappel", bank: "FloridaBank" },
+  { value: 290, from: "Lisa Simpson", to: "Dave America", bank: "bankOfAmerica" },
+  { value: 10800, from: "Arnold Schuz", to: "Mark Zuck", bank: "JPMorgan" },
+  { value: 850, from: "Barney Gumble", to: "Lisa Simpson", bank: "Citigroup" },
+  { value: 76000, from: "Ned Flanders", to: "Edna Krabappel", bank: "JPMorgan" },
+  { value: 1280, from: "Dave America", to: "Home Simpson", bank: "Citigroup" },
+  { value: 7000, from: "Arnold Schuz", to: "Ned Flanders", bank: "International" },
+  { value: 5902, from: "Home Simpson", to: "Lisa Simpson", bank: "International" },
+  { value: 100, from: "Mark Zuck", to: "Barney Gumble", bank: "floridaBank" }
+]);
+"acknowledged" : true,
+
+> db.transactions.aggregate([
+  { $match: { bank: "JPMorgan" } },
+]);
+# resultado
+{ "_id": ObjectId("611d2c892742406fe2ccb7bc"), "value": 10800, "from" : "Arnold Schuz", "to": "Mark Zuck", "bank": "JPMorgan" }
+{ "_id": ObjectId("611d2c892742406fe2ccb7be"), "value": 76000, "from" : "Ned Flanders", "to": "Edna Krabappel", "bank": "JPMorgan" }
+
+# banco JPMorgan e valor >= 20000
+> db.transactions.aggregate([
+  { $match: { $and: [
+    { bank: "JPMorgan" },
+    { value: { $gte: 20000 } },
+  ] } },
+]).pretty();
+# resultado
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7be"),
+  "value" : 76000,
+  "from" : "Ned Flanders",
+  "to" : "Edna Krabappel",
+  "bank" : "JPMorgan"
+}
+
+###
+
+> db.articles.insertMany([
+  { _id: ObjectId("512bc95fe835e68f199c8686"), author: "dave", score: 80, views: 100 },
+  { _id: ObjectId("512bc962e835e68f199c8687"), author: "dave", score: 85, views: 521 },
+  { _id: ObjectId("55f5a192d4bede9ac365b257"), author: "ahn", score: 60, views: 1000 },
+  { _id: ObjectId("55f5a192d4bede9ac365b258"), author: "li", score: 55, views: 5000 },
+  { _id: ObjectId("55f5a1d3d4bede9ac365b259"), author: "annT", score: 60, views: 50 },
+  { _id: ObjectId("55f5a1d3d4bede9ac365b25a"), author: "li", score: 94, views: 999 },
+  { _id: ObjectId("55f5a1d3d4bede9ac365b25b"), author: "ty", score: 95, views: 1000 }
+]);
+"acknowledged" : true,
+
+# Exemplo 1: Igualdade simples
+# Seleciona todos os documentos em que o campo 'author' seja igual a 'dave'
+> db.articles.aggregate([
+  { $match: { author: "dave" } },
+]).pretty();
+# resultado
+{
+  "_id" : ObjectId("512bc95fe835e68f199c8686"),
+  "author" : "dave",
+  "score" : 80,
+  "views" : 100
+}
+{
+  "_id" : ObjectId("512bc962e835e68f199c8687"),
+  "author" : "dave",
+  "score" : 85,
+  "views" : 521
+}
+
+# Exemplo 2: Igualdade complexa
+# match, pode utilizar operadores como (or, and, in etc).
+# seleciona todos os documentos de 'articles' em que o 'score' seja > 70 e < 90, 'ou' o campo 'views' seja >= 1000:
+> db.articles.aggregate([
+  { $match: { $or: [
+    { score: { $gt: 70, $lt: 90 } },
+    { views: { $gte: 1000 } }
+  ] } }
+]).pretty();
+# resultado
+{
+  "_id" : ObjectId("512bc95fe835e68f199c8686"),
+  "author" : "dave",
+  "score" : 80,
+  "views" : 100
+}
+{
+  "_id" : ObjectId("512bc962e835e68f199c8687"),
+  "author" : "dave",
+  "score" : 85,
+  "views" : 521
+}
+{
+  "_id" : ObjectId("55f5a192d4bede9ac365b257"),
+  "author" : "ahn",
+  "score" : 60,
+  "views" : 1000
+}
+{
+  "_id" : ObjectId("55f5a192d4bede9ac365b258"),
+  "author" : "li",
+  "score" : 55,
+  "views" : 5000
+}
+{
+  "_id" : ObjectId("55f5a1d3d4bede9ac365b25b"),
+  "author" : "ty",
+  "score" : 95,
+  "views" : 1000
+}
+
+### Operador $limit
+# limita o número de documentos que será passado para o próximo estágio do pipeline
+
+# Limita o número de documentos numa operação de agregação na coleção articles.
+> db.articles.aggregate([
+  { $limit: 5 },
+]);
+# resultado
+{ "_id": ObjectId("512bc95fe835e68f199c8686"), "author": "dave", "score": 80, "views": 100 }
+{ "_id": ObjectId("512bc962e835e68f199c8687"), "author": "dave", "score": 85, "views": 521 }
+{ "_id": ObjectId("55f5a192d4bede9ac365b257"), "author": "ahn", "score": 60, "views": 1000 }
+{ "_id": ObjectId("55f5a192d4bede9ac365b258"), "author": "li", "score": 55, "views": 5000 }
+{ "_id": ObjectId("55f5a1d3d4bede9ac365b259"), "author": "annT", "score": 60, "views": 50 }
+
+### Para Fixar
+
+> use agg_example
+
+# 1 Selecione todas as transações feitas pelo cliente chamado "Dave America".
+> db.transactions.aggregate([
+  { $match: { from: "Dave America" } },
+]).pretty();
+# resultado
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7b9"),
+  "value" : 5900,
+  "from" : "Dave America",
+  "to" : "Ned Flanders",
+  "bank" : "International"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7bf"),
+  "value" : 1280,
+  "from" : "Dave America",
+  "to" : "Home Simpson",
+  "bank" : "Citigroup"
+}
+
+# 2 Selecione todas as transações com o valor entre 700 e 6000, ou que sejam recebidas pela cliente "Lisa Simpson".
+> db.transactions.aggregate([
+  { $match: { $or: [
+    { value: { $gt: 700, $lt: 6000 } },
+    { to: "Lisa Simpson" },
+  ] } },
+]).pretty();
+# resultado
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7b9"),
+  "value" : 5900,
+  "from" : "Dave America",
+  "to" : "Ned Flanders",
+  "bank" : "International"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7ba"),
+  "value" : 1000,
+  "from" : "Mark Zuck",
+  "to" : "Edna Krabappel",
+  "bank" : "FloridaBank"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7bd"),
+  "value" : 850,
+  "from" : "Barney Gumble",
+  "to" : "Lisa Simpson",
+  "bank" : "Citigroup"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7bf"),
+  "value" : 1280,
+  "from" : "Dave America",
+  "to" : "Home Simpson",
+  "bank" : "Citigroup"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7c1"),
+  "value" : 5902,
+  "from" : "Home Simpson",
+  "to" : "Lisa Simpson",
+  "bank" : "International"
+}
+
+# 3 Selecione três transações com o valor acima de 1000.
+> db.transactions.aggregate([
+  { $match: { value: { $gt: 1000 } } },
+  
+]).pretty();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- > CONTEÚDO do dia - 25.1 -- <---/ FIM -----------------------------------------//
+==============================
+-- > AULA ao VIVO - 25.1 ----- <---/ INICIO --------------------------------------//
+==============================
+
+
+-- > AULA ao VIVO - 25.1 ----- <---/ FIM -----------------------------------------//
+==============================
+-- > EXERCÍCIO do dia - 25.1 -- <---/ INICIO --------------------------------------//
+==============================
+
+
+-- > EXERCÍCIO do dia - 25.1 -- <---/ FIM -----------------------------------------//
+============================== Updates Complexos - Arrays - Parte 2
