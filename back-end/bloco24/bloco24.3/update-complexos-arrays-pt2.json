@@ -269,7 +269,46 @@ $text tem a seguinte sintaxe:
 ##############################
 -- > AULA ao VIVO - 24.3 ----- <---/ INICIO --------------------------------------//
 
+#### O QUE VAMOS FALAR
+- $all
+- $elemenMatch
+- $size
+- $expr
+- $regex
+- $text
+- $mod
 
+---
+### $all
+```js
+db.collection.find({ field: { $all: ["item1", "item2", "Item3"] } });
+```
+---
+### $elemenMatch
+```js
+db.collection.find({
+  field: { $elemMatch: { listField: { $gte: 200 } } },
+});
+```
+---
+### $size
+---
+### $expr
+```js
+db.collection.find({ $expr: { $gt: ["$field1", "$field2"] } });
+```
+---
+![Regex]
+---
+### $text
+![Text]
+---
+### $mod
+```js
+db.inventory.find({ qty: { $mod: [4, 0] } });
+// qty % 4 = 0
+```
+---
 
 -- > AULA ao VIVO - 24.3 ----- <---/ FIM -----------------------------------------//
 ##############################
