@@ -224,26 +224,720 @@ db.orders.aggregate([
 # 3 Selecione três transações com o valor acima de 1000.
 > db.transactions.aggregate([
   { $match: { value: { $gt: 1000 } } },
-  
+  { $limit: 3 },
 ]).pretty();
+# resultado
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7b9"),
+  "value" : 5900,
+  "from" : "Dave America",
+  "to" : "Ned Flanders",
+  "bank" : "International"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7bc"),
+  "value" : 10800,
+  "from" : "Arnold Schuz",
+  "to" : "Mark Zuck",
+  "bank" : "JPMorgan"
+}
+{
+  "_id" : ObjectId("611d2c892742406fe2ccb7be"),
+  "value" : 76000,
+  "from" : "Ned Flanders",
+  "to" : "Edna Krabappel",
+  "bank" : "JPMorgan"
+}
+
+### Operador $project
+# passa adiante no pipeline apenas alguns campos dos documentos vindos do estágio anterior, fazendo isso por meio de uma "projeção"
+# podem ser campos novos, resultado de um cálculo ou de uma concatenação.
+# o único campo que precisa ser negado explicitamente é o _id
+
+> db.transactions.aggregate([
+  { $project: { _id: 0, bank: 1, value: 1 } },
+]).pretty();
+# resultado
+{ "value" : 5900, "bank" : "International" }
+{ "value" : 1000, "bank" : "FloridaBank" }
+{ "value" : 290, "bank" : "bankOfAmerica" }
+{ "value" : 10800, "bank" : "JPMorgan" }
+{ "value" : 850, "bank" : "Citigroup" }
+{ "value" : 76000, "bank" : "JPMorgan" }
+{ "value" : 1280, "bank" : "Citigroup" }
+{ "value" : 7000, "bank" : "International" }
+{ "value" : 5902, "bank" : "International" }
+{ "value" : 100, "bank" : "floridaBank" }
+
+> use books;
+> db.books.insertOne(
+{
+  _id: 1,
+  title: "A Fundação",
+  isbn: "0001122223334",
+  author: { last: "Asimov", first: "Isaac" },
+  copies: 5
+}
+);
+{ "acknowledged" : true, "insertedId" : 1 }
+
+# Exemplo 1: Incluindo campos específicos
+# inclui os campos _id, title e author no documento de saída
+> db.books.aggregate([
+  { $project: { title: 1, author: 1 } },
+]).pretty();
+# resultado
+{
+  "_id" : 1,
+  "title" : "A Fundação",
+  "author" : { "last" : "Asimov", "first" : "Isaac" },
+}
+
+# Exemplo 2: Excluindo o campo _id
+# _id é padrão e é o único que necessita de uma negação explícita para que não seja incluído no documento de saída:
+> db.books.aggregate([
+  { $project: { _id: 0, title: 1, author: 1 } },
+]).pretty();
+# resultado
+{
+  "title": "A Fundação",
+  "author": { "last": "Asimov", "first": "Isaac" },
+}
+
+# Exemplo 3: Excluindo outros campos
+# Quando você nega um campo específico, todos os outros serão incluídos no documento de saída
+# exclui do documento de saída apenas o campo copies
+> db.books.aggregate([
+  { $project: { copies: 0 } },
+]).pretty();
+# resultado
+{
+  "_id" : 1,
+  "title" : "A Fundação",
+  "isbn" : "0001122223334",
+  "author" : { "last" : "Asimov", "first" : "Isaac" }
+}
+
+# Exemplo 4: Excluindo campos em subdocumentos
+# documentos embedados, seguimos os mesmos conceitos de dot notation
+> db.books.aggregate([
+  { $project: { "author.first": 0, copies: 0 } },
+]).pretty();
+# resultado
+{
+  "_id" : 1,
+  "title" : "A Fundação",
+  "isbn" : "0001122223334",
+  "author" : { "last" : "Asimov" }
+}
+
+# Exemplo 5: Incluindo campos calculados
+# string iniciada com o caractere $ indica que queremos projetar um campo, assim: "$nomeDoCampo".
+# Adiciona os novos campos isbn, lastname e copiesSold:
+> db.books.aggregate([
+  { $project: {
+    title: 1,
+    isbn: {
+      prefix: { $substr: ["$isbn", 0, 3] },
+      group: { $substr: ["$isbn", 3, 2] },
+      publisher: { $substr: ["$isbn", 5, 4] },
+      title: { $substr: ["$isbn", 9, 3] },
+      checkDigit: { $substr: ["$isbn", 12, 1] }
+    },
+    lastName: "$author.last",
+    copiesSold: "$copies"
+  } },
+]).pretty();
+# resultado
+{
+  "_id" : 1,
+  "title" : "A Fundação",
+  "isbn" : {
+    "prefix" : "000",
+    "group" : "11",
+    "publisher" : "2222",
+    "title" : "333",
+    "checkDigit" : "4"
+  },
+  "lastName" : "Asimov",
+  "copiesSold" : 5
+}
+
+### Operador $group
+# agrupa valores, desde um "distinct" simples até cálculos mais elaborados com a ajuda de outros operadores.
+
+# Faz operações sobre os campos de documentos agrupados usando operadores de acumulação.
+
+# $addToSet: retorna um array com os valores únicos da expressão para cada grupo;
+# $avg: retorna a média de valores numéricos. Valores não numéricos são ignorados;
+# $first: retorna um valor do primeiro documento de cada grupo;
+# $last: retorna um valor do último documento de cada grupo;
+# $max: retorna o maior valor de cada grupo;
+# $sum: retorna a soma de valores numéricos. Valores não numéricos são ignorados.
+
+> db.sales.insertMany([
+  { _id: 1, item: "Código Limpo", price: NumberDecimal("10"), quantity: NumberInt("2"), date: ISODate("2014-03-01T08:00:00Z") },
+  { _id: 2, item: "O Homem e Seus Símbolos", price: NumberDecimal("20"), quantity: NumberInt("1"), date: ISODate("2014-03-01T09:00:00Z") },
+  { _id: 3, item: "Comunicação Não-Violenta", price: NumberDecimal("5"), quantity: NumberInt( "10"), date: ISODate("2014-03-15T09:00:00Z") },
+  { _id: 4, item: "Comunicação Não-Violenta", price: NumberDecimal("5"), quantity:  NumberInt("20"), date: ISODate("2014-04-04T11:21:39.736Z") },
+  { _id: 5, item: "Código Limpo", price: NumberDecimal("10"), quantity: NumberInt("10"), date: ISODate("2014-04-04T21:23:13.331Z") },
+  { _id: 6, item:"A Coragem de Ser Imperfeito", price: NumberDecimal("7.5"), quantity: NumberInt("5" ), date: ISODate("2015-06-04T05:08:13Z") },
+  { _id: 7, item: "A Coragem de Ser Imperfeito", price: NumberDecimal("7.5"), quantity: NumberInt("10"), date: ISODate("2015-09-10T08:43:00Z") },
+  { _id: 8, item: "Código Limpo", price: NumberDecimal("10"), quantity: NumberInt("5" ), date: ISODate("2016-02-06T20:20:13Z")  }
+]);
+"acknowledged" : true,
+
+# Exemplo 1: Contando o número de documentos
+# operador $group para contar o número de documentos da coleção sales
+> db.sales.aggregate([
+  { $group: { _id: null, count: { $sum: 1 } } },
+]).pretty();
+# resultado
+# _id setado como null, porque queremos todos os documentos.
+{ "_id": null, "count": 8 }
+# poderia utilizar o método count() para realizar essa operação
+> db.sales.count();
+# resultado
+8
+
+# Exemplo 2: Retornando valores distintos
+# $group também pode ser utilizado para encontrar os valores distintos de um campo. Todos os valores únicos do campo item e quantos são:
+# o campo deve ser precedido de $
+> db.sales.aggregate([
+  { $group: { _id: "$item", count: { $sum: 1 } } },
+]).pretty();
+# resultado
+{ "_id": "Código Limpo", "count": 3 }
+{ "_id": "A Coragem de Ser Imperfeito", "count": 2 }
+{ "_id": "O Homem e Seus Símbolos", "count": 1 }
+{ "_id": "Comunicação Não-Violenta", "count": 2 }
+
+# Exemplo 3: Somando valores
+# Para saber o valor das vendas, multiplica-se o valor do campo price pelo valor do campo quantity:
+> db.sales.aggregate([
+  { $group: {
+    _id: "$item",
+    totalSaleAmount: { $sum: { $multiply: ["$price", "$quantity"] } },
+  } },
+]).pretty();
+# resultado
+{ "_id": "Código Limpo", "totalSaleAmount": NumberDecimal("170") }
+{ "_id": "A Coragem de Ser Imperfeito", "totalSaleAmount": NumberDecimal("112.5")}
+{ "_id": "O Homem e Seus Símbolos", "totalSaleAmount": NumberDecimal("20")}
+{ "_id": "Comunicação Não-Violenta", "totalSaleAmount": NumberDecimal("150")}
+
+# Exemplo 4: Having(do Mysql), combinando estágios no aggregate
+# operações equivalentes ao HAVING do SQL, um filtro depois de um agrupamento. Saber apenas as vendas que possuem valores maiores do que 100.
+> db.sales.aggregate([
+  // Primeiro Estágio
+  {
+    $group: {
+      _id : "$item",
+      totalSaleAmount: {
+        $sum: { $multiply: ["$price", "$quantity"] },
+      },
+    },
+  },
+  // Segundo Estágio
+  { $match: { "totalSaleAmount": { $gte: 100 } } },
+]).pretty();
+# resultado
+{ "_id": "Código Limpo", "totalSaleAmount": NumberDecimal("170") }
+{ "_id": "A Coragem de Ser Imperfeito", "totalSaleAmount": NumberDecimal("112.5") }
+{ "_id": "Comunicação Não-Violenta", "totalSaleAmount": NumberDecimal("150") }
+
+# Exemplo 5: Agrupando por null
+# operações matemáticas em todos os documentos de uma coleção. Passa null no _id e segue com os operadores de acumulação.
+# retorna um documento com a quantidade média de itens vendidos e o total de vendas:
+> db.sales.aggregate([
+  {
+    $group: {
+      _id: null,
+      totalSaleAmount: {
+        $sum: { $multiply: ["$price", "$quantity"] }
+      },
+      averageQuantity: { $avg: "$quantity" },
+      count: { $sum: 1 }
+    }
+  }
+]).pretty();
+# resultado
+{
+  "_id": null,
+  "totalSaleAmount": NumberDecimal("452.5"),
+  "averageQuantity": 7.875,
+  "count": 8
+}
+
+# Para Fixar
+> use agg_example
+
+# 1 Selecione todos os bancos, ou seja, valores do campo bank;
+> db.transactions.aggregate([
+  { $group: {
+    _id: "$bank",
+    bank: { $sum: 1 },
+  } },
+]).pretty();
+# retorno
+{ "_id": "JPMorgan", "bank": 2 }
+{ "_id": "bankOfAmerica", "bank": 1 }
+{ "_id": "Citigroup", "bank": 2 }
+{ "_id": "floridaBank", "bank": 1 }
+{ "_id": "International", "bank": 3 }
+{ "_id": "FloridaBank", "bank": 1 }
+
+# 2 Selecione o valor total das transações em cada banco e quantas são;
+> db.transactions.aggregate([
+  { $group: {
+    _id: "$bank",
+    total: { $sum: "$value" },
+    transacoes: { $sum: 1 },
+  } },
+]).pretty();
+# retorno
+{ "_id": "JPMorgan", "total": 86800, "transacoes": 2 }
+{ "_id": "bankOfAmerica", "total": 290, "transacoes": 1 }
+{ "_id": "Citigroup", "total": 2130, "transacoes": 2 }
+{ "_id": "floridaBank", "total": 100, "transacoes": 1 }
+{ "_id": "International", "total": 18802, "transacoes": 3 }
+{ "_id": "FloridaBank", "total": 1000, "transacoes": 1 }
+
+# 3 Selecione o valor total de transações por banco;
+> db.transactions.aggregate([
+  { $group: {
+    _id: "$bank",
+    total: { $sum: "$value" },
+  } },
+]).pretty();
+# retorno
+{ "_id": "JPMorgan", "total": 86800 }
+{ "_id": "bankOfAmerica", "total": 290 }
+{ "_id": "Citigroup", "total": 2130 }
+{ "_id": "floridaBank", "total": 100 }
+{ "_id": "International", "total": 18802 }
+{ "_id": "FloridaBank", "total": 1000 }
+
+# 4 Selecione os bancos que têm o valor total de transações maior que 1000.
+> db.transactions.aggregate([
+  { $match: {
+    value: { $gt: 1000 },
+  } },
+  { $group: {
+    _id: "$bank",
+    total: { $sum: "$value" },
+  } },
+]).pretty();
+# retorno
+{ "_id": "JPMorgan", "total": 86800 }
+{ "_id": "Citigroup", "total": 1280 }
+{ "_id": "International", "total": 18802 }
+
+### Operador $unwind
+# "desconstrói" um campo array do documento de entrada e gera como saída um documento para cada elemento do array
+
+> db.inventory.insertOne(
+  {
+    _id: 7,
+    item: "ABC1",
+    sizes: ["S", "M", "L"],
+  },
+);
+{ "acknowledged" : true, "insertedId" : 7 }
+
+# $unwind como um estágio do pipeline
+> db.inventory.aggregate([
+  { $unwind: "$sizes" },
+]).pretty();
+# resultado
+# temos a "expansão" do array sizes, a saída são três documentos com os valores _id e item preservados.
+{ "_id": 7, "item": "ABC1", "sizes": "S" }
+{ "_id": 7, "item": "ABC1", "sizes": "M" }
+{ "_id": 7, "item": "ABC1", "sizes": "L" }
+
+### Operador $lookup
+# junta documentos de outra coleção(join). Resultado, um elemento do tipo array é adicionado a cada documento da coleção de entrada, contendo os documentos que deram "match"
+
+# 4 parâmetros monta um $lookup:
+
+# from: uma coleção no mesmo DB para executar o join;
+# localField: de onde a operação de agregação está sendo executada. Comparado por igualdade com o campo especificado no parâmetro foreingField;
+# foreingField: coleção especificada no parâmetro from que será comparado com o campo localField por igualdade simples;
+# as: nome do novo array que será adicionado.
+
+# Join com igualdade simples
+// orders
+> db.orders.insertMany([
+  { _id: 1, item: "almonds", price: 12, quantity: 2 },
+  { _id: 2, item: "pecans", price: 20, quantity: 1 },
+  { _id: 3 }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3 ] }
+
+// inventory
+> db.inventory.insertMany([
+  { _id: 1, sku: "almonds", description: "product 1", instock: 120 },
+  { _id: 2, sku: "bread", description: "product 2", instock: 80 },
+  { _id: 3, sku: "cashews", description: "product 3", instock: 60 },
+  { _id: 4, sku: "pecans", description: "product 4", instock: 70 },
+  { _id: 5, sku: null, description: "Incomplete" },
+  { _id: 6 }
+]);
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5, 6 ] }
+
+# retorna em uma única query os documentos correspondentes das duas coleções mencionadas.
+# 1° encontre um campo em comum entre eles.
+# Quando cruzados, um novo campo 'inventory_docs', será adicionado ao resultado final:
+> db.orders.aggregate([
+  {
+    $lookup: {
+      from: "inventory",
+      localField: "item",
+      foreignField: "sku",
+      as: "inventory_docs",
+    }
+  }
+]).pretty();
+# resultado
+{
+  "_id" : 1,
+  "item" : "almonds",
+  "price" : 12,
+  "quantity" : 2,
+  "inventory_docs" : [
+    { "_id": 1, "sku": "almonds", "description": "product 1", "instock": 120 }
+  ]
+}
+{
+  "_id" : 2,
+  "item" : "pecans",
+  "price" : 20,
+  "quantity" : 1,
+  "inventory_docs" : [
+    { "_id": 4, "sku": "pecans", "description": "product 4", "instock": 70 }
+  ]
+}
+{
+  "_id" : 3,
+  "inventory_docs" : [
+    { "_id": 5, "sku": null, "description": "Incomplete" },
+    { "_id": 6 }
+  ]
+}
+
+# Para Fixar
+> use agg_example;
+
+db.clients.insertMany([
+  { name: "Dave America", State: "Florida" },
+  { name: "Ned Flanders", State: "Alasca" },
+  { name: "Mark Zuck", State: "Texas" },
+  { name: "Edna Krabappel", State: "Montana" },
+  { name: "Arnold Schuz", State: "California" },
+  { name: "Lisa Simpson", State: "Florida" },
+  { name: "Barney Gumble", State: "Texas" },
+  { name: "Homer Simpson", State: "Florida" },
+]);
+"acknowledged" : true,
+
+# 1 Selecione todos os clientes com as suas respectivas transações feitas;
+> db.clients.aggregate([
+  { $lookup: {
+    from: "transactions",
+    localField: "from",
+    foreignField: "from",
+    as: "transactions_history"
+  } },
+]).pretty();
+# retorno
+{
+  "_id" : ObjectId("611d8643be7d4f068352e802"),
+  "name" : "Dave America",
+  "State" : "Florida",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e803"),
+  "name" : "Ned Flanders",
+  "State" : "Alasca",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e804"),
+  "name" : "Mark Zuck",
+  "State" : "Texas",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e805"),
+  "name" : "Edna Krabappel",
+  "State" : "Montana",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e806"),
+  "name" : "Arnold Schuz",
+  "State" : "California",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e807"),
+  "name" : "Lisa Simpson",
+  "State" : "Florida",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e808"),
+  "name" : "Barney Gumble",
+  "State" : "Texas",
+  "transactions_history" : [ ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e809"),
+  "name" : "Homer Simpson",
+  "State" : "Florida",
+  "transactions_history" : [ ]
+}
+
+# 2 Selecione quatro clientes com as suas respectivas transações recebidas;
+> db.clients.aggregate([
+  { $lookup: {
+    from: "transactions",
+    localField: "name",
+    foreignField: "to",
+    as: "transactions_history"
+  } },
+  { $limit: 4 },
+]).pretty();
+# retorno
+{
+  "_id" : ObjectId("611d8643be7d4f068352e802"),
+  "name" : "Dave America",
+  "State" : "Florida",
+  "transactions_history" : [
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7bb"),
+      "value" : 290,
+      "from" : "Lisa Simpson",
+      "to" : "Dave America",
+      "bank" : "bankOfAmerica"
+    }
+  ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e803"),
+  "name" : "Ned Flanders",
+  "State" : "Alasca",
+  "transactions_history" : [
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7b9"),
+      "value" : 5900,
+      "from" : "Dave America",
+      "to" : "Ned Flanders",
+      "bank" : "International"
+    },
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7c0"),
+      "value" : 7000,
+      "from" : "Arnold Schuz",
+      "to" : "Ned Flanders",
+      "bank" : "International"
+    }
+  ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e804"),
+  "name" : "Mark Zuck",
+  "State" : "Texas",
+  "transactions_history" : [
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7bc"),
+      "value" : 10800,
+      "from" : "Arnold Schuz",
+      "to" : "Mark Zuck",
+      "bank" : "JPMorgan"
+    }
+  ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e805"),
+  "name" : "Edna Krabappel",
+  "State" : "Montana",
+  "transactions_history" : [
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7ba"),
+      "value" : 1000,
+      "from" : "Mark Zuck",
+      "to" : "Edna Krabappel",
+      "bank" : "FloridaBank"
+    },
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7be"),
+      "value" : 76000,
+      "from" : "Ned Flanders",
+      "to" : "Edna Krabappel",
+      "bank" : "JPMorgan"
+    }
+  ]
+}
+
+# 3 Selecione todos os cliente do estado da "Florida" e suas respectivas transações recebidas.
+> db.clients.aggregate([
+  { $match: { State: "Florida" } },
+  { $lookup: {
+    from: "transactions",
+    localField: "name",
+    foreignField: "to",
+    as: "transactions_history"
+  } },
+]).pretty();
+# retorno
+{
+  "_id" : ObjectId("611d8643be7d4f068352e802"),
+  "name" : "Dave America",
+  "State" : "Florida",
+  "transactions_history" : [
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7bb"),
+      "value" : 290,
+      "from" : "Lisa Simpson",
+      "to" : "Dave America",
+      "bank" : "bankOfAmerica"
+    }
+  ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e807"),
+  "name" : "Lisa Simpson",
+  "State" : "Florida",
+  "transactions_history" : [
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7bd"),
+      "value" : 850,
+      "from" : "Barney Gumble",
+      "to" : "Lisa Simpson",
+      "bank" : "Citigroup"
+    },
+    {
+      "_id" : ObjectId("611d2c892742406fe2ccb7c1"),
+      "value" : 5902,
+      "from" : "Home Simpson",
+      "to" : "Lisa Simpson",
+      "bank" : "International"
+    }
+  ]
+}
+{
+  "_id" : ObjectId("611d8643be7d4f068352e809"),
+  "name" : "Homer Simpson",
+  "State" : "Florida",
+  "transactions_history" : [ ]
+}
+
+# Fixando os aprendizados
+
+# 1. Como funcionam, no MongoDB, as operações de agregação:
+# São feitas através de uma pipeline com vários estágios, que recebe a informação na entrada e retorna o resultado agregado
+# As operações de agregação no MongoDB funcionam através de uma pipeline, ou funil, recebendo os dados na entrada, filtrando-os e/ou transformando-os através de uma série de estágios. Cada estágio, por sua vez, recebe um _input_ e devolve um _output_. Isso significa que temos uma operação que recebe um dado bruto e devolve ele de forma mais refinada através de várias operações sequenciais.
+
+# 2. uso correto da função aggregate():
+# db.colecao.aggregate([
+  {
+    // Estágio 1
+  },
+  {
+    // Estágio 2
+  },
+  {
+    // Estágio 3
+  },
+]);
+
+# 3. Analise o código:
+> db.colecao.aggregate([
+  { $match: { company: "Trybe" } },
+]);
+# O que o operador $match faz na pipeline?
+# Melhora a performance da agregação, pois filtra os documentos da coleção.
+# O operador $match funciona do mesmo modo que o find(). É sempre recomendado usá-lo o quanto antes, por melhorar a performance.
+
+# 4. garante, de forma segura, que o resultado agregado terá apenas um elemento?
+{ $limit: 1 }
+# O operador $limit funciona de modo semelhante ao LIMIT do SQL.
+
+# 5. Sobre o operador $group:
+# Permite, de forma limitada, projetar campos do documento para o próximo estágio;
+# Seu principal parâmetro é o _id, que aqui é o mesmo _id do documento;
+# Dentre os operadores de acumulação, $first e $avg retornam, respectivamente, o primeiro valor do documento e a média dos valores numéricos;
+# É possível agrupar valores de diversas formas, até mesmo com cálculos elaborados; Estão corretas as afirmativas:
+### 
+# O operador $group é utilizado para agrupar valores de diversas formas. Seu principal parâmetro é o _id, que determina quais campos serão utilizados no agrupamento. Ele geralmente é utilizado em associação a operadores de acumulação para calcular valores sobre os campos agrupados.
+
+# 6. "O operador _____ tem como sua principal função passar adiante, no funil, _____ , fazendo uma 'projeção'. Aqui, _____ também podem ser novos, resultando de _____ "
+# $project; documentos com campos selecionados; os campos; outros campos e/ou operadores.
+# O operador $project passa adiante campos selecionados na pipeline para a projeção (semelhante à projeção usada no .find()) . Ele também pode gerar novos campos que são resultado de outros campos e/ou operadores.
 
 
+# 7. Considere o documento:
+{
+  _id: 55,
+  employee: {
+    first_name: 'R',
+    last_name: 'L',
+    nickname: 'Pharaoh',
+  },
+  company: 'Trybe',
+  category_id: 2,
+}
+###
+{
+  $project: {
+    _id: 0,
+    nome: {
+      $concat: [
+        "$employee.first_name",
+        "$employee.last_name",
+      ],
+    }
+    apelido: "$employee.nickname"
+  }
+}
+# Podemos usar operadores como o $concat para juntar informações. No operador $project, podemos também projetar dados em campos específicos, que foram criados pela pessoa desenvolvedora.
 
+# 8. Função do operador $unwind?
+# Desestruturar um campo array de um documento, retornando um documento para cada um dos valores do array
+# O operador $unwind é muito útil para desestruturar arrays e acessar e/ou manipular seus dados.
 
+# 9. relaciona adequadamente as informações: 
+# 1. Campo da coleção de onde a operação de agregação está sendo executada;
+# 2. Campo da coleção vinda do from;
+# 3. Coleção no mesmo banco de dados para executar a junção;
+# 4. Nome do novo array;
+[ ] - from[ ] - localField[ ] - foreignField[ ] - as
+###
+# O operador $lookup funciona como um JOIN, unindo dois documentos e criando um array que contém as informações do documento estrangeiro.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 10. Analise os documentos:
+{ _id: 1, nome: "Andressa", modulo_id: 2, pontos: 75 }
+{ _id: 2, nome: "André", modulo_id: 2, pontos: 64 }
+{ _id: 3, nome: "Andreia", modulo_id: 3, pontos: 82 }
+{ _id: 4, nome: "Anderson", modulo_id: 2, pontos: 79 }
+{ _id: 5, nome: "Adriano", modulo_id: 1, pontos: 68 }
+{ _id: 6, nome: "Adriana", modulo_id: 1, pontos: 72 }
+{ _id: 7, nome: "Adria", modulo_id: 3, pontos: 80 }
+# Após uma operação de agregação, a saída obtida foi:
+{ "_id": 1, "estudantes": 2 }
+{ "_id": 2, "estudantes": 3 }
+{ "_id": 3, "estudantes": 2 }
+# Qual gera corretamente a saída obtida acima?
+###
+{
+  $group: {
+    _id: "$modulo_id",
+    estudantes: { $sum: 1 },
+  }
+}
+# O operador $group contém o campo _id que, quando seleciona um campo precedido por $, retorna os valores distintos do mesmo.
 
 -- > CONTEÚDO do dia - 25.1 -- <---/ FIM -----------------------------------------//
 ==============================
