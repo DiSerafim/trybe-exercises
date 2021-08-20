@@ -979,8 +979,92 @@
 ### Cheat Sheet
 ?
 
-
 # O operador $group contém o campo _id que, quando seleciona um campo precedido por $, retorna os valores distintos do mesmo.
+
+### Fixando
+# 1.
+Marque a alternativa que completa corretamente o texto a seguir: O _________ é um estágio que adiciona novos campos aos documentos. A _________ desse estágio conterá todos os campos existentes nos documentos de entrada e _________ os novos campos especificados. Um pipeline pode conter _________ um estágio desse tipo.
+# $addFields, saída, adicionará, mais de.
+Essa alternativa está correta. O $addFields é um estágio que adiciona novos campos aos documentos. A saída desse estágio conterá todos os campos existentes nos documentos de entrada e adicionará os novos campos especificados. Um pipeline pode conter mais de um estágio desse tipo.
+
+# 2.
+Leia as definições abaixo de expressões utilizadas junto com o operador $lookup e marque a alternativa que apresenta a que elas se referem respectivamente. - Define as variáveis que serão utilizadas no estágio pipeline dentro do $lookup. É necessário porque o estágio pipeline não consegue acessar diretamente os campos dos documentos de entrada, então esses campos precisam ser definidos previamente e transformados em variáveis. - Define as condições ou o pipeline que será executado na coleção de junção. Se você quiser todos os documentos da coleção de junção, é só especificá-lo como vazio ([]).
+# $let e pipeline.
+Essa alternativa está correta. A expressão $let define as variáveis que serão utilizadas no estágio pipeline dentro do $lookup. Isso é necessário porque o estágio pipeline não consegue acessar diretamente os campos dos documentos de entrada, então esses campos precisam ser definidos previamente e transformados em variáveis. Já o estágio pipeline dentro do $lookup define as condições ou estágios que serão executados na coleção de junção. Se você quiser todos os documentos da coleção de junção, é só especificá-lo como vazio ( [] ).
+
+# 3.
+Qual dos blocos de código abaixo possui um resultado agregado referente à soma de dois campos?
+> db.sales.aggregate([
+  { $project: { item: 1, total: { $add: ["$price", "$fee"] } } }
+]);
+# Essa alternativa está correta porque utiliza no aggregate a expressão $add, que possibilita somar valores numéricos ou datas, no estágio $project, retornando assim a soma dos campos "price" e "fee".
+
+# 4.
+Qual expressão completa corretamente a lacuna do bloco de código a seguir, de modo que o retorno seja a diferença entre os dois campos especificados?
+Copiar
+> db.sales.aggregate([
+  {
+    $project: { 
+      item: 1, total: {
+        $_________: ["$price", "$discount"]
+      }
+    }
+  }
+]);
+# substract
+# Essa alternativa está correta, pois a expressão $subtract possibilita subtrair dois valores numéricos para retornar a diferença entre eles, ou duas datas para retornar a diferença entre elas em milissegundos.
+
+# 5.
+No contexto das operações de agregação com o aggregate, qual das alternativas a seguir apresenta a função da expressão $ceil?
+# Retornar o maior número inteiro mais próximo ao especificado, ou seja, arredondar um valor "para cima".
+Essa alternativa está correta. A expressão $ceil basicamente arredonda o número especificado para "cima". Ela executa a função matemática teto que converte um número x no número inteiro mais próximo, que seja maior ou igual a x .
+
+# 6.
+Marque a alternativa cujo retorno seja o maior número inteiro menor ou igual ao valor especificado.
+> db.samples.aggregate([
+  { $project: { item: 1, value: { $floor: "$value" } } }
+]);
+# Essa alternativa está correta porque utiliza no aggregate a expressão $floor, que retorna um arredondamento para baixo, ou seja, o maior número inteiro menor ou igual ao valor especificado.
+
+# 7.
+Sobre a expressão $round, analise os itens a seguir e marque a alternativa que apresenta apenas os itens corretos. I. Ela promove um arredondamento, retornando o número inteiro mais próximo do valor atual. II. Ela permite especificar se o retorno será um arredondamento "para baixo" ou "para cima". III. Ela permite definir a quantidade de casas decimais que você quer manter ao arredondar. IV. Ela precisa de um array como argumento. V. Ela precisa ser utilizada no estágio $project da pipeline.
+# I, III e IV.
+Essa alternativa está correta. A expressão $round retorna o número inteiro mais próximo do valor atual e também permite definir a quantidade de casas decimais que você quer manter ao arredondar. Além disso, ela precisa de um array como argumento em vez de um valor plano, pois caso haja um segundo parâmetro ele vai arredondar mantendo a quantidade de casas decimais que for definida.
+
+# 8.
+Qual expressão completa a lacuna da pipeline a seguir de forma a retornar a magnitude da diferença entre os valores dos campos start e end?
+> db.ratings.aggregate([
+  {
+    $project: {
+      delta: {
+        ________: { $subtract: ["$start", "$end"] }
+      }
+    }
+  }
+]);
+# $abs
+# Essa alternativa está correta. A expressão $abs retorna o valor absoluto de um número. Combinando essa expressão com a $subtract no estágio $project, podemos retornar a magnitude da diferença entre os valores dos campos "start" e "end", ou seja, considerando apenas sua distância até 0 na reta numérica, onde tanto 1 quanto -1 têm valor absoluto igual a 1, por exemplo.
+
+# 9.
+A seguir estão os documentos da collection lanches:
+{ "_id" : 1, "item" : "coxinha", "price" : 3, "quantity": 5, }
+{ "_id" : 2, "item" : "sanduiche", "price" : 12, "quantity": 3, }
+{ "_id" : 3, "item" : "pizza", "price" : 20, "quantity": 1, }
+Marque a alternativa que apresenta a operação de agregação realizada a partir dessa collection para que o retorno seja:
+{ "_id" : 1, "item" : "coxinha", "total" : 15 }
+{ "_id" : 2, "item" : "sanduiche", "total" : 36 }
+{ "_id" : 3, "item" : "pizza", "total" : 20 }
+> db.lanches.aggregate(
+   [
+     { $project: { item: 1, total: { $multiply: [ "$price", "$quantity" ] } } }
+   ]
+)
+# Essa alternativa está correta, pois o campo "total", resultante da operação de agregação, corresponde à multiplicação dos campos "$price" e "$quantity" e a alternativa traz o uso da expressão $multiply, utilizada justamente para multiplicar dois valores.
+
+# 10.
+Sobre a expressão $divide, julgue os itens a seguir e marque a alternativa que apresenta somente os itens corretos. I. Como o próprio nome sugere, essa expressão é utilizada para dividir dois valores. II. Os argumentos devem ser passados dentro de chaves. III. O primeiro argumento necessário é o dividendo , e o segundo é o divisor. IV. Pode ser utilizado um terceiro argumento para definir as quantidade de casas decimais no arredondamento do resultado.
+# I e III.
+# Essa alternativa está correta. Como o próprio nome sugere, a expressão $divide é utilizada para dividir dois valores. O primeiro argumento necessário é o dividendo, e o segundo é o divisor. Os argumentos devem ser passados dentro de colchetes. Não há um terceiro argumento, para definir a quantidade de casas decimais no arredondamento do resultado deve-se utilizar em conjunto com $divide a expressão $round.
 
 -- > CONTEÚDO do dia - 25.1 -- <---/ FIM -----------------------------------------//
 ==============================
@@ -994,7 +1078,428 @@
 -- > EXERCÍCIO do dia - 25.1 -- <---/ INICIO --------------------------------------//
 ==============================
 
+# Agora, a prática
 
+> use erp;
+
+# 1 Utilize uma combinação das expressões aritméticas e 'adicione' um campo chamado 'idade' à coleção 'clientes'.
+- arredonde para baixo o valor da idade;
+- calcule a idade usando a diferença entre a data corrente e a data de nascimento;
+- 1 dia é igual a 86400000 milissegundos.
+> db.clientes.aggregate([
+  {
+    $addFields: {
+      idade: {
+        $floor: {
+          $divide: [
+            { $subtract: ["$$NOW", "$dataNascimento"] },
+            { $multiply: [86400000, 365] }
+          ]
+        }
+      }  
+    }
+  },
+]).pretty();
+# resultado +
+{
+  "_id" : ObjectId("5e7bc243b642fc6050badb29"),
+  "clienteId" : 23,
+  "nome" : "DR. ALEXANDRE MONTEIRO",
+  "dataNascimento" : ISODate("1987-01-14T12:51:00Z"),
+  "sexo" : "FEMININO",
+  "endereco" : {
+    "logradouro" : "QUADRA DE FREITAS",
+    "numero" : "943",
+    "bairro" : "MALA E CUIA",
+    "cidade" : "CARDOSO DO SUL",
+    "uf" : "PR",
+    "cep" : "28340274"
+  },
+  "idade" : 34
+}
+
+# 2 Utilizando o novo campo idade, conte quantos clientes têm entre 18 e 25 anos.
+> db.clientes.aggregate([
+  {
+    $addFields: {
+      idade: {
+        $floor: {
+          $divide: [
+            { $subtract: ["$$NOW", "$dataNascimento"] },
+            { $multiply: [86400000, 365] }
+          ]
+        }
+      }
+    }
+  },
+  {
+    $match: {
+      idade: {
+        $gte: 18, $lte: 25
+      }
+    }
+  },
+  { $count: "clientes_entre18_25" }
+]).pretty();
+# resultado
+{ "clientes_entre18_25" : 64 }
+
+# 3 Remova os estágios $count e $match do exercício anterior e adicione um estágio no pipeline que coloque as compras do cliente no campo compras.
+> db.clientes.aggregate([
+  {
+    $addFields: {
+      idade: {
+        $floor: {
+          $divide: [
+            { $subtract: ["$$NOW", "$dataNascimento"] },
+            { $multiply: [86400000, 25] }
+          ]
+        }
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "vendas",
+      localField: "clienteId",
+      foreignField: "clienteId",
+      as: "compras"
+    }
+  }
+]).pretty();
+# resultado +
+{
+  "_id" : ObjectId("5e7bc243b642fc6050badb29"),
+  "clienteId" : 23,
+  "nome" : "DR. ALEXANDRE MONTEIRO",
+  "dataNascimento" : ISODate("1987-01-14T12:51:00Z"),
+  "sexo" : "FEMININO",
+  "endereco" : {
+          "logradouro" : "QUADRA DE FREITAS",
+          "numero" : "943",
+          "bairro" : "MALA E CUIA",
+          "cidade" : "CARDOSO DO SUL",
+          "uf" : "PR",
+          "cep" : "28340274"
+  },
+  "idade" : 505,
+  "compras" : [
+          {...}]}
+
+# 4 Selecione TODOS os clientes que compraram entre Junho de 2019 e Março de 2020.
+> db.clientes.aggregate([
+  {
+    $addFields: {
+      idade: {
+        $floor: {
+          $divide: [
+            { $subtract: ["$$NOW", "$dataNascimento"] },
+            { $multiply: [86400000, 365] }
+          ]
+        }
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "vendas",
+      localField: "clienteId",
+      foreignField: "clienteId",
+      as: "compras"
+    }
+  },
+  {
+    $match: {
+      "compras.dataVenda": {
+        $gte: ISODate("2019-06-01"),
+        $lte: ISODate("2020-03-01"),
+      }
+    }
+  },
+]).pretty();
+# resultado +
+{
+  "_id" : ObjectId("5e7bd299ad5e8ba212389599"),
+  "clienteId" : 22,
+  "dataVenda" : ISODate("2018-06-03T19:28:25Z"),
+  "status" : "AGUARDANDO PAGAMENTO",
+  "itens" : [
+    {
+      "produtoId" : 463,
+      "nome" : "QUEIJO MOZARELA",
+      "valorUnitario" : 43.43,
+      "quantidade" : 24
+    },
+  ],
+  "valorTotal" : 6087.01
+},
+
+# 5 Confira o número de documentos retornados pelo pipeline com o método itcount(). Até aqui, você deve ter 486 documentos sendo retornados.
+> db.clientes.aggregate([
+  {
+    $addFields: {
+      idade: {
+        $floor: {
+          $divide: [
+            { $subtract: ["$$NOW", "$dataNascimento"] },
+            { $multiply: [86400000, 365] }
+          ]
+        }
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "vendas",
+      localField: "clienteId",
+      foreignField: "clienteId",
+      as: "compras"
+    }
+  },
+  {
+    $match: {
+      "compras.dataVenda": {
+        $gte: ISODate("2019-06-01"),
+        $lte: ISODate("2020-03-31")
+      }
+    }
+  },
+]).itcount();
+# resultado
+486
+
+# 6 Ainda nesse pipeline, descubra os 5 estados com mais compras.
+> db.clientes.aggregate([
+  {
+    $addFields: {
+      idade: {
+        $floor: {
+          $divide: [
+            { $subtract: ["$$NOW", "$dataNascimento"] },
+            { $divide: [86400000, 365] }
+          ]
+        }
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "vendas",
+      localField: "clienteId",
+      foreignField: "clienteId",
+      as: "compras"
+    }
+  },
+  {
+    $match: {
+      "compras.dataVenda": {
+        $gte: ISODate("2019-06-01"),
+        $lte: ISODate("2020-03-01")
+      }
+    }
+  },
+  {
+    $addFields: {
+      totalCompras: {
+        $size: "$compras"
+      }
+    }
+  },
+  {
+    $sort: { totalCompras: -1 }
+  },
+  { $limit: 10 },
+  { $unwind: "$compras" },
+  {
+    $addFields: {
+      "compras.valorComDesconto": {
+        $subtract: [
+          "$compras.valorTotal",
+          { $multiply: ["$compras.valorTotal", 0.10] }
+        ]
+      }
+    }
+  },
+  {
+    $group: {
+      _id: "$endereco.uf",
+      totalCompras: {
+        $sum: 1
+      }
+    }
+  },
+  {
+    $sort: {
+      totalCompras: -1
+    }
+  },
+  { $limit: 5 }
+]).pretty();
+# resultado
+{ "_id" : "MT", "totalCompras" : 37 }
+{ "_id" : "AC", "totalCompras" : 37 }
+{ "_id" : "RN", "totalCompras" : 19 }
+{ "_id" : "RO", "totalCompras" : 19 }
+{ "_id" : "PA", "totalCompras" : 19 }
+
+# 7 Descubra o cliente que mais consumiu QUEIJO PRATO . Retorne um documento com a seguinte estrutura:
+{
+  "nomeCliente": "NOME",
+  "uf": "UF DO CLIENTE",
+  "totalConsumido": 100
+}
+> db.vendas.aggregate([
+  {
+    $match: {
+      "itens.nome": "QUEIJO PRATO"
+    }
+  },
+  {
+    $unwind: "$itens"
+  },
+  {
+    $match: {
+      "itens.nome": "QUEIJO PRATO"
+    }
+  },
+  {
+    $group: {
+      _id: "$clienteId",
+      totalConsumido: {
+        $sum: "$itens.quantidade"
+      }
+    }
+  },
+  {
+    $sort: {
+      totalConsumido: -1
+    }
+  },
+  {
+    $limit: 1
+  },
+  { // todos clientes
+    $lookup: {
+      from: "clientes",
+      localField: "_id",
+      foreignField: "clienteId",
+      as: "cliente"
+    }
+  },
+  {
+    $unwind: "$cliente"
+  },
+  {
+    $project: {
+      nomeCliente: "$cliente.nome",
+      uf: "$cliente.endereco.uf",
+      totalConsumido: "$totalConsumido",
+      _id: 0
+    }
+  }
+]).pretty();
+# resultado
+{
+  "nomeCliente": "SRTA. LETÍCIA DA MATA",
+  "uf": "GO",
+  "totalConsumido": 44
+}
+
+# 8 Selecione todas as vendas do mês de Março de 2020, com status EM SEPARACAO. Acrescente um campo chamado dataEntregaPrevista com valor igual a três dias após a data da venda. Retorne apenas os campos clienteId, dataVenda e dataEntregaPrevista.
+> db.vendas.aggregate(
+  {
+    $match: {
+      dataVenda: {
+        $gte: ISODate("2020-03-01"),
+        $lte: ISODate("2020-03-31")
+      },
+      status: "EM SEPARACAO"
+    }
+  },
+  {
+    $addFields: {
+      dataEntregaPrevista: {
+        $add: ["$dataVenda", 3 * 24 * 60 * 6000]
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      clienteId: 1,
+      dataVenda: 1,
+      dataEntregaPrevista: 1
+    }
+  },
+).pretty();
+# resultado
+{
+  "clienteId" : 445,
+  "dataVenda" : ISODate("2020-03-19T13:01:05Z"),
+  "dataEntregaPrevista" : ISODate("2020-03-19T20:13:05Z")
+}
+
+Bônus
+# 9 : Calcule a diferença absoluta em dias entre a data da primeira entrega prevista e a última, considerando o pipeline do exercício 8.
+> db.vendas.aggregate([
+  {
+    $match: {
+      dataVenda: {
+        $gte: ISODate("2020-03-01"),
+        $lte: ISODate("2020-03-31")
+      },
+      status: "EM SEPARACAO"
+    }
+  },
+  {
+    $addFields: {
+      dataEntregaPrevista: {
+        $add: ["$dataVenda", 3 * 24 * 60 * 60000]
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      clienteId: 1,
+      dataVenda: 1,
+      dataEntregaPrevista: 1
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      maxDataEntrega: {
+        $max: "$dataEntregaPrevista"
+      },
+      minDataEntrega: {
+        $min: "$dataEntregaPrevista"
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      diasDiferenca: {
+        $ceil: {
+          $abs: {
+            $divide: [
+              {
+                $subtract: [
+                  "$maxDataEntrega",
+                  "$minDataEntrega"
+                ]
+              },
+              86400000
+            ]
+          }
+        }
+      }
+    }
+  },
+]).pretty();
+# resultado
+{ "diasDiferenca" : 23 }
 
 -- > EXERCÍCIO do dia - 25.1 -- <---/ FIM -----------------------------------------//
 ============================== Updates Complexos - Arrays - Parte 2
