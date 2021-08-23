@@ -537,7 +537,151 @@ WHERE
 ##############################
 -- > AULA ao VIVO - 21.2 ----- <---/ INICIO --------------------------------------//
 
+## Foco de hoje
 
+# JOIN
+# UNION
+# Subqueries
+
+### JOIN (junta 2 ou mais tabelas)
+SELECT * FROM sakila.address WHERE city_id = 300;
+SELECT * FROM sakila.city WHERE city_id = 300;
+
+# todas cidades com city_id 300
+SELECT 
+    *
+FROM
+    sakila.address AS A
+        INNER JOIN
+    sakila.city AS C ON A.city_id = C.city_id
+WHERE
+    A.city_id = 300; # 2 row(s) returned
+
+# endereço e cidade com city_id 300
+SELECT 
+    A.address, C.city
+FROM
+    sakila.address AS A
+        INNER JOIN
+    sakila.city AS C ON A.city_id = C.city_id
+WHERE
+    A.city_id = 300; # 2 row(s) returned
+
+# endereço, cidade e país com city_id 300
+SELECT * FROM sakila.address WHERE city_id = 300;
+SELECT * FROM sakila.city WHERE city_id = 300;
+SELECT * FROM sakila.country;
+
+SELECT 
+    A.address, C.city, P.country
+FROM
+    sakila.address AS A
+        INNER JOIN
+    sakila.city AS C ON A.city_id = C.city_id
+        INNER JOIN
+    country AS P ON C.country_id = P.country_id
+WHERE
+    A.city_id = 300; # 2 row(s) returned
+
+### LEFT JOIN (junta tabela da esquerda)
+SELECT * FROM aula_joins.pets;
+SELECT * FROM aula_joins.friends;
+
+SELECT 
+    *
+FROM
+    aula_joins.friends AS F
+        LEFT JOIN
+    aula_joins.pets AS P ON F.friend_id = P.owner_id
+
+### RIGHT JOIN (junta tabela da direita)
+SELECT 
+    *
+FROM
+    aula_joins.friends AS F
+        RIGHT JOIN
+    aula_joins.pets AS P ON F.friend_id = P.owner_id; # 7 row(s) returned
+
+### SELF JOIN (busca na própria tabela)
+SELECT * FROM sakila.actor;
+
+SELECT 
+    A.actor_id AS A, B.actor_id AS B, A.first_name
+FROM
+    sakila.actor AS A,
+    sakila.actor AS B
+WHERE
+    A.first_name = B.first_name;
+
+### UNION (une 2 ou mais tabelas)
+# UNION - não trás valores repetidos
+# UNION ALL - trás valores repetidos
+
+SELECT first_name FROM sakila.actor; # 200 row(s) returned
+SELECT first_name FROM sakila.customer; # 599 row(s) returned
+
+#UNION
+SELECT 
+    first_name
+FROM
+    sakila.actor 
+UNION SELECT 
+    first_name
+FROM
+    sakila.customer; # 647 row(s) returned
+
+#UNION ALL
+SELECT 
+    first_name
+FROM
+    sakila.actor 
+UNION ALL SELECT 
+    first_name
+FROM
+    sakila.customer; # 799 row(s) returned
+
+### Subqueries (faz 1 ou mais consultas dentro de outras*select(select(select))*)
+SELECT customer_id, first_name FROM sakila.customer; # 599 row(s) returned
+
+SELECT 
+    customer_id,
+    first_name,
+    (SELECT 
+            address
+        FROM
+            sakila.address AS A
+        WHERE
+            A.address_id = C.address_id) AS Address
+FROM
+    sakila.customer AS C; # 599 row(s) returned
+
+# atores que trabalharam em mais de 20 filmes
+SELECT 
+    first_name,
+    last_name FROM
+    sakila.actor where actor_id in (
+    select actor_id from sakila.film_actor group by actor_id having count(*) > 20
+    ); # 181 row(s) returned
+# quantidade de filmes que cada ator fez > 20
+SELECT 
+    first_name,
+    last_name,
+    (SELECT 
+            COUNT(*)
+        FROM
+            sakila.film_actor AS FA
+        WHERE
+            A.actor_id = FA.actor_id
+        GROUP BY actor_id)
+FROM
+    sakila.actor AS A
+WHERE
+    actor_id IN (SELECT 
+            actor_id
+        FROM
+            sakila.film_actor
+        GROUP BY actor_id
+        HAVING COUNT(*) > 20); # 181 row(s) returned
 
 -- > AULA ao VIVO - 21.2 ----- <---/ FIM -----------------------------------------//
 ##############################
@@ -545,6 +689,190 @@ WHERE
 
 # Vamos praticar!
 
+# 1 Utilizando o INNER JOIN, encontre as vendas nacionais (domestic_sales) e internacionais (international_sales) de cada filme.
+SELECT * FROM Pixar.Movies; # 11 row(s) returned
+SELECT * FROM Pixar.BoxOffice; # 11 row(s) returned
+
+SELECT 
+    M.title, B.domestic_sales, B.international_sales
+FROM
+    Pixar.Movies AS M
+        INNER JOIN
+    Pixar.BoxOffice AS B ON M.id = B.movie_id; # 11 row(s) returned
+
+# 2 Utilizando o INNER JOIN, faça uma busca que retorne o número de vendas para cada filme que possui um número maior de vendas internacionais (international_sales) do que vendas nacionais (domestic_sales).
+SELECT 
+    M.title, B.rating, B.international_sales
+FROM
+    Pixar.Movies AS M
+        INNER JOIN
+    Pixar.BoxOffice AS B ON M.id = B.movie_id
+WHERE
+    B.international_sales > B.domestic_sales; # 5 row(s) returned
+
+# 3 Utilizando o INNER JOIN, faça uma busca que retorne os filmes e sua avaliação (rating) em ordem decrescente.
+SELECT 
+    M.title, B.rating
+FROM
+    Pixar.Movies AS M
+        INNER JOIN
+    Pixar.BoxOffice AS B ON M.id = B.movie_id
+ORDER BY B.rating DESC; # 11 row(s) returned
+
+# 4 Utilizando o LEFT JOIN, faça uma busca que retorne todos os dados dos cinemas, mesmo os que não possuem filmes em cartaz e, adicionalmente, os dados dos filmes que estão em cartaz nestes cinemas. Retorne os nomes dos cinemas em ordem alfabética.
+SELECT 
+    T.`name`,
+    T.location,
+    M.title,
+    M.director,
+    M.`year`,
+    M.length_minutes
+FROM
+    Pixar.Theater AS T
+        LEFT JOIN
+    Pixar.Movies AS M ON T.id = M.theater_id
+ORDER BY T.name; # 6 row(s) returned
+
+# 5 Utilizando o RIGHT JOIN, faça uma busca que retorne todos os dados dos filmes, mesmo os que não estão em cartaz e, adicionalmente, os dados dos cinemas que possuem estes filmes em cartaz. Retorne os nomes dos cinemas em ordem alfabética.
+SELECT 
+    T.id,
+    T.`name`,
+    T.location,
+    M.title,
+    M.director,
+    M.`year`,
+    M.length_minutes
+FROM
+    Pixar.Theater AS T
+        RIGHT JOIN
+    Pixar.Movies AS M ON T.id = M.theater_id
+ORDER BY T.name; # 11 row(s) returned
+
+# 6 Faça duas buscas, uma utilizando SUBQUERY e outra utilizando INNER JOIN, que retornem os títulos dos filmes que possuem avaliação maior que 7.5.
+# utilizando SUBQUERY
+SELECT 
+    title
+FROM
+    Pixar.Movies
+WHERE
+    id IN (SELECT 
+            movie_id
+        FROM
+            Pixar.BoxOffice
+        WHERE
+            rating > 7.5); # 5 row(s) returned
+# utilizando INNER JOIN
+SELECT 
+    M.title
+FROM
+    Pixar.Movies AS M
+        INNER JOIN
+    Pixar.BoxOffice AS B ON M.id = B.movie_id
+WHERE
+    B.rating > 7.5; # 5 row(s) returned
+
+# 7 Faça duas buscas, uma utilizando SUBQUERY e outra utilizando INNER JOIN, que retornem as avaliações dos filmes lançados depois de 2009.
+# utilizando SUBQUERY
+SELECT 
+    rating
+FROM
+    Pixar.BoxOffice
+WHERE
+    movie_id IN (SELECT 
+            id
+        FROM
+            Pixar.Movies
+        WHERE
+            `year` > 2009); # 2 row(s) returned
+# utilizando INNER JOIN
+SELECT 
+    B.rating
+FROM
+    Pixar.BoxOffice AS B
+        INNER JOIN
+    Pixar.Movies AS M ON B.movie_id = M.id
+WHERE
+    M.`year` > 2009; # 2 row(s) returned
+
+# 8 Utilizando o EXISTS, selecione o nome e localização dos cinemas que possuem filmes em cartaz.
+SELECT 
+    T.`name`, T.location
+FROM
+    Pixar.Theater AS T
+WHERE
+    EXISTS( SELECT 
+            *
+        FROM
+            Pixar.Movies AS M
+        WHERE
+            T.id = M.theater_id); # 5 row(s) returned
+
+# 9 Utilizando o EXISTS, selecione o nome e localização dos cinemas que não possuem filmes em cartaz.
+SELECT 
+    T.`name`, T.location
+FROM
+    Pixar.Theater AS T
+WHERE
+    NOT EXISTS( SELECT 
+            *
+        FROM
+            Pixar.Movies AS M
+        WHERE
+            T.id = M.theater_id); # 1 row(s) returned
+
+# Bônus
+
+# 10 Utilizando o INNER JOIN, selecione todas as informações dos filmes com avaliação maior que 8 e que estejam em cartaz.
+SELECT 
+    M.id,
+    M.title,
+    M.director,
+    M.`year`,
+    M.length_minutes,
+    M.theater_id
+FROM
+    Pixar.Movies AS M
+        INNER JOIN
+    Pixar.BoxOffice AS B ON M.id = B.movie_id
+WHERE
+    B.rating > 8
+        AND M.theater_id IS NOT NULL; # 1 row(s) returned
+
+# 11 Utilizando o SELF JOIN, selecione os títulos e duração dos filmes que possuem o mesmo diretor.
+SELECT 
+    T1.title, T1.length_minutes, T2.title, T2.length_minutes
+FROM
+    Pixar.Movies AS T1,
+    Pixar.Movies AS T2
+WHERE
+    T1.director = T2.director
+        AND T1.title <> T2.title; # 14 row(s) returned
+
+# 12 Faça duas buscas, uma utilizando SUBQUERY e outra utilizando INNER JOIN, que retornem o título dos filmes que arrecadaram 500 milhões ou mais, e que possuem duração maior que 110 minutos.
+# utilizando SUBQUERY
+SELECT 
+    M.title
+FROM
+    Pixar.Movies AS M
+WHERE
+    M.id IN (SELECT 
+            B.movie_id
+        FROM
+            Pixar.BoxOffice AS B
+        WHERE
+            B.international_sales >= 500000000)
+        AND M.length_minutes > 110; # 1 row(s) returned
+# utilizando INNER JOIN
+SELECT 
+    M.title
+FROM
+    Pixar.Movies AS M
+        INNER JOIN
+    Pixar.BoxOffice AS B ON M.id = B.movie_id
+WHERE
+    B.international_sales >= 500000000
+        AND M.length_minutes > 110; # 1 row(s) returned
 
 -- > EXERCÍCIO do dia - 21.2 -- <---/ FIM -----------------------------------------//
 ############################## JOINs, UNIONs e Subqueries
+# concluido \o/
