@@ -636,6 +636,158 @@ leArquivo
 // -- > EXERCÍCIO do dia - 26.3 -- <---/ INICIO --------------------------------------//
 // ==============================
 
+// Agora a prática
+
+// Exercício 1: Estruture os testes utilizando mocha e chai para um função que irá dizer se um número é "positivo", "negativo" ou "neutro":
+// # Essa função irá receber um número como parâmetro e retornar uma string como resposta;
+// # Quando o número passado for maior que 0 deverá retornar "positivo", quando for menor que 0 deverá retornar "negativo" e quando igual a 0 deverá retornar "neutro";
+// # Descreva todos os cenário de teste utilizando describes;
+// # Descreva todos os testes que serão feitos utilizando its;
+// # Crie as asserções validando se os retornos de cada cenário tem o tipo e o valor esperado.
+
+// - resolução:
+// # exercicio/test. 
+// # npm init
+// # npm install -D mocha chai
+// # npm install --save-dev sinon
+/*
+// package.json
+{
+  // ...
+    "scripts": {
+      "start": "node index.js",
+      "test": "mocha test.js"
+    },
+  // ...
+  }
+*/ 
+const { expect } = require('chai');
+const numerosNaturais = require('./positivoNegativoNeutro');
+
+describe('Executa a funçção numerosNaturais', () => {
+  describe('Quando o número for maior que 0', () => {
+    describe('A resposta', () => {
+      it('é uma ""string', () => {
+        const resposta = numerosNaturais(10);
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é igual a "positivo"', () => {
+        const resposta = numerosNaturais(10);
+        expect(resposta).to.be.equals('positivo');
+      });
+    });
+  });
+  
+  describe('Quando o número for menor que 0', () => {
+    describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = numerosNaturais(-10);
+      expect(resposta).to.be.a('string');
+    });
+    
+    it('é igual a "negativo"', () => {
+      const resposta = numerosNaturais(-10);
+      expect(resposta).to.be.equals('negativo');
+    });
+    });
+  });
+
+  describe('Quando o número for igual a 0', () => {
+    describe('a resposta', () => {
+      it('é uma "string"', () => {
+        const resposta = numerosNaturais(0);
+        expect(resposta).to.be.a('string');
+      });
+      
+      it('é igual a "neutro"', () => {
+        const resposta = numerosNaturais(0);
+        expect(resposta).to.be.equals('neutro');
+      });
+    });
+  });
+});
+
+// Exercício 2: Implemente a função apresentada no exercício 1, garantindo que ela irá passar em todos os testes que você escreveu.
+
+// - resolução
+module.export = (numero) => {
+  if (numero > 0) {
+    return 'positivo';
+  }
+  if (numero < 0) {
+    return 'negativo';
+  }
+  return 'neutro';
+};
+
+// Exercício 3: Adicione à função um tratamento para casos em que o parâmetro informado não seja do tipo Number .
+// # Adicione o cenário em seu arquivo de testes, passando um valor de tipo diferente a Number para a função;
+// # Adicione uma asserção para esperar que o valor retornado para esse caso seja igual uma string "o valor deve ser um número";
+// # Implemente em sua função tal validação para que o teste passe.
+
+// - resolução
+// test.js
+describe('Quando o parâmetro passado não é número', () => {
+  describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = numerosNaturais('Texto');
+      expect(resposta).to.be.a('string');
+    });
+
+    it('é igual a "o parâmetro deve ser número"', () => {
+      const resposta = numerosNaturais('Texto');
+      expect(resposta).to.be.equals('oparâmetro deve ser número');
+    });
+  });
+});
+// positivoNegativoNeutro.js
+module.export = (numero) => {
+  if (typeof numero !== 'number') {
+    return 'o parâmetro deve ser um número';
+  }
+  if (numero > 0) {
+    return 'positivo';
+  }
+  if (numero < 0) {
+    return 'negativo';
+  }
+  return 'neutro';
+};
+
+// Exercício 4: Crie testes para uma função que escreverá um conteúdo em um arquivo específico.
+// # Essa função deverá receber dois parâmetros: o nome do arquivo e o conteúdo desse arquivo.
+// # Após concluir a escrita do arquivo ela deverá retornar um ok.
+// # Descreva todos os cenários de teste utilizando describes;
+// # Descreva todos os testes que serão feitos utilizando its;
+// # Crie as asserções validando se o retorno da função possui o valor e tipo esperado.
+
+// - resolução
+const fs = require('fs');
+const { expect } = require('chai');
+const escrevaArquivo = require('./escrevaArquivo');
+
+describe('Executa a função  escrevaArquivo', () => {
+  describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+      expect(resposta).to.be.a('string');
+    });
+
+    it('é igual a "ok"', () => {
+      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+      expect(resposta).to.be.equals('ok');
+    });
+  });
+});
+
+// Exercício 5: Implemente a função descrita no exercício 4.
+// # Crie a função descrita no exercício 4 utilizando o módulo fs do node.
+// # Adapte os testes adicionando stub ao módulo utilizado do fs, isolando assim o teste.
+// # Garanta que todos os testes escritos no exercício 4 irão passar com sucesso.
+
+// - resolução
+
 
 // ==============================
 // -- > EXERCÍCIO do dia - 26.3 -- <---/ FIM -----------------------------------------//
