@@ -1,5 +1,5 @@
 // ============================== Intro - NodeJS
-// -- > CONTEÚDO do dia - 24.1 -- <---/ INICIO --------------------------------------//
+// -- > CONTEÚDO do dia - 26.1 -- <---/ INICIO --------------------------------------//
 // ==============================
 
 // 1 O que é Node.js?
@@ -295,58 +295,136 @@ const readline = require('readline-sync');
 
 // o próximo e último passo é utilizarmos essas novas variáveis para compor nossa mensagem de olá.
 
-// -- > CONTEÚDO do dia - 24.1 -- <---/ FIM -----------------------------------------//
+// -- > CONTEÚDO do dia - 26.1 -- <---/ FIM -----------------------------------------//
 // ==============================
-// -- > AULA ao VIVO - 24.1 ----- <---/ INICIO --------------------------------------//
+// -- > AULA ao VIVO - 26.1 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
  
  
-// -- > AULA ao VIVO - 24.1 ----- <---/ FIM -----------------------------------------//
+// -- > AULA ao VIVO - 26.1 ----- <---/ FIM -----------------------------------------//
 // ==============================
-// -- > EXERCÍCIO do dia - 24.1 -- <---/ INICIO --------------------------------------//
+// -- > EXERCÍCIO do dia - 26.1 -- <---/ INICIO --------------------------------------//
 // ==============================
 
 // Agora a prática
 
 // Crie uma nova pasta e, dentro dela, crie um pacote Node.js com o npm init chamado my-scripts.
+// # mkdir exercicio
+// # cd exercicio 
+// # npm init
 
-// 1 Crie um script para calcular o Índice de Massa Corporal(IMC) de uma pessoa.
-
-// 1.1 A fórmula para calcular o IMC é peso / altura ^ 2 .
+// 1- Crie um script para calcular o Índice de Massa Corporal(IMC) de uma pessoa.
+// - A fórmula para calcular o IMC é peso / altura ^ 2.
 // Obs: Lembre-se que a altura é em metros, caso deseje usar em centímetros a conversão para metros será necessária.
+// - Comece criando um novo pacote node com npm init e respondendo às perguntas do npm.
+// - Por enquanto, não se preocupe em pedir input da pessoa usuária. Utilize valores fixos para peso e altura.
+// - Armazene o script no arquivo imc.js.
 
+// # cd exercicio 
+// # cria o arquivo 'imc.js'
+// # isere o código
 
-// 1.2 Comece criando um novo pacote node com npm init e respondendo às perguntas do npm .
+// # imc.js
+const peso = 78;
+const altura = 1.70;
 
+function indiceMassaCorporal() {
+  console.log(`Peso: ${peso}, Altura: ${altura}`);
+  const imc = (peso / Math.pow(altura / 100, 2)).toFixed(2);
+  console.log(`IMC: ${imc}`);
+}
 
-// 1.3 Por enquanto, não se preocupe em pedir input da pessoa usuária. Utilize valores fixos para peso e altura.
+indiceMassaCorporal();
 
+// https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/pow
 
-// 1.4 Armazene o script no arquivo imc.js.
+// # Math.pow()
+// A função Math.pow() retorna a 'base' elevada ao 'expoente' power, ou seja, baseexpoente.
+// - Math.pow(base, expoente)
+// base - O número da base.
+// expoente - O expoente usado para elevar a base.
 
+// https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed
 
-// 2 Agora, permita que o script seja executado através do comando npm run imc
+// # .toFixed()
+// formata um número utilizando notação de ponto fixo.
+// - numObj.toFixed([dígitos])
+// dígitos - O número de dígitos que aparecem depois do ponto decimal; este pode ser um valor entre 0 e 20,
 
-// 2.1 O novo script criado deve conter o comando que chama o node para executar o arquivo imc.js.
+// veja o resultado
 
+// # node imc.js                  
+// Peso: 78, Altura: 1.7
+// IMC: 269896.19
 
-// 3 Chegou a hora de tornar nosso script mais interativo! Vamos adicionar input de quem usa.
+// 2- Agora, permita que o script seja executado através do comando 'npm run imc'
+// - O novo script criado deve conter o comando que chama o node para executar o arquivo 'imc.js'.
 
+// # edita o package.json
+{
+  // ...
+  "scripts": {
+    // ...
+    "imc": "node imc.js"
+  }
+  // ...
+}
+// # teste o resultado
+// # npm run imc
 
-// 3.1 Você já utilizou o pacote readline-sync para esse fim. Que tal utilizar o mesmo pacote?
+// 3- Chegou a hora de tornar nosso script mais interativo! Vamos adicionar input de quem usa.
+// - Você já utilizou o pacote 'readline-sync' para esse fim.
+// - Substitua os valores fixos de peso e altura por dados informados pela pessoa ao responder as perguntas "Qual seu peso?" e "Qual sua altura?" no terminal.
 
+// # instala o 'readline-sync'
+// # npm i readline-sync
+// # importa o 'readline-sync' no 'imc.js'
 
-// 3.2 Substitua os valores fixos de peso e altura por dados informados pela pessoa ao responder as perguntas "Qual seu peso?" e "Qual sua altura?" no terminal.
+// # imc_readline.js
+const readline = require('readline-sync');
 
+const peso = readline.questionInt('Qual o seu peso? (em Kg)');
+const altura = readline.questionInt('Qual a sua altura? (em cm)');
+
+function indiceMassaCorporal() {
+  console.log(`Peso: ${peso}, Altura: ${altura}`);
+  const imc = (peso / Math.pow(altura / 100, 2)).toFixed(2);
+  console.log(`IMC: ${imc}`);
+}
+
+indiceMassaCorporal();
+
+// # veja o resultado
+// # node imc_readline.js
 
 // 4 Agora temos um problema: peso não é um número inteiro! Isso quer dizer que precisamos mudar um pouco a forma como solicitamos o input desse dado.
+// - O pacote 'readline-sync' possui uma função específica para tratar esses casos. Consulte a documentação do pacote e encontre o método adequado para realizar input de floats.
+// - Encontrou a função? Show! Agora utilize-a para solicitar o input de peso.
 
+// # questionFloat
+// # numFloat  = readlineSync.questionFloat([query[, options]]) 
+// interpreta como um número de ponto flutuante e retorna o número(não string).
+// # Isso analisa a entrada tanto quanto possível por parseFloat().
+// Exemplo, ele interpreta ' 3.14 ', '003.1400', '314e-2'e '3.14PI'como 3.14
+// Fonte: https://www.npmjs.com/package/readline-sync
 
-// 4.1 O pacote readline-sync possui uma função específica para tratar esses casos. Consulte a documentação do pacote e encontre o método adequado para realizar input de floats.
+// # imc_readline_float.js
+const readline = require('readline-sync');
 
+const peso = readline.questionFloat('Qual o seu peso? (em kg) ');
+const altura = readline.questionFloat('Qual a sua altura? (em cm) ' );
 
-// 4.2 Encontrou a função? Show! Agora utilize-a para solicitar o input de peso.
+function indiceMassaCorporal() {
+  console.log(`Peso: ${peso}, Altura: ${altura}`);
+  const imc = (peso / Math.pow(altura / 100, 2)).toFixed(2);
+  console.log(`IMC: ${imc}`);
+}
+
+indiceMassaCorporal();
+
+// # veja o resultado
+// # node imc_readline_float.js
 
 // 5 Vamos sofisticar um pouco mais nosso script. Além de imprimir o IMC na tela, imprima também em qual categoria da tabela abaixo aquele IMC se enquadra:
 //  Considere a seguinte tabela para classificar a situação do IMC:
@@ -361,46 +439,90 @@ const readline = require('readline-sync');
 | 40,0 e acima                              | Obesidade graus III e IV  |
 */
 
+// # imc_categoria.js
+const readline = require('readline-sync');
+
+const peso = readline.questionFloat('Qual o seu peso? (em kg) ');
+const altura = readline.questionFloat('Qual a sua altura? (em cm) ' );
+
+function indiceMassaCorporal() {
+  console.log(`Peso: ${peso}, Altura: ${altura}`);
+  const imc = (peso / Math.pow(altura / 100, 2)).toFixed(2);
+  console.log(`IMC: ${imc}`);
+
+  if (imc < 18.5) {
+    console.log('Situação: Abaixo do peso (magreza)');
+    return;
+  }
+  if (imc < 25) {
+    console.log('Situação: Peso nornal');
+    return;
+  }
+  if (imc < 30) {
+    console.log('Situação: Acima do peso (sobrepeso)');
+    return;
+  }
+  if (imc < 35) {
+    console.log('Situação: Obesidade grau I');
+    return;
+  }
+  if (imc < 40) {
+    console.log('Situação: Obesidade grau II');
+    return;
+  }
+  console.log('Situação: Obesidade graus III e IV');
+}
+
+indiceMassaCorporal();
+
+// # veja o resultado
+// # node imc_categoria.js 
+
 // 6 Vamos criar mais um script. Dessa vez, para calcular a velocidade média de um carro numa corrida
+// - A fórmula para calcular velocidade média é 'distância/tempo'.
+// - Armazene o script no arquivo 'velocidade.js'.
+// - Agora, permita que o script seja executado através do comando 'npm run velocidade'. Para isso, crie a chave velocidade dentro do objeto scripts no 'package.json'.
+// - Utilize o readline-sync para solicitar os dados à pessoa.
+// - Considere a distância em metros e o tempo em segundos. Repare que, agora, estamos trabalhando com números inteiros.
 
+// # cria pagina
+// # velocidade.js
+const readline = require('readline-sync');
 
-// 6.1 A fórmula para calcular velocidade média é distância/tempo .
+function velocidadeMedia () {
+  const distancia = readline.questionInt('Distância percorrida (m): ');
+  const tempo = readline.questionInt('Tempo gasto (s): ');
 
+  const velocidadeMed = (distancia / tempo).toFixed(2);
+  console.log(`Velocidade média: ${velocidadeMed} m/s`);
+}
 
-// 6.2 Armazene o script no arquivo velocidade.js.
+velocidadeMedia();
 
+// # cria o script para o comando de chamada
+{
+  // ...
+  "scripts": {
+    // ...
+    "velocidade":"node velocidade.js"
+  },
+  // ...
+}
 
-// 6.3 Agora, permita que o script seja executado através do comando npm run velocidade . Para isso, crie a chave velocidade dentro do objeto scripts no package.json.
-
-
-// 6.4 Utilize o readline-sync para solicitar os dados à pessoa.
-
-
-// 6.5 Considere a distância em metros e o tempo em segundos. Repare que, agora, estamos trabalhando com números inteiros.
-
+// # veja o resultado
+// # npm run velocidade
 
 // 7 Crie um "jogo de adivinhação" em que a pessoa ganha se acertar qual foi o número aleatório gerado
+// - O script deve ser executado através do comando npm run sorteio.
+// - Utilize o readline-sync para realizar input de dados.
+// - Armazene o script em sorteio.js.
+// - O número gerado deve ser um inteiro entre 0 e 10.
+// - Caso a pessoa acerte o número, exiba na tela "Parabéns, número correto!".
+// - Caso a pessoa erre o número, exiba na tela "Opa, não foi dessa vez. O número era [número sorteado]".
+// - Ao final, pergunte se a pessoa deseja jogar novamente. Se sim, volte ao começo do script.
 
-
-// 7.1 O script deve ser executado através do comando npm run sorteio.
-
-
-// 7.2 Utilize o readline-sync para realizar input de dados.
-
-
-// 7.3 Armazene o script em sorteio.js.
-
-
-// 7.4 O número gerado deve ser um inteiro entre 0 e 10.
-
-
-// 7.5 Caso a pessoa acerte o número, exiba na tela "Parabéns, número correto!".
-
-
-// 7.6 Caso a pessoa erre o número, exiba na tela "Opa, não foi dessa vez. O número era [número sorteado]".
-
-
-// 7.7 Ao final, pergunte se a pessoa deseja jogar novamente. Se sim, volte ao começo do script.
+// # cria a pagina
+// # sorteio.js
 
 
 // 8 Crie um arquivo index.js que pergunta qual script deve ser executado
@@ -422,7 +544,7 @@ const readline = require('readline-sync');
 
 
 
-// -- > EXERCÍCIO do dia - 24.1 -- <---/ FIM -----------------------------------------//
+// -- > EXERCÍCIO do dia - 26.1 -- <---/ FIM -----------------------------------------//
 // ============================== Intro - NodeJS
 // ...
 
