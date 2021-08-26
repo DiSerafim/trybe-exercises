@@ -1,0 +1,1 @@
+// - e se precisarmos do resultado da leitura dos três arquivos?

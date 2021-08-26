@@ -1,0 +1,1 @@
+// - todos os arquivos serão lidos ao mesmo tempo e, não teremos uma forma de saber quando cada um vai terminar de ser lido.
