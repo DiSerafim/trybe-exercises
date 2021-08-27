@@ -628,8 +628,173 @@ leArquivo
 // -- > AULA ao VIVO - 26.3 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
- 
- 
+// ### O que vamos aprender
+
+// - **Testes no Node**
+// - **Mocha**
+// - **Chai**
+// // - **Sinon**
+// - **Usaremos TDD 💚**
+
+// # mkdir ao-vivo && cd ao-vivo
+// # mkdir exemplo01 && cd exemplo01
+// # npm init -y (cria o package.json padrão)
+// # npm install --save-dev mocha chai sinon (ferramentas de teste)
+
+// # package.json
+{
+  // ...
+  "scripts": {
+    "test": "mocha readFileTest.js"
+  },
+  // ...
+}
+
+// # exemplo01/readFileTest.js
+const { expect } = require('chai');
+const { readFile } = require('./readFile')
+const sinon = require('sinon');
+const fs = require('fs').promises;
+
+describe('Chama a função "ReadFile"', () => {
+  describe('Quando o arquivo é lido com sucesso', () => {
+    describe('a resposta', () => {
+
+      before(() => {
+        sinon.stub(fs, 'readFile').resolves(FILE_CONTENT);
+      });
+      after(() => {
+        fs.readFile.restore();
+      });
+
+      const FILE_CONTENT = 'Testes <3';
+
+      it('é uma string', async() => {
+        const resposta = await readFile('teste.txt');
+        expect(resposta).to.be.a('string');
+      });
+
+      it('é iguall ao conteúdo do arquivo', async() => {
+        const resposta = await readFile('teste.txt');
+        expect(resposta).to.be.equal(FILE_CONTENT);
+      });
+    });
+  });
+
+  describe('Quando ocorre algum erro na leitura do arquivo', () => {
+    describe('a resposta', () => {
+
+      before(() => {
+        sinon.stub(fs, 'readFile').rejects();
+      });
+      after(() => {
+        fs.readFile.restore();
+      });
+
+      it('é igual a "null"', async() => {
+        const resposta = await readFile('não-existe.txt');
+        expect(resposta).to.be.equal(null);
+      });
+    });
+  });
+});
+// # exemplo01/readFile.js
+const fs = require('fs').promises;
+
+async function readFile(fileName) {
+  try {
+    const fileContent = await fs.readFile(`./${fileName}`, 'utf-8');
+    return fileContent;
+  } catch {
+    return null;
+  }
+}
+module.exports = { readFile }
+// # exemplo01/teste.txt
+Testes <3
+
+// # mkdir exemplo02 && cd exemplo02
+// # npm init -y
+// # npm install --save-dev mocha chai sinon
+// # npm i readline-sync
+
+// # package.json
+{
+  // ...
+  "scripts": {
+    "test": "mocha tests.js"
+  },
+  // ...
+}
+
+// # exemplo02/test/calculaAreaTest.js
+const { expect } = require('chai');
+const calculaArea = require('../calculaArea');
+const sinon = require('sinon');
+const readline = require('readline-sync');
+
+describe('Executa o script CalculaArea', () => {
+  describe('a resposta', () => {
+    // Dublê
+    before(() => {
+      sinon.stub(readline, 'questionInt').returns(10);
+    });
+    after(() => {
+      readline.questionInt.restore()
+    });
+
+    it('é um "number"', () => {
+      const resposta = calculaArea();
+      expect(resposta).to.be.a('number');
+    });
+
+    it('é igual a "100" se o lado for "10"', () => {
+      const resposta = calculaArea();
+      expect(resposta).to.be.equal(100);
+    });
+  });
+  describe('Se o lado for negativo', () => {
+    describe('a resposta é', () => {
+      // Dublê
+      before(() => {
+        sinon.stub(readline, 'questionInt').returns(-10);
+      });
+      after(() => {
+        readline.questionInt.restore();
+      });
+
+      it('Deve dar um erro', () => {
+        // throws(erros)
+        expect(() => calculaArea()).to.throws();
+      });
+    });
+  });
+});
+// # exemplo02/calculaArea.js
+const readline = require('readline-sync');
+
+function calculaArea() {
+  const lado = readline.questionInt('Digite o valor do lado: ');
+
+  if (lado < 0) throw new Error('O lado precisa ser positivo');
+  
+  const area = Math.pow(lado, 2);
+  return area;
+}
+
+module.exports = calculaArea;
+
+// Para ter um visual bonito tente
+// # npx mocha test --reporter=nyan test/calculaAreaTest.js
+ 3   -_-__,------,
+ 0   -_-__|  /\_/\ 
+ 0   -_-_~|_( ^ .^) 
+     -_-_ ""  "" 
+
+  3 passing (23ms)
+// veja mais em:
+// https://mochajs.org/#reporters
+
 // ==============================
 // -- > AULA ao VIVO - 26.3 ----- <---/ FIM -----------------------------------------//
 // ==============================
@@ -646,7 +811,8 @@ leArquivo
 // # Crie as asserções validando se os retornos de cada cenário tem o tipo e o valor esperado.
 
 // - resolução:
-// # exercicio/test. 
+// # exercicio/positivoegativoNeutro/test.js
+// # exercicio/positivoegativoNeutro/positivoegativoNeutro.js
 // # npm init
 // # npm install -D mocha chai
 // # npm install --save-dev sinon
@@ -661,6 +827,7 @@ leArquivo
   // ...
   }
 */ 
+// test.js
 const { expect } = require('chai');
 const numerosNaturais = require('./positivoNegativoNeutro');
 
@@ -711,6 +878,7 @@ describe('Executa a funçção numerosNaturais', () => {
 // Exercício 2: Implemente a função apresentada no exercício 1, garantindo que ela irá passar em todos os testes que você escreveu.
 
 // - resolução
+// test.js
 module.export = (numero) => {
   if (numero > 0) {
     return 'positivo';
@@ -762,20 +930,37 @@ module.export = (numero) => {
 // # Descreva todos os testes que serão feitos utilizando its;
 // # Crie as asserções validando se o retorno da função possui o valor e tipo esperado.
 
-// - resolução
+// - resolução:
+
+// # exercicio/ecrevaUmConteudo/test.js
+// # exercicio/ecrevaUmConteudo/ecrevaUmConteudo.js
+// # npm init -y
+// # npm install --save-dev mocha chai sinon
+/*
+// package.json
+{
+  // ...
+    "scripts": {
+      "start": "node index.js",
+      "test": "mocha test.js"
+    },
+  // ...
+  }
+*/ 
+// test.js
 const fs = require('fs');
 const { expect } = require('chai');
-const escrevaArquivo = require('./escrevaArquivo');
+const ecrevaUmConteudo = require('./ecrevaUmConteudo');
 
-describe('Executa a função  escrevaArquivo', () => {
+describe('Executa a função  ecrevaUmConteudo', () => {
   describe('a resposta', () => {
     it('é uma "string"', () => {
-      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+      const resposta = ecrevaUmConteudo('arquivo.txt', '#vqv conteúdo');
       expect(resposta).to.be.a('string');
     });
 
     it('é igual a "ok"', () => {
-      const resposta = escrevaArquivo('arquivo.txt', '#vqv conteúdo');
+      const resposta = ecrevaUmConteudo('arquivo.txt', '#vqv conteúdo');
       expect(resposta).to.be.equals('ok');
     });
   });
@@ -787,9 +972,44 @@ describe('Executa a função  escrevaArquivo', () => {
 // # Garanta que todos os testes escritos no exercício 4 irão passar com sucesso.
 
 // - resolução
+// test.js
+const fs = require('fs');
+const sinon = require('sinon'); // 5
+const { expect } = require('chai');
 
+const ecrevaUmConteudo = require('./ecrevaUmConteudo');
+
+describe('Executa a função ecrevaUmConteudo', () => {
+   // 5(before, after)
+  before(() => {
+    sinon.stub(fs, 'writeFileSync');
+  });
+  after(() => {
+    fs.writeFileSync.restore();
+  });
+
+  describe('a resposta', () => {
+    it('é uma "string"', () => {
+      const resposta = ecrevaUmConteudo('arquivo.txt', '#vqv conteúdo');
+      expect(resposta).to.be.a('string');
+    });
+
+    it('é igual a "ok"', () => {
+      const resposta = ecrevaUmConteudo('arquivo.txt', '#vqv conteúdo');
+      expect(resposta).to.be.equals('ok');
+    });
+  });
+});
+// ecrevaUmConteudo.js
+const fs = require('fs');
+
+module.exports = (nomeDoArquivo, conteudoDoArquivo) => {
+  fs.writeFileSync(`${__dirname}/${nomeDoArquivo}`, conteudoDoArquivo);
+
+  return 'ok';
+};
 
 // ==============================
 // -- > EXERCÍCIO do dia - 26.3 -- <---/ FIM -----------------------------------------//
 // ============================== Node.js - Fluxo Assíncrono
-// ...
+// Concluido \o/
