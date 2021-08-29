@@ -5,12 +5,22 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "fatorial": "node fatorial.js",
     "imc": "node imc.js",
-    "velocidade":"node velocidade.js"
+    "velocidade": "node velocidade.js",
+    "sorteio": "node sorteio.js",
+    "start": "node index.js",
+    "fibonacci": "node fibonacci.js"
   },
   "author": "Diego-Serafim",
   "license": "ISC",
   "dependencies": {
     "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.25.0"
   }
 }
