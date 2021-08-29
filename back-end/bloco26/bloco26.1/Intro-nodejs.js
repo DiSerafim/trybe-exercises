@@ -14,7 +14,6 @@
 // Utilizar o sistema de módulos do Node.js;
 // Criar scripts simples, com interação do usuário, com Node.js.
 
-
 // ### O que é Node.js?
 // -- Node.js surgiu do V8, que é a ferramenta do Google Chrome responsável por ler e executar as instruções que escrevemos em JavaScript. Ao software responsável por interpretar o código dá-se o nome de interpretador, engine e, de runtime. Por isso, é comum dizer que o "NodeJS é um runtime JavaScript".
 
@@ -300,8 +299,57 @@ const readline = require('readline-sync');
 // -- > AULA ao VIVO - 26.1 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
- 
- 
+//  Oque vamos aprender
+// # Criar projetos(npm init)
+// # Scripts Node
+// # Instalar pacotes
+// # Ler dados do console
+
+// Mão na massa
+
+// # cd funcao-segundo-grau
+// # npm init
+// # npm i readline-sync
+
+// # edita o package.json
+{
+  // ...
+  "scripts": {
+    // ...
+    "start": "node index.js"
+  }
+  // ...
+}
+
+// # index.js
+const readline = require('readline-sync');
+
+function executaCalculo() {
+  const a = readline.questionInt('Digite o valor de a: ');
+  const b = readline.questionInt('Digite o valor de b: ');
+  const c = readline.questionInt('Digite o valor de c: ');
+  const delta = calculaDelta(a, b, c);
+  if (delta < 0) {
+    console.log('Impossível fazer calculo de Delta negativo');
+    return;
+  }
+  const resultado = calculaX(a, b, delta);
+  console.log(`Resultado: X1 = ${resultado.x1}; X2 = ${resultado.x2}`);
+}
+function calculaDelta(a, b, c) {
+  // exponeiciação Math.pow(b, 2)
+  return Math.pow(b, 2) - 4 * a * c;
+}
+function calculaX(a, b, delta) {
+  // raiz quadrada Math.sqrt(delta)
+  const x1 = ((-b + Math.sqrt(delta)) / (2 * a));
+  const x2 = ((-b - Math.sqrt(delta)) / (2 * a));
+
+  return { x1, x2 }
+}
+
+executaCalculo();
+
 // -- > AULA ao VIVO - 26.1 ----- <---/ FIM -----------------------------------------//
 // ==============================
 // -- > EXERCÍCIO do dia - 26.1 -- <---/ INICIO --------------------------------------//
@@ -702,5 +750,4 @@ calculo();
 
 // -- > EXERCÍCIO do dia - 26.1 -- <---/ FIM -----------------------------------------//
 // ============================== Intro - NodeJS
-// ...
-
+// Concluido \o/
