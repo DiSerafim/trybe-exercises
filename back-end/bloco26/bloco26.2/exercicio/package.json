@@ -4,8 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "index2": "node index2.js",
+    "index3": "node index3.js",
+    "simpsons": "node simpsons.js",
+    "le-escreve-arquivos": "node le-escreve-arquivos.js",
+    "qual-arquivo-deseja-ler": "node qual-arquivo-deseja-ler.js",
+    "bonus2": "node bonus2.js"
   },
   "author": "Diego Serafim",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
 }
