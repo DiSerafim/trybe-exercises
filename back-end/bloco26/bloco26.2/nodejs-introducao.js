@@ -446,6 +446,15 @@ Promise.all([
 // Resolução
 // - mkdir exercicio
 // - npm init
+// - package.json
+{
+  // ...
+  "scripts": {
+    "start": "node index.js"
+  },
+  // ...
+}
+
 // - index.js
 function doMatch(a, b, c) {
   return new Promise((resolve, reject) => {
@@ -476,7 +485,7 @@ doMatch(1, 1, 1)
   .catch(error => console.log(error))
   // Valor muito baixo
   
-// 2 - Escreva um código para consumir a função construída no exercício anterior.
+// 2- Escreva um código para consumir a função construída no exercício anterior.
 // - Gere um número aleatório de 1 a 100 para cada parâmetro que a função recebe. Para gerar um número aleatório, utilize o seguinte trecho de código: Math.floor(Math.random() * 100 + 1) .
 // - Chame a função do exercício anterior, passando os três números aleatórios como parâmetros.
 // - Utilize then e catch para manipular a Promise retornada pela função:
@@ -485,7 +494,306 @@ doMatch(1, 1, 1)
 
 // Resolução
 // - pasta exercicio
+// - package.json
+{
+  // ...
+  "scripts": {
+    "index2": "node index2.js"
+  },
+  // ...
+}
+
 // - index2.js
+function doMath(a, b, c) {
+  return new Promise((resolve, reject) => {
+    // garante que todos os valores sejam numéricos
+    if (typeof a !== 'number' || typeof b !== 'number' || typeof c !== 'number')
+      //caso não seja 'number', rejeitamos
+      reject('Imforme apenas números');
+    // faz a soma
+    const resultado = (a + b) * c;
+    // valida o resultado se for maior que 50
+    if (resultado < 50) 
+      return reject('Valor muito baixo');
+    
+    resolve(resultado);
+  });
+}
+// Chama a função nas condições de entrada e verifica sua saída
+doMath(50, 10, 10)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+// 200
+doMath(1, 1, 50)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+// Imforme apenas números
+doMath(1, 50, 1)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+  // Valor muito baixo
+
+// criar as funções para gerar números aleatórios..
+function getRandomNumber() {
+  return Math.floor(Math.random() * 100 + 1);
+}
+
+function callDoMath() {
+  /* Criamos um novo array de 3 posições
+   * e utilizamos o `map` para gerar um número aleatório
+   * para cada posição do Array
+   */
+  const randomNumbers = Array.from({ length: 3 }).map(getRandomNumber);
+  // .. e chamar doMath
+  doMath(...randomNumbers)
+   .then(result => console.log(result))
+   .catch(err => console.log(err.message))
+}
+
+// 3- Reescreva o código do exercício anterior para que utilize async/await .
+// - Lembre-se: a palavra chave await só pode ser utilizada dentro de funções async .
+
+// Resolução
+// - pasta exercicio
+// - package.json
+{
+  // ...
+  "scripts": {
+    "index3": "node index3.js"
+  },
+  // ...
+}
+// - index3.js
+function doMath(a, b, c) {
+  return new Promise((resolve, reject) => {
+    // garante que todos os valores sejam numéricos
+    if (typeof a !== 'number' || typeof b !== 'number' || typeof c !== 'number')
+      //caso não seja 'number', rejeitamos
+      reject('Imforme apenas números');
+    // faz a soma
+    const resultado = (a + b) * c;
+    // valida o resultado se for maior que 50
+    if (resultado < 50) 
+      return reject('Valor muito baixo');
+    
+    resolve(resultado);
+  });
+}
+// Chama a função nas condições de entrada e verifica sua saída
+doMath(50, 10, 10)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+// 200
+doMath(1, 1, 50)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+// Imforme apenas números
+doMath(1, 50, 1)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+  // Valor muito baixo
+
+// criar as funções para gerar números aleatórios..
+function getRandomNumber() {
+  return Math.floor(Math.random() * 100 + 1);
+}
+async function callDoMath() {
+  /* Um novo array de 3 posições
+   * e utilizamos o `map` para gerar um número aleatório
+   * para cada posição do Array
+   */
+  const randomNumbers = Array.from({ length: 3 }).map(getRandomNumber);
+  // .. e chamar doMath
+  try {
+    const resultado = await doMath(...randomNumbers);
+    console.log(resultado);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// 4- simpsons.json Utilize o arquivo, Você pode utilizar then e catch, async/await ou uma mistura dos dois para escrever seu código. Procure não utilizar callbacks.
+// - Crie uma função que leia todos os dados do arquivo e imprima cada personagem no formato id - Nome. Por exemplo: 1 - Homer Simpson .
+// - Crie uma função que receba o id de uma personagem como parâmetro e retorne uma Promise que é resolvida com os dados da personagem que possui o id informado. Caso não haja uma personagem com o id informado, rejeite a Promise com o motivo "id não encontrado".
+// - Crie uma função que altere o arquivo simpsons.json retirando os personagens com id 10 e 6.
+// - Crie uma função que leia o arquivo simpsons.json e crie um novo arquivo, chamado simpsonFamily.json , contendo as personagens com id de 1 a 4.
+// - Crie uma função que adicione ao arquivo simpsonFamily.json o personagem Nelson Muntz .
+// - Crie uma função que substitua o personagem Nelson Muntz pela personagem Maggie Simpson no arquivo simpsonFamily.json.
+// Resolução
+// - pasta exercicio
+// - package.json
+{
+  // ...
+  "scripts": {
+    "simpsons": "node simpsons.js"
+  },
+  // ...
+}
+// - npm i readline-sync
+// - simpsons.js
+const fs = require('fs').promises;
+
+// 1- função que ler todos os dados do arquivo e imprima na tela
+fs.readFile('./simpsons.json', 'utf-8')
+  .then((fileContent) => {
+    // Converter o conteúdo do arquivo de JSON para um Array utilizando JSON.parse
+    return JSON.parse(fileContent);
+  })
+  // Mapear cada objeto do Array para uma string no formato correto
+  .then((simpsons) => {
+    return simpsons.map(({ id, name }) => `${id} - ${name}`);
+  })
+  // Exibe as strings na tela
+  .then((strings) => {
+    strings.forEach((string) => console.log(string));
+  });
+// resultado
+// # node simpsons.js
+
+// 5- Crie uma função que lê e escreve vários arquivos ao mesmo tempo.
+// - Utilize o Promise.all para manipular vários arquivos ao mesmo tempo.
+// - Dado o seguinte array de strings: ['Finalmente', 'estou', 'usando', 'Promise.all', '!!!'] Faça com que sua função crie um arquivo contendo cada string, sendo o nome de cada arquivo igual a file<index + 1>.txt. Por exemplo, para a string "Finalmente", o nome do arquivo é file1.txt.
+// - Programe sua função para que ela faça a leitura de todos os arquivos criados no item anterior, armazene essa informação e escreva em um arquivo chamado fileAll.txt.
+// - O conteúdo do arquivo fileAll.txt deverá ser Finalmente estou usando Promise.all!!!.
+
+// Resolução
+// - package.json
+"le-escreve-arquivos": "node le-escreve-arquivos.js"
+// le-escreve-arquivos.js
+// Importar o módulo fs e criar a função com o Array de strings
+const fs = require('fs').promises;
+
+async function arrayToFile() {
+  const strings = ['Finalmente', 'estou', 'usando', 'Promise.all', '!!!']
+  // Utiliza a função map para criar um Array de Promises, cada um criando um arquivo
+  const createFilePromises = strings.map((string, index) =>
+    fs.writeFile(`./file${index + 1}.txt`, string)
+  );
+  // Utiliza Promise.all para aguardar a escrita de todos os arquivos
+  await Promise.all(createFilePromises);
+  // Realiza a leitura dos arquivos criados
+  const fileNames = [
+    'file1.txt',
+    'file2.txt',
+    'file3.txt',
+    'file4.txt',
+    'file5.txt',
+  ];
+  const fileContents = await Promise.all(
+    fileNames.map((fileName) => fs.readFile(fileName, 'utf-8'))
+  );
+  // Concatena o conteúdo dos arquivos e criar o arquivo novo
+  const newFileContent = fileContents.join(' ');
+  await fs.writeFile('./fileAll.txt', newFileContent);
+}
+arrayToFile();
+
+// # Bônus
+
+// 1- Crie um script que mostre na tela o conteúdo de um arquivo escolhido pela pessoa usuária:
+// - Pergunte à pessoa usuária qual arquivo ela deseja ler.
+// - Leia o arquivo indicado.
+// - Caso o arquivo não exista, exiba na tela "Arquivo inexistente" e encerre a execução do script.
+// - Caso o arquivo exista, escreva seu conteúdo na tela.
+
+// resolução
+// package.js
+"qual-arquivo-deseja-ler": "node qual-arquivo-deseja-ler.js"
+// qual-arquivo-deseja-ler.js
+
+// teste
+// # node qual-arquivo-deseja-ler.js
+
+// 2- Crie um script que substitua uma palavra por outra em um arquivo escolhido pela pessoa usuária:
+// - Pergunte à pessoa usuária qual arquivo ela deseja utilizar.
+// - Leia o arquivo.
+// - Caso o arquivo não exista, exiba um erro na tela e encerre a execução do script.
+// - Caso o arquivo exista, solicite a palavra a ser substituída.
+// - Solicite a nova palavra, que substituirá a palavra anterior.
+// - Imprima na tela o conteúdo do arquivo com as palavras já substituídas.
+// - Pergunte o nome do arquivo de destino.
+// - Salve o novo arquivo no caminho de destino.
+// - Dica: Utilize a classe RegExp do JS para substituir todas as ocorrências da palavra com replace(new RegExp(palavra, 'g'), novaPalavra) .
+
+// Resolução
+// # bonus2.js
+// - importa os módulos necessários e criando a função question.
+const fs = require('fs').promises;
+const readline = require('readline');
+
+function question(message) {
+  // Realiza o uso do readline conforme mostrado na documentação.
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  return new Promise((resolve) => {
+    // ao abrir a pergunta, faz isso dentro de uma Promise.
+    rl.question(message, (answer) => {
+      rl.close();
+      // Dessa forma, quando obtivermos a resposta,
+      // podemos resolver nossa Promise com essa resposta.
+      // Assim, quem chama nossa função não precisa
+      // se preocupar com callbacks, e pode obter a resposta
+      // através da Promise que retornamos.
+      resolve(answer);
+    });
+  });
+}
+// função start, responsável pelo fluxo, e perguntamos o nome do arquivo a ser lido
+// # const fs = require('fs').promises;
+// # const readline = require('readline');
+
+function question(message) {
+  // Realiz o uso do readline conforme mostrado na documentação.
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  return new Promise((resolve) => {
+    // ao abrirmos a pergunta, faz isso dentro de uma Promise.
+    rl.question(message, (answer) => {
+      rl.close();
+      // Dessa forma, quando obtivermos a resposta,
+      // podemos resolver nossa Promise com essa resposta.
+      // Assim, quem chama nossa função não precisa
+      // se preocupar com callbacks, e pode obter a resposta
+      // através da Promise que retornamos.
+      resolve(answer);
+    });
+  });
+}
+async function start() {
+  const fileName = await question('Arquivo a ser lido: ');
+  // Realiza a leitura do arquivo, utilizando um catch para tratar erros.
+  const originalContent = await fs.readFile(fileName, 'utf-8')
+    // Caso aconteça um erro ao ler o arquivo
+    .catch(err => {
+      // Mostra o erro na tela
+      console.error(`Erro ao ler o arquivo: ${err}`);
+      // E retorna `false`.
+      // O valor retornado aqui do catch é o valor que será armazenado
+      // na variável `originalContent`.
+      return false;
+    })
+  // Se `originalContent` estiver vazia ou contiver um valor falso,
+  // quer dizer que ocorreu um erro na leitura do arquivo e não devemos prosseguir.
+  // Utilizamos o `return` para encerrar a execução
+  if (!originalContent) return;
+  // Pergunta quais palavras deverão ser substituídas, realizamos a substituição e exibimos o resultado na tela
+  const oldWord = await question('Qual palavra deseja substituir? ');
+  const newWord = await question('E qual palavra deve ficar em seu lugar? ');
+  const newContent = originalContent.replace(new RegExp(oldWord, 'g'), newWord);
+  console.log('Resultado da substituição: ');
+  console.log(newContent);
+  // Por último, perguntamos o nome do arquivo onde salvar o resultado e escrevemos no disco.
+  const destinationPath = await question('Onde deseja salvar o resultado? ');
+  await fs.writeFile(destinationPath, newContent);
+
+}
+
+start();
 
 // ==============================
 // -- > EXERCÍCIO do dia - 26.2 -- <---/ FIM -----------------------------------------//
