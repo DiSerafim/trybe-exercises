@@ -14,15 +14,15 @@ function doMath(a, b, c) {
   });
 }
 // Chama a função nas condições de entrada e verifica sua saída
-doMath(10, 10, 10)
+doMath(50, 10, 10)
   .then(resolve => console.log(resolve))
   .catch(error => console.log(error))
 // 200
-doMath(1, 1, 'a')
+doMath(1, 1, 50)
   .then(resolve => console.log(resolve))
   .catch(error => console.log(error))
 // Imforme apenas números
-doMath(1, 1, 1)
+doMath(1, 50, 1)
   .then(resolve => console.log(resolve))
   .catch(error => console.log(error))
   // Valor muito baixo

@@ -13,7 +13,21 @@ function doMath(a, b, c) {
     resolve(resultado);
   });
 }
-// riar as funções para gerar números aleatórios..
+// Chama a função nas condições de entrada e verifica sua saída
+doMath(50, 10, 10)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+// 200
+doMath(1, 1, 50)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+// Imforme apenas números
+doMath(1, 50, 1)
+  .then(resolve => console.log(resolve))
+  .catch(error => console.log(error))
+  // Valor muito baixo
+
+// criar as funções para gerar números aleatórios..
 function getRandomNumber() {
   return Math.floor(Math.random() * 100 + 1);
 }
@@ -26,6 +40,6 @@ function callDoMath() {
   const randomNumbers = Array.from({ length: 3 }).map(getRandomNumber);
   // .. e chamar doMath
   doMath(...randomNumbers)
-         .then(result => console.log(result))
-         .catch(err => console.log(err.message))
+   .then(result => console.log(result))
+   .catch(err => console.log(err.message))
 }
