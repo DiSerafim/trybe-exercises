@@ -429,7 +429,113 @@ Promise.all([
 // -- > AULA ao VIVO - 26.2 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
- 
+// Fluxo assíncrono
+// - Oque é um callback?
+// - Oque é uma promise?
+// - Promises x Callbacks
+// - Promissificando uma função com util.promisify
+// - Node style callback -> Função que retorna Promise -> Usando util.promisify.
+// - Promise.all
+// - async/await
+
+// - mkdir ao-vivo
+// - npm init -y
+// - package.json
+{
+  // ...
+  "scripts": {
+    "start": "node index.js"
+  },
+  // ...
+
+// const multiplicar = (a, b) => a * b;
+// const calcularPorcentagem = (a, b) => multiplicar(a, b/100);
+// console.log(calcularPorcentagem(100, 20));
+
+const fs = require('fs');
+
+fs.readFile('script.md', function (err, content) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(content);
+    console.log(content.toString());
+  }
+});
+// resultado
+// └─# node teste.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  
 // -- > AULA ao VIVO - 26.2 ----- <---/ FIM -----------------------------------------//
 // ==============================
