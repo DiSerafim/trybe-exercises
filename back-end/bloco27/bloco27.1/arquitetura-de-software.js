@@ -353,48 +353,238 @@ module.exports = {
 // Criando um novo escritor
 // - dando continuidade ao 'model-example-mysql'
 
+// index.js
+// 3°
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+const Author = require('./models/Author');
+// 3°
+app.use(bodyParser.json());
+
+app.get('/authors', async (_req, res) => {
+  const authors = await Author.getAll();
+  res.status(200).json(authors);
+});
+
+// 2° video
+app.get('/authors/:id', async (req, res) => {
+  const { id } = req.params;
+  const author = await Author.findById(id);
+  if (!author) return res.status(404).json({ message: 'Not found ;)' });
+  res.status(200).json(author);
+});
+
+// 3° video
+app.post('/authors', async (req, res) => {
+  const { first_name, middle_name, last_name } = req.body;
+  if (!Author.isValid(first_name, middle_name, last_name)) {
+    return res.status(400).json({ message: 'Dados inválidos' });
+  }
+  await Author.create(first_name, middle_name, last_name);
+  res.status(201).json({ message: 'Autor criado com sucesso! '});
+});
 
 
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
 
+// models/Author.js
+const connection = require('./connection');
 
+// Cria uma string com o nome completo do autor
+const getNewAuthor = (authorData) => {
+const { id, firstName, middleName, lastName } = authorData;
 
+const fullName = [firstName, middleName, lastName]
+  .filter((name) => name)
+  .join(' ');
 
+return {
+  id,
+  firstName,
+  middleName,
+  lastName,
+  name: fullName,
+};
+};
 
+// Converte o nome dos campos de snake_case para camelCase
+const serialize = (authorData) => ({
+  id: authorData.id,
+  firstName: authorData.first_name,
+  middleName: authorData.middle_name,
+  lastName: authorData.last_name});
 
+// Busca todos os autores do banco.
+const getAll = async () => {
+  const [authors] = await connection.execute(
+    'SELECT id, first_name, middle_name, last_name FROM model_example.authors;',
+  );
+  return authors.map(serialize).map(getNewAuthor);
+};
+
+// 2° video
+const findById = async (id) => {
+  const [authorData] = await connection.execute(
+    'SELECT id, first_name, middle_name, last_name FROM authors',
+    [id]
+  );
+  if (authorData.length === 0) return null;
+  // Utilizamos [0] para buscar a primeira linha, que deve ser a única no array de resultados, pois estamos buscando por ID.
+  const { firstName, middleName, lastName } = authorData.map(serialize)[0];
+  return getNewAuthor({
+    id,
+    firstName,
+    middleName,
+    lastName
+  });
+};
+
+// 3° video
+const isValid = (firstName, middleName, lastName) => {
+  if (!firstName || typeof firstName !== 'string') return false;
+  if (!lastName || typeof lastName !== 'string') return false;
+  if (middleName && typeof middleName !== 'string') return false;
+  return true;
+}
+const create = async (firstName, middleName, lastName) => connection.execute(
+  'INSERT INTO model_example.authors (first_name, middle_name, last_name) VALUES (?,?,?)',
+  [firstName, middleName, lastName],
+);
+
+module.exports = {
+  getAll,
+  // 2° video
+  findById,
+  // 3° video
+  isValid,
+  create,
+};
 
 // ### Model com MongoDB
+// - mostrar como acessar o MongoDB a partir de aplicações Node.js e exemplificar como é possível trocar nosso data storage com algumas poucas alterações na camada de model , sem afetar as demais.
+
+// Populando o banco
+// - certifique-se de ter o MongoDB instalado na sua máquina.
+
+// - independentemente de como os dados são armazenados, a representação e as responsabilidades do modelo não mudam.
+
+// # Refatorando o App para usar MongoDB
+// - 'model-example-mysql'
+
+// # model-example-mysql
+// └─# npm i mongodb
+
+// # model-example-mysql/models/connectionMongo.js
+const { MongoClient } = require('mongodb');
+
+const OPTIONS = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}
+const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
+let db = null;
+const connection = () => {
+  return db
+  ? Promise.resolve(db)
+  : MongoClient.connect(MONGO_DB_URL, OPTIONS)
+  .then((conn) => {
+  db = conn.db('model_example');
+  return db;
+  })
+};
+
+module.exports = connection;
+// - Note o uso dos parâmetros useNewUrlParser e useUnifiedTopology. Eles dizem ao driver do mongodb como ele deve se conectar ao banco:
+// # A forma de conexão antiga está depreciada, e seu uso emite um warning no terminal.
+// - 'singleton' é um objeto ou módulo que, mesmo que chamado várias vezes, só vai ser criado uma vez.
 
 
+// # model-example-mysql/seed.js
+use model_example;
 
+db.authors.insertMany([
+  { "firstName": "George", "middleName": "R. R.", "lastName": "Martin", "birthday": "1948-09-20", "nationality": "norte-americano" },
+  { "firstName": "J.", "middleName": "R. R.", "lastName": "Tolkien", "birthday": "1892-01-03", "nationality": "britânico" },
+  { "firstName": "Isaac", "lastName": "Asimov", "birthday": "1920-01-20", "nationality": "russo-americano" },
+  { "firstName": "Frank", "lastName": "Herbert", "birthday": "1920-02-11", "nationality": "norte-americano" },
+  { "firstName": "Júlio", "lastName": "Verne", "birthday": "1905-03-24", "nationality": "francês" }
+])
 
+// models/AuthorMongo.js
+const connection = require('./connectionMongo');
+const { ObjectId } = require('mongodb');
 
+// Cria uma string com o nome completo do autor
+const getNewAuthor = (authorData) => {
+const { id, firstName, middleName, lastName } = authorData;
 
+const fullName = [firstName, middleName, lastName]
+  .filter((name) => name)
+  .join(' ');
 
+return {
+  id,
+  firstName,
+  middleName,
+  lastName,
+  name: fullName,
+};
+};
+// Converte o nome dos campos de snake_case para camelCase
+const serialize = (authorData) => ({
+  id: authorData.id,
+  firstName: authorData.first_name,
+  middleName: authorData.middle_name,
+  lastName: authorData.last_name});
+// Busca todos os autores do banco.
+const getAll = async () => {
+  return connection()
+    .then((db) => db.collection('authors').find().toArray())
+    .then((authors) => {
+      return authors.map(({ _id, firstName, middleName, lastName }) => {
+        return getNewAuthor({
+          id: _id,
+          firstName,
+          middleName,
+          lastName
+        });
+      })
+    });
+};
+const findById = async (id) => {
+  const authorData = await connection()
+    .then((db) => db.collection('authors').findOne(ObjectId(id)))
+  if (!authorData) return null;
+  const { firstName, middleName, lastName } = authorData;
+  return getNewAuthor({
+    id,
+    firstName,
+    middleName,
+    lastName
+  });
+};
+const isValid = (firstName, middleName, lastName) => {
+  if (!firstName || typeof firstName !== 'string') return false;
+  if (!lastName || typeof lastName !== 'string') return false;
+  if (middleName && typeof middleName !== 'string') return false;
+  return true;
+}
+const create = async (firstName, middleName, lastName) => {
+  await connection()
+    .then((db) => db.collection('authors').insertOne({ firstName, middleName, lastName }));
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = {
+  getAll,
+  findById,
+  isValid,
+  create,
+};
 
 // ==============================
 // -- > CONTEÚDO do dia - 27.1 -- <---/ FIM -----------------------------------------//

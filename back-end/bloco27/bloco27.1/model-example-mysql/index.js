@@ -10,8 +10,8 @@ const Author = require('./models/Author');
 app.use(bodyParser.json());
 
 app.get('/authors', async (_req, res) => {
-  const authors = await Author.getAll();
-  res.status(200).json(authors);
+  const author = await Author.getAll();
+  res.status(200).json(author);
 });
 
 // 2° video
