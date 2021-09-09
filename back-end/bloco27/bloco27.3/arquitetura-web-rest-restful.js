@@ -316,6 +316,73 @@ const body = JSON.stringify({
 // -- > AULA ao VIVO - 27.3 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
+// # Boas Praticas em APIs (Rest)
+
+// O que teremos hoje
+// - Rest
+// - Rest vs. Restful
+// - Status Code
+
+// ### Rest
+// - Padronizar construção de APIs
+// - Reduzir o tempo de aprendizado ao usar API
+
+// # Principais conceitos
+// - Usar os status de retornos e os verbos HTTP Corretos
+// - Separação entre cliente e servidor
+// - Separar por recursos (Pessoas «» Pedidos «» Entregas)
+
+// ╰ mkdir api-restful && cd api-restful
+// ╰ npm init -y
+// ╰ npm install express body-parser mongodb
+// ╰ npm i nodemon -D
+// package.json > scripts: "dev": "nodemon indexjs"
+// para rodar os testes: npm run dev
+
+// # recursos
+// - Listar Pessoas
+// - Listar por ID
+// - Criar Pessoas
+// - Editar Pessoas
+// - Atualizar Pessoas
+// - Apagar (ou deletar) Pessoas
+
+// index.js
+
+// controllers/peopleController.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ### Rest vs. Restful
+// - É uma API que segue o padrão REST
+
+
+
+
+
+
+
+
+// ### Status Code
+
+
+
+
+
+
+
+
+
 
 
 // ==============================
