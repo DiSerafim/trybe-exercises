@@ -718,7 +718,16 @@ app.listen(PORT, () => {
 // -- > AULA ao VIVO - 27.4 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
+// Testes de unidades \o/
 
+// Oque vai rolar Hoje?
+// - Testes no model
+// - Testes no service
+// - Testes no controller
+// - Testes no <3
+// - E com o nosso amado TDD
+
+// criação na pasta 'ao-vivo'
 // └── controllers
 // │   └── movieController.js
 // └── models
@@ -740,6 +749,18 @@ app.listen(PORT, () => {
 // │   │   └── movieServiceGetAll.test.js
 // │   │   └── movieServiceGetById.test.js
 // └── index.js
+
+// Instalações:
+// $ npm init -y
+// $ npm install express body-parser mongodb
+// $ npm install -D mocha chai sinon
+// # npm install -D mongodb-memory-server@6
+// script de teste no package.json
+...
+  "scripts": {
+    "test": "mocha ./tests/**/*$NAME*.test.js --exit"
+  },
+...
 
 // ==============================
 // -- > AULA ao VIVO - 27.4 ----- <---/ FIM -----------------------------------------//
