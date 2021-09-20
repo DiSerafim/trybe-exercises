@@ -317,13 +317,150 @@ const upload = multer({ storage });
 // # Acessando os arquivos enviados pela API
 // - Como já tornamos pública a pasta /uploads, que é onde guardamos os arquivos enviados, não precisamos fazer mais nada para deixá-los disponíveis através da API.
 
-// acessar http://localhost:3000/meu-arquivo.txt , deverá ver o conteúdo do seu arquivo no browser. Que tal testar com outros tipos de arquivo, como uma imagem?
+// acessar http://localhost:3000/meu-arquivo.txt, deverá ver o conteúdo do seu arquivo no browser. Que tal testar com outros tipos de arquivo, como uma imagem?
 
 // ==============================
 // -- > CONTEÚDO do dia - 28.2 -- <---/ FIM -----------------------------------------//
 // ==============================
 // -- > AULA ao VIVO - 28.2 ----- <---/ INICIO --------------------------------------//
 // ==============================
+
+// # Upload e servindo arquivos
+
+// ╰ mkdir api
+// ╰ cd api
+// ╰ npm init -y
+// ╰ npm install express multer
+// ╰ npm install nodemon -D
+
+// api/index.js
+const express = require('express');
+const multer = require('multer');
+const app = express();
+
+const upload = multer({ dest: 'uploads/' })
+// 1 arquivo
+app.post('/files', upload.single('file'), (req, res) => {
+  return res.status(201).json({ message: 'Arquivo' })
+});
+// vários arquivos
+app.post('/files', upload.array('photos', 2), (req, res) => {
+  return res.status(201).json({message: 'Photos'})
+})
+app.listen(3000, () => console.log('Api na porta 3000'));
+// script pakage.json/ > npm run dev
+
+// # axios
+
+// ╰ mkdir client && cd client 
+// ╰ npm init -y
+// ╰ npm install axios form-data
+// ╰ touch index.js
+
+// client/index.js
+const FormData = require('form-data');
+const axios = require('axios');
+const fs = require('fs');
+
+const stream = fs.createReadStream('./meu-arquivo.txt');
+
+const formInfo = new FormData();
+formInfo.append('file', stream);
+
+const formHeader = formInfo.getHeaders();
+const URL = 'http://localhost:3000/files';
+
+axios.post(URL, formInfo, { Headers: { ...formHeader } })
+  .then((response) => console.log(response));
+
+// para ver o resultado
+// rode 1̣º  'node index.js' da pasta 'api'
+// 2º em seguida 'node index.js' da pasta 'client'
+
+// criando uploads para a web
+
+// ╰ mkdir apiParaWeb
+// ╰ cd apiParaWeb
+// ╰ npm init -y
+// ╰ npm install express multer
+// ╰ npm install nodemon -D
+
+// apiParaWeb/index.js
+const express = require('express');
+const multer = require('multer');
+const app = express();
+const fs = require('fs');
+
+// cria a pasta com nome original para cada upload
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    const folderName = `./uploads/${getDate()}/`;
+    fs.mkdirSync(folderName, { recursive: true });
+    return callback(null, folderName)
+  },
+  filename: (req, file, callback) => {
+    return callback(null, file.originalname)
+  }
+})
+// cria um nome padrão para os arquivos
+const upload = multer({ storage });
+// salva os arquvos com nome aleatório
+// const upload = multer({ dest: 'uploads/' })
+
+// coloca o nome do arquivo no navegador para ver o arquivo
+// http://localhost:3000/19-9-2021/nome do arquivo.png
+app.use(express.static(`${__dirname}/uploads`));
+
+// coloca uma pasta de referência para ver o arquivo
+// http://localhost:3000/19-9-2021/nome do arquivo.png
+app.use('/arquivos', express.static(`${__dirname}/uploads`));
+
+// 1 arquivo
+app.post('/files', upload.single('file'), (req, res) => {
+  return res.status(201).json({ message: 'Arquivo' })
+});17
+// vários arquivos
+// app.post('/files', upload.array('photos', 17), (req, res) => {
+  //   return res.status(201).json({message: 'Photos'})
+  // })
+  
+// nome automático na pasta
+const getDate = () => {
+  const date = new Date;
+  return `${date.getDate()}-${(date.getMonth() + 1)}-${date.getFullYear()}`;
+}
+
+app.listen(3000, () => console.log('Api na porta 3000'));
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
