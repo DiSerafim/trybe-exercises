@@ -487,6 +487,9 @@ app.listen(3000, () => console.log('Api na porta 3000'));
   { "file": "CNH.jpg", "url": "http://localhost:3000/78c948b7b737d9a80b13f52bc6968d75" }
 ]
 
+// >>> resultado na pasta
+// multer-exercise
+
 // #2 Crie o endpoint POST /profile
 // - Receba strings nos campos name , email , password e bio ;
 // - Receba um arquivo no campo profilePic ;
@@ -494,16 +497,18 @@ app.listen(3000, () => console.log('Api na porta 3000'));
 // - Utilize o nome gerado pelo multer como ID para o perfil criado;
 // - Armazene as informações do perfil no arquivo profiles.json
 
+// >>> resultado na pasta
+// multer-exercise
+
 // #3 Crie o endpoint GET /profiles/:id
 // - Caso exista um perfil com o id informado, retorne as informações desse perfil, conforme salvo no arquivo profiles.json
 // - Caso não exista um perfil com o id informado, retorne o status 404 Not Found com o seguinte corpo:
-{
-    "error": {
-        "message": "Perfil não encontrado"
-    }
-}
+{ "error": { "message": "Perfil não encontrado" } }
 
-// Recursos adicionais
+// >>> resultado na pasta
+// multer-exercise
+
+// # Recursos adicionais
 
 // Documentação do multer
 https://github.com/expressjs/multer
