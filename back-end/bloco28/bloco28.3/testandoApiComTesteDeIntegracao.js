@@ -448,6 +448,49 @@ npm run test:coverage
 // -- > AULA ao VIVO - 28.3 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
+// # testes de integração
+// - vamos usar como exemplo "nodejs-jwt-base-project"
+
+╰ cd nodejs-jwt-base-project
+╰ npm i -D mocha chai chai-http sinon mongodb-memory-server@6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ==============================
 // -- > AULA ao VIVO - 28.3 ----- <---/ FIM -----------------------------------------//
