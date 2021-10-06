@@ -683,6 +683,51 @@ module.exports = connection;
 // -- > EXERCÍCIO do dia - 27.2 -- <---/ INICIO --------------------------------------//
 // ==============================
 
+// desenvolvimento
+// └─# mkdir ao-vivo && cd ao-vivo
+// └─# mkdir api-msc-music && cd api-msc-music
+// └─# npm init -y
+// └─# npm i express body-parse mongodb
+// └─# npm i nodemon -D
+
+// # package.json/scripts
+// "dev": "nodemon index.js"
+
+// rodar aplicação
+// # npm run dev
+
+// abre um novo terminal
+// └─# service mongod start
+// └─# mongosh             
+
+// cria o DB
+// > use musicClass
+
+// insere as tabelas
+> db.songs.insertMany([
+  {
+    _id: Object("1234567898734"),
+    name: 'Carry On',
+    album: 'Reaching Horizons'
+  },
+  {
+    _id: Object("3472365538979"),
+    name: 'Feeling Good',
+    album: 'I Put a Spell on You'
+  },
+  {
+    _id: Object("8736598348159"),
+    name: 'Da Ponte pra Cá',
+    album: 'Nada como um dia após o Outro Dia'
+  },
+  {
+    _id: Object("3478572845908"),
+    name: 'Aprendendo a Jogar',
+    album: 'Elis'
+  }
+])
+// acknowledged: true,
+
 
 
 // ==============================
