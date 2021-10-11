@@ -21,7 +21,7 @@ https://web.archive.org/web/20150906155800/http://www.objectmentor.com/resources
 // - #D ependency inversion principle ( Princípio da inversão da dependência ): quem usa uma função deve ser capaz de determinar quais outros módulos ela usa em sua lógica.
 
 // >>>> Single responsibility principle
-// - princípio da responsabilidade única .
+// - princípio da responsabilidade única.
 
 // # Em uma nova pasta, inicie uma aplicação utilizando:
 // > npm init -y ;
@@ -36,14 +36,12 @@ https://web.archive.org/web/20150906155800/http://www.objectmentor.com/resources
 // # instale também as dependências de testes:
 // > npm i -D mocha chai sinon ;
 // # Adicione um script para rodarmos o test e para o lint nesse projeto:
-
 ...
 "scripts": {
   "test": "mocha ./tests/**/*$NAME*.{test,spec}.js --exit",
   "lint": "eslint --no-inline-config --ext .js --no-error-on-unmatched-pattern -c .eslintrc.json ."
 },
 ...
-
 // # Inicie um arquivo index.js e crie uma pasta tests para validarmos nossos exemplos;
 // # Adicione um arquivo .eslintignore na raiz do projeto, com o seguinte conteúdo:
 
@@ -741,6 +739,275 @@ ConsultaCEP('cabanagem', viaCEP);
 // -- > AULA ao VIVO - bloco29-new.1 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
+// └─# mkdir ao-vivo && cd ao-vivo                      
+// > npm init -y ;
+// # Instale as dependências que vamos utilizar em desenvolvimento:
+// > npm i -D eslint-config-trybe-backend ;
+// # Adicione um arquivo ".eslintrc.json" na raiz do projeto, onde estenderemos o uso do ESLint utilizando as normas e padrões dos projetos de back-end aqui na Trybe:
+{
+  "extends": "trybe-backend",
+  "globals": {
+    "db": "writable"
+  },
+  "rules": {
+    "sonarjs/no-duplicate-string": ["error", 5]
+  }
+}
+// # instale também as dependências de testes:
+// > npm i -D mocha chai sinon ;
+// # Adicione um script para rodarmos o test e para o lint nesse projeto:
+...
+"scripts": {
+  "test": "mocha ./tests/**/*$NAME*.{test,spec}.js --exit",
+  "lint": "eslint --no-inline-config --ext .js --no-error-on-unmatched-pattern -c .eslintrc.json ."
+},
+...
+// └─# npm i nodemon -D
+// # Inicie um arquivo index.js e crie uma pasta tests para validarmos nossos exemplos;
+// # Adicione um arquivo .eslintignore na raiz do projeto, com o seguinte conteúdo:
+// tests
+
+// └─# npm i express mysql2
+
+// index.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const userController = require('./controllers/userController');
+
+const app = express();
+
+app.use('/users', userController.createUser);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Ouvindo na porta ${PORT}`);
+});
+
+// controllers/userController.js
+const User = require('../models/User');
+
+const createUser = async (req, res) => {
+  const { username, email, password, role } = req.body;
+  const passwordRegex = /^\d+$/;
+  const emailRegex = (
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+  );
+  const isPasswordValid = passwordRegex.test(password);
+  const isEmailValid = emailRegex.test(email);
+
+  if (isEmailValid && isPasswordValid) {
+    await User.create(username, email, password, role);
+    res.status(200).json({
+      message: 'Usuario criado com sucesso!',
+    });
+  } else {
+    res.status(400).json({
+      message: 'Dados inválidos.',
+    });
+  }
+};
+
+module.exports = {
+  createUser,
+};
+
+// models/User.js
+const connection = require('./connection');
+
+const create = async (username, email, password, role) =>
+  connection.execute(
+    'INSERT INTO solid_example.users (username, email, password, role) VALUES (?,?,?,?)',
+    [username, email, password, role],
+  );
+
+module.exports = {
+  create,
+};
+
+// models/connection.js
+const mysql = require('mysql2/promisse');
+
+const connection = mysql.createPool({
+  host: 'localhost',
+  user: 'root',
+  password: 'serafim86',
+  database: 'solid_example',
+});
+
+module.exports = connection;
+
+// Apartir daqui iremos organizar nosso codigo para que ele fique no 'princípio da responsabilidade única' 
+
+// - vamos passar a validação de email e password do controllers/userController para o services/userValidation
+
+// # services/userValidation.js
+const validateEmail = (email) => {
+  const emailRegex = (
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+  );
+  const isEmailValid = emailRegex.test(email);
+  return isEmailValid;
+};
+
+const validatePassword = (password) => {
+  const passwordRegex = /^\d+$/;
+  const isPasswordValid = passwordRegex.test(password);
+  return isPasswordValid
+};
+
+module.exports = {
+  validateEmail,
+  validatePassword,
+};
+
+// # controllers/userController.js
+const User = require('../models/User');
+const userValidation = require('../services/userValidation');
+
+const createUser = async (req, res) => {
+  const { username, email, password, role } = req.body;
+
+  if (!userValidation.validateEmail(email) || !userValidation.validatePassword(password)) {
+    res.status(400).json({
+      message: 'Dados inválidos.',
+    });
+  };
+  
+  await User.create(username, email, password, role);
+  res.status(200).json({
+    message: 'Usuario criado com sucesso!',
+  });
+};
+
+module.exports = {
+  createUser,
+};
+
+// # index.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const userController = require('./controllers/userController');
+
+const app = express();
+
+// app.use(express.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.post('/users', userController.createUser);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Ouvindo a porta ${PORT}`);
+}); 
+
+// - vamos fazer a validação do 'role' no services/userValidation e controllers/userController
+
+const User = require('../models/User');
+
+const validateEmail = (email) => {
+  const emailRegex = (
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+  );
+  const isEmailValid = emailRegex.test(email);
+  return isEmailValid;
+};
+
+const validatePassword = (password) => {
+  const passwordRegex = /^\d+$/; /* Senha pode ter apenas números */
+  const isPasswordValid = passwordRegex.test(password);
+  return isPasswordValid;
+};
+
+// const valideRoles = ['admin', 'user'];
+const validateRole = (role, valideRoles) => valideRoles.includes(role);
+
+const validateUser = ({ email, password, role }, valideRoles = []) => (
+    validateEmail(email) && validatePassword(password) && validateRole(role, valideRoles)
+  );
+
+  const createUser = async (user, valideRoles) => {
+    if (!validateUser(user, valideRoles)) {
+      return {
+        isError: true,
+        error: {
+          message: 'Dados inválidos',
+        },
+      };
+    }
+    const { username, email, password, role } = user;
+    await User.create(username, email, password, role);
+    return {
+      isError: false,
+      error: {
+        message: 'Usuário criado com sucesso!',
+      },
+    };
+  };
+
+module.exports = { 
+  createUser,
+};
+
+// controllers/userController
+const userValidation = require('../services/userValidation');
+
+const createUser = async (req, res) => {
+  const user = userValidation.createUser(req.body, ['admin', 'user']);
+  if (user.isError) {
+    return res.status(400).json({
+      message: user.message,
+    });
+  }
+  res.status(200).json({
+    message: user.message,
+  });
+};
+
+module.exports = {
+  createUser,
+}; 
+
+// models/connectionFactory
+const mysql = require('mysql2/promise');
+
+const connection = (schema) => mysql.createPool(schema);
+
+module.exports = connection;
+
+// models/connection foi renomeado para 'schema'
+const connection1 = {
+  host: 'localhost',
+  user: 'root' /* Se necessário, altere o user */,
+  password: '123456' /* Não se esqueça de inserir a senha aqui! */,
+  database: 'solid_example',
+};
+
+const connection2 = {
+  host: 'localhost',
+  user: 'root' /* Se necessário, altere o user */,
+  password: '123456' /* Não se esqueça de inserir a senha aqui! */,
+  database: 'solid_example2',
+};
+
+module.exports = { connection1, connection2 };
+
+// models/User
+const connectionFactory = require('./connectionFactory');
+const schema = require('./schema');
+
+const create = async (username, email, password, role) => {
+  const connection = schema.connection2;
+  connectionFactory(connection).execute(
+    `INSERT INTO ${connection.database}.users (username, email, password, role) VALUES (?,?,?,?)`,
+    [username, email, password, role],
+  ); 
+};
+module.exports = {
+  create,
+};
 
 // ==============================
 // -- > AULA ao VIVO - bloco29-new.1 ----- <---/ FIM -----------------------------------------//
