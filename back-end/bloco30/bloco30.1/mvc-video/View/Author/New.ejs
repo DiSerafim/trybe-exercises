@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVC com Express</title>
+</head>
+<body>
+  <% if (message) { %>
+    <p>
+      <%= message %>
+    </p>
+  <% } %>
+  <form action="/authors" method="POST">
+    <label for="first_name">Nome:</label>
+    <input type="text" name="firstName" id="first_name">
+    <label for="middle_name">Nome do meio:</label>
+    <input type="text" name="middleName" id="middle_name">
+    <label for="last_name">Sobrenome:</label>
+    <input type="text" name="lastName" id="last_name">
+    <button type="submit">Criar novo autor!</button>
+  </form>
+  <a href="/authors">Voltar</a>
+</body>
+</html>
