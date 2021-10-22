@@ -172,7 +172,27 @@ https://nodejs.org/api/net.html#net_event_close_1
 // -- > AULA ao VIVO - bloco30.2 ----- <---/ INICIO --------------------------------------//
 // ==============================
 
+// ### Construindo um chat
+// comunicaçao entre terminais
 
+// └─# mkdir chat-aovivo && cd chat-aovivo
+// └─# touch server.js client.js               
+// └─# npm init -y   
+// └─# npm i nodemon -D
+
+// servidor
+// * server.js
+// └─# npm start
+
+// cliente 1
+// * client.js
+// └─# node client.js
+
+// cliente 2
+// * client.js
+// └─# node client.js
+
+// concluido ...???
 
 // ==============================
 // -- > AULA ao VIVO - bloco30.2 ----- <---/ FIM -----------------------------------------//
