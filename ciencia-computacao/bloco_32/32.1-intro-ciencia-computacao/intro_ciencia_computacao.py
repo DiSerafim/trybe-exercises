@@ -743,8 +743,36 @@ help(math.sin)
 # --------------------------------------------------------------------------- #
 
 # Foco de hoje
+# Aprendendo Python
 
-#
+# aula1
+if 4 < 5:
+    print("ok")  # ok
+
+...
+4 * 5  # 20
+
+...
+a = 'a resposta é ' + '42'
+print(a)  # a resposta é 42
+
+...
+help(a.isalnum)  # isalnum = alfanumérica / caracteres do alfabeto e ou números
+
+...
+a.isalnum()  # False - pq possui espaçamento
+
+...
+a = 'arespostaé' + '42'
+a.isalnum()  # True - todos os caracteres são letras e ou numeros
+print(a)  # arespostaé42
+
+...
+# area.py
+# dinamica.py
+# extensao.py
+
+
 
 # - > AULA ao VIVO - 32.1 ----- <--- / FIM --------------------------------- //
 # #####################################
