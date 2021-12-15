@@ -767,6 +767,12 @@ a = 'arespostaé' + '42'
 a.isalnum()  # True - todos os caracteres são letras e ou numeros
 print(a)  # arespostaé42
 
+...
+# area.py
+# dinamica.py
+# extensao.py
+
+
 
 # - > AULA ao VIVO - 32.1 ----- <--- / FIM --------------------------------- //
 # #####################################
