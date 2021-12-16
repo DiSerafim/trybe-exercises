@@ -1,0 +1,11 @@
+import math
+
+
+def tinta(area):
+    preco = 80
+    tamanho_area = area / 3
+    latas_unid = math.ceil(tamanho_area / 18)
+    return latas_unid, latas_unid * preco
+
+
+print(tinta(20))
