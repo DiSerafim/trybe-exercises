@@ -1,0 +1,37 @@
+[
+  {
+    "superhero":"Batman",
+    "publisher":"DC Comics",
+    "alter_ego": "Bruce Wayner",
+    "first_appearance":"Detective Comics #27",
+    "characters":"Bruce Wayner"
+  },
+  {
+    "superhero":"Superman",
+    "publisher":"DC Comics",
+    "alter_ego": "kal-El",
+    "first_appearance":"Action Comics #1",
+    "characters":"Kal-El"
+  },
+  {
+    "superhero":"Flash",
+    "publisher":"DC Comics",
+    "alter_ego": "Jay Garrick",
+    "first_appearance":"Flash Comics #1",
+    "characters":"Jay Garrick, Barry Allen, Wally West, Bart Allen"
+  },
+  {
+    "superhero":"Green Lantern",
+    "publisher":"DC Comics",
+    "alter_ego": "Alan Scott",
+    "first_appearance":"All-American ",
+    "characters":"Alan Scott, Hal Jord"
+  },
+  {
+    "superhero":"Green Arrow",
+    "publisher":"DC Comics",
+    "alter_ego": "Oliver Queen",
+    "first_appearance":"Moté Fun Comics #23",
+    "characters":"Oliver Queen"
+  }
+]
