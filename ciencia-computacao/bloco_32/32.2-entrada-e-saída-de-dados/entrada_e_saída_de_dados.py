@@ -304,7 +304,32 @@ print(file.closed)  # True
 # --------------------------------------------------------------------------- #
 
 # Foco de hoje
-#
+# Entrada e Saída de Dados
+
+...
+# instalando um ambiente virtual
+# - python3 -m venv .venv
+...
+# ativar o ambiente virtual
+# - source .venv/bin/activate
+...
+# └─# pip install flake8 black
+...
+# confirmar o local de trabalho
+# - which python3
+...
+# Sair do ambiente virtual
+# - deactivate
+
+...
+# vamos uar a pasta "ao-vivo"
+
+# ./ao-vivo/dados/frentes.json
+# ./ao-vivo/src/importer.py
+# ./ao-vivo/src/analyzer.py
+# ./ao-vivo/src/menu.py
+# ./ao-vivo/src/exporter.py
+
 # --------------------------------------------------------------------------- #
 # - > AULA ao VIVO - 32.2 ----- <--- / FIM --------------------------------- //
 # #####################################
