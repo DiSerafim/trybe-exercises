@@ -142,7 +142,42 @@ A principal função dessa camada é realizar a interface do modelo TCP/IP com o
 # --------------------------------------------------------------------------- #
 
 # Foco de hoje
-# ...
+# ... Arquitetura de redes
+
+# - Curl
+# - wget
+# - TCPServer
+# - UDPServer
+
+# Execute os comando no Terminal
+
+""" Curl > exibe uma paina a web """
+# curl https://app.betrybe.com/course/live-lectures/sd-cohort-10-b
+
+""" wget > possibilita baixar uma pagina da web"""
+# wget https://app.betrybe.com/course/live-lectures/sd-cohort-10-b
+
+""" TCPServer """
+# ./tcp.py
+
+# Terminal-01
+# python3 tcp.py
+# Terminal-02
+# telnet 127.0.1 8080
+
+""" UDPServer """
+# ./udp.py
+# Terminal-01
+
+# Terminal-02
+# nc -u 127.0.0.1 9090
+
+
+
+
+
+
+
 
 # --------------------------------------------------------------------------- #
 # - > AULA ao VIVO - 34.1 ----- <--- / FIM --------------------------------- //
