@@ -75,13 +75,58 @@
 # Foco de hoje
 # ... redes-de-computadores-ferramentas-e-seguraança
 
-# - 
+""" Ferramentas: Ping, Traceroute, Proxy, SSH, VPN, Certificado SSL, Firewall, Fail2ban... """
 
+# Ping - Packet Internet Network Group(Agrupador de pacotes da internet)
+# - testa se a rota esta funcionando
+# └─# ping google.com
+# └─# ping -c 4 -s 50 www.google.com
 
+# Traceroute
+# - mostra o caminho percorrido até determinado site
+# └─# traceroute www.google.com
 
+# Proxy
+# - faz o redirecionamento, gerenciamendo de acesso, limitação de acesso
 
+# SSH
+# - conecta a outra maquina, via linha de comando
+# └─# ssh root@127.168.10.1
 
+# VPN - Virtual Private Network
+# - permite criar conexões privadas e mais seguras
+# - VPN usa criptografia
 
+# Certificado SSL
+# - http (Sem SSL) site vunerável
+# - https (Com SSL) site mais seguro
+
+# Firewall
+# - controla as requisições, podendo aceitar ou bloquear
+
+# Fail2ban
+# - Limita o numero de tentativas de acesso
+
+# Iptables
+# - bloquei conexões(local) e ou endereços IP
+
+# Terminal-1, faz o ping
+# └─# ping 127.0.0.1
+
+# Terminal-2, cria a regra (-A)
+# └─# iptables -A INPUT -p icmp --icmp-type echo-request -j DROP (retorna um aviso)
+# └─# iptables -A INPUT -p icmp --icmp-type echo-request -j REJECT (não retorna aviso)
+# └─# iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 6/minute -j ACCEPT (aceita)
+# └─# iptables -A INPUT -p icmp --icmp-type echo-request -j REJECT (rejeia a cada 10seg, de acordo co m a regra acima)
+
+# Terminal-2, deleta a regra (-D)
+# └─# iptables -D INPUT -p icmp --icmp-type echo-request -j DROP
+
+# verifica se a regra foi criada e ou deletada
+# └─# iptables -L
+
+# Apaga todas as regras
+# └─# iptables --flush
 
 
 # --------------------------------------------------------------------------- #
