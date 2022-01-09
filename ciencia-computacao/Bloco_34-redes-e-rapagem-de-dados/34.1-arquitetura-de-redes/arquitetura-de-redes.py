@@ -173,12 +173,6 @@ A principal função dessa camada é realizar a interface do modelo TCP/IP com o
 # nc -u 127.0.0.1 9090
 
 
-
-
-
-
-
-
 # --------------------------------------------------------------------------- #
 # - > AULA ao VIVO - 34.1 ----- <--- / FIM --------------------------------- //
 # #####################################
@@ -187,9 +181,92 @@ A principal função dessa camada é realizar a interface do modelo TCP/IP com o
 
 # Agora a prática
 
-# Exercício 1: 
+# Exercício 1: O primeiro server que iremos utilizar é o nosso velho amigo HTTP, na camada de aplicação. Você pode tanto criar um quanto utilizar um dos projetos ou exercícios dos módulos anteriores. A ideia é utilizarmos os conhecimentos do conteúdo e a ferramenta CURL para realizarmos uma chamada HTTP para ele. A ideia aqui é que o projeto tenha rotas GET e POST, para que seja possível enviar requisições para os endpoints e receber respostas, assim como já nos acostumamos a receber via browser ou utilizando programas como o Postman.
+
+# Caso tenha dificuldades maiores, você pode utilizar o Postman para converter uma requisição em cURL, é só fazer a requisição nele como você já sabe e depois clicar no botão code (que fica embaixo do save) e escolher CURL.
+# Faça uma chamada GET, utilizando o CURL.
+# Faça uma chamada POST, utilizando o CURL, passando um JSON no body da requisição.
+# Faça uma chamada qualquer, utilizando o cURL, passando um header na requisição.
+# R = ./curl-get-e-post.py
+
+# Exercício 2 : Ainda utilizando o cURL, vamos explorar mais alguns conceitos do HTTP. Relembre que falamos que o HTTP organiza e dá significado aos dados encapsulados nessa camada. Por exemplo: ao vermos um 200 tanto nós quanto um client HTTP sabemos que aquela request foi realizada com sucesso. Vamos explorar isso com o cURL.
+# Faça uma chamada GET, utilizando o cURL, para "google.com".
+# R = └─# curl www.google.com
+
+# Perceba que foi retornado um 301 . Isso quer dizer que existem diversos redirecionamentos que nos encaminham para o lugar certo. No caso, o caminho certo para a página do google é www.google.com . Ao acessarmos pelo navegador, não percebemos isso porquê ele faz o redirecionamento para a página certa para nós ao encontrar o 301 , porém, se você inspecionar a network você irá identificar esse redirecionamento. Faça uma nova chamada a "google.com", porém agora utilizando o parâmetro -L ou --location , que serve para "seguir redirecionamentos".
+# R = └─# curl -L www.google.com
+# R = └─# curl --location www.google.com
+
+# Exercício 3 : Agora utilizando o wget, pegue o conteúdo da página do site da Trybe, depois abra o arquivo HTML baixado em seu navegador. Faça o mesmo processo com outras páginas web.
+# R = wget https://app.betrybe.com
+
+# Exercício 4 : Agora iremos para a camada de transporte. Crie um servidor TCP usando o módulo socketserver que já vem embutido com o Python. Nosso servidor TCP deverá:
+# Responder com um "Olá, client", logo quando estabelecer uma conexão.
+# Imprimir no console todo dado recebido.
+# Responder com os dados recebidos (como um eco).
+# Utilize a porta 8085.
+# Perceba que o servidor sozinho não faz nada. Ele precisa que alguém se conecte a ele, então para testá-lo você pode utilizar o comando "telnet localhost 8085" , onde telnet é a aplicação que iremos utilizar, localhost é o local onde o servidor está (no caso, o seu próprio PC) e 8085 é a porta em que o servidor está escutando conexões.
+# Dicas:
+# a documentação do módulo traz exemplos de como instanciar seu servidor TCP
+# na mesma documentação, temos exemplos de classes para responder as requisições
+# os dados na requisição vêm em bytes -- não strings! bytes podem ser decodificados em string com a codificação correta
+# do mesmo jeito, para responder você pode precisar codificar strings em bytes
+# telnet sempre envia ASCII, já o netcat envia no encoding do sistema (em Linux, geralmente utf-8, mas confirme com o comando locale )
+"""
+R = servidor-tcp-com-socketserver.py
+terminal-1:
+└─# python3 servidor-tcp-com-socketserver.py
+terminal-2:
+└─# telnet localhost 8085
+"""
+
+# Exercício 5 : Utilizando o comando telnet ou o Netcat (nc):
+# Conecte no server do exercício anterior e envie informações. O server deverá imprimir as mensagens enviadas no console.
+# Pare o servidor e verifique o que aconteceu com a conexão que estava aberta com o comando telnet ou nc.
+"""
+R = servidor-tcp-com-socketserver.py
+terminal-1:
+└─# python3 servidor-tcp-com-socketserver.py
+terminal-2:
+└─# telnet 127.0.0.1 8085
+ou
+└─# nc -t 127.0.0.1 8085                                                                                             1 ⨯
+"""
+
+# Exercício 6 : Reinicie o servidor TCP e agora faça uma requisição utilizando o cURL (HTTP). Perceba o que é exibido no console do server , já que não estamos utilizando o HTTP nele. Perceba também que o comando cURL não recebe uma resposta HTTP com sentido (um status code 200, por exemplo), de modo que ele não sabe que aquela requisição chegou ao fim.
+"""
+curl --request POST \
+    --data "{ \"foo\": \"bar\" }" \
+    --header 'Content-Type: application/json' \
+    --header 'Foo-Bar-Header: foo-bar' \
+    --data '{ "foo": "bar" }' \
+    localhost:8085/foo-bar
+"""
+
+# Exercício 7 : Agora iremos explorar o outro protocolo de transporte que aprendemos. Crie um servidor UDP usando o mesmo módulo socketserver . Nosso servidor UDP deverá:
+# Imprimir no console toda mensagem recebida (não esqueça de converter também para string).
+# Responder com os dados recebidos (como um eco).
+# Utilize a porta 8084.
+# Dicas:
+# todas as dicas do exercício 4 se aplicam
+# telnet não funciona com udp -- use netcat
+# R = ./servidor-udp-com-socketserver.py
+
+# Exercício 8 : Envie pacotes para o servidor UDP utilizando o Netcat (nc). Em seguida pare o servidor e perceba que como não há conexão nada é sentido pelo client .
+# R = └─# nc -u 127.0.1 8084
+
+# Exercício 9 : Faça uma chamada ao server utilizando o cURL . Lembre que, além do HTTP, o comando utiliza o protocolo TCP e não o UDP. Repare o que acontece.
+# R = └─# curl localhost:8084
+
+""" Bônus """
+
+# Exercício 10 : Identifique o IP interno e externo da sua máquina.
+# R = └─# curl ifconfig.me
+
+# Exercício 11 : Identifique as interfaces de redes utilizadas por sua máquina e identifique qual está em uso agora.
+# R = └─# curl ifconfig.me
 
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 34.1 - <--- / FIM --------------------------------- //
 # ########################################## Arquitetura de redes
-# - Concluído ... ------------------------------------------------------------ #
+# - Concluído \o/ ------------------------------------------------------------ #
