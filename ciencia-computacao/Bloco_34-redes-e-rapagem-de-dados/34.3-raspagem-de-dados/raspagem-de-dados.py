@@ -191,39 +191,90 @@ response.raise_for_status()
 # Foco de hoje
 # ... Rapagem de dados
 
-# - Curl
-# - wget
-# - TCPServer
-# - UDPServer
+# ativando o ambiente virtual
+# - └─# source .venv/bin/activate
 
-# Execute os comando no Terminal
+# ./spider_quote.py
 
-""" Curl > exibe uma paina a web """
-# curl https://app.betrybe.com/course/live-lectures/sd-cohort-10-b
+import requests
 
-""" wget > possibilita baixar uma pagina da web"""
-# wget https://app.betrybe.com/course/live-lectures/sd-cohort-10-b
+res = requests.get("https://quotes.toscrape.com/")
+print(res)  # <Response [200]>
+type(res)  # <class 'requests.models.Response'>
 
-""" TCPServer """
-# ./tcp.py
+# res. + tab (para ver opções)
 
-# Terminal-01
-# python3 tcp.py
-# Terminal-02
-# telnet 127.0.1 8080
+res.apparent_encoding  # 'utf-8'
+res.close  # <bound method Response.close of <Response [200]>>
+res.connection  # <requests.adapters.HTTPAdapter object at 0x7f5aa153d790>
+res.cookies  # <RequestsCookieJar[]>
 
-""" UDPServer """
-# ./udp.py
-# Terminal-01
+# Tempo limite de espera(timeout)
+res = requests.get("https://quotes.toscrape.com/", timeout=0.1)
 
-# Terminal-02
-# nc -u 127.0.0.1 9090
+# retorna em formato de texto(text)
+res.text
+# pega somente 1000 caracteres
+res.text[:1000]
+
+""" casos de erro """
+res = requests.get("https://blog.betrybe.com/")
+res = text[:1000]
+res  # <Response [403]>
+res.raise_for_status()  # motivo do erro(sem permissão)
+
+""" ... """
+res = requests.get("https://quotes.toscrape.com/")
+
+# import parsel
+from parsel import Selector
+
+selector = Selector(res.text)
+selector  # <Selector xpath=None data='<html lang="en">\n<head>\n\t<meta charse...'>
+
+# seleciona a e cola("") da origem do website
+selector.css("body > div > div:nth-child(2) > div.col-md-8 > div:nth-child(1) > span:nth-child(2) > small")
+
+# .get nos retorna uma opção melhor
+selector.css("body > div > div:nth-child(2) > div.col-md-8 > div:nth-child(1) > span:nth-child(2) > small").get()
+# '<small class="author" itemprop="author">Albert Einstein</small>'
 
 
+# pega só o texto(::text)
+selector.css("body > div > div:nth-child(2) > div.col-md-8 > div:nth-child(1) > span:nth-child(2) > small ::text").get()
+# 'Albert Einstein'
 
+# pega todos autores da pagina(::text + getall)
+selector.css("body > div > div:nth-child(2) > div.col-md-8 span:nth-child(2) > small ::text").getall()
+# ['Albert Einstein', 'J.K. Rowling', 'Albert Einstein', 'Jane Austen', 'Marilyn Monroe', 'Albert Einstein', 'André Gide', 'Thomas A. Edison', 'Eleanor Roosevelt', 'Steve Martin']
 
+print(res.headers["Content-Type"])  # text/html; charset=utf-8
 
+""" terminal python3 """
 
+import requests
+import parsel
+
+# importa a pagina spider_quote
+from spider_quote import fetch_content
+
+# site alvo
+page_content = fetch_content("https://quotes.toscrape.com/")
+
+# seleciona o conteuda da pagina
+sel = parsel.Selector(page_content)
+
+# seleciona a classe css
+quotes = sel.css("div.quote")
+
+# mostra o conteudo obtido
+print(quotes)
+
+# mostra os autores
+sel.css("div.quote small.author").getall()
+
+# pega somente o texto
+sel.css("div.quote small.author::text").getall()
 
 
 # --------------------------------------------------------------------------- #
