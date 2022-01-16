@@ -12,3 +12,7 @@ class AnimalEstimacao():
 
     def comer(self):
         print('{0} está comendo'.format(self.nome))
+
+
+animal = AnimalEstimacao('frederico', 'gato', 'Junior')
+print(animal.correr())

@@ -325,10 +325,80 @@ print('%s late sem parar!' % snoop.nome)  # Rex late sem parar!
 # --------------------------------------------------------------------------- #
 
 # Agora a prática
+"""
+Exercício 1: Em um contexto de orientação a objetos, como podemos definir o que
+são mensagens e qual a sua importância?
+R = uma mensagem é uma das responsabilidades que um objeto pode ter, sendo
+utilizada para invocar um comportamento. Quando uma mensagem é enviada a um
+objeto, o mesmo pode ou não alterar seu estado. É importante, pois orientação a
+objetos é sobre objetos e sua comunicação. E essa comunicação entre os objetos
+é feita através de mensagens.
 
-# Exercício 1:
+Exercício 2: Para exercitar nossa capacidade de abstração, vamos modelar
+algumas partes de um software de geometria. Como poderíamos modelar um
+objeto retângulo?
+para descrever nossas abstrações:
 
+Nome da abstração
+Quadrado
+atributos/estados
+- lado (tamanho)
+comportamentos
+- calcular area (lado * lado)
+- calcular perímetro (4 * lado)
+
+R = ./ex2.py
+
+Exercício 3: E como poderíamos definir um círculo? Qual seu nome, atributos e
+comportamentos?
+R = ./ex3.py
+
+Exercício 4: Vamos mudar um pouco nosso contexto para um sistema de
+vendas de uma cafeteria. Como podemos abstrair um pedido composto
+por vários itens? Qual
+seu nome, atributos e comportamentos?
+R = ./ex4.py
+
+Exercício 5: modelar uma televisão?
+🐦 Pense em como encapsular comportamentos como o estado (ligado/desligado),
+ou a taxa de variação do volume, que muda de TV para TV etc.
+R = ./ex5.py
+"""
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 33.1 - <--- / FIM --------------------------------- //
 # ################################ introducao-a-programacao-orientada-a-objetos
-# - Concluído ... ----------------------------------------------------------- #
+# - Concluído \o/ ----------------------------------------------------------- #
+
+# Recursos adicionais (opcional)
+""" Alan Kay On Messaging
+http://wiki.c2.com/?AlanKayOnMessaging
+
+Código Fonte TV - Programming Paradigms
+https://www.youtube.com/watch?v=EefVmQ2wPlM
+
+Learn Haskell in Y minutes
+https://learnxinyminutes.com/docs/haskell/
+
+Learn Prolog in Y minutes
+https://learnxinyminutes.com/docs/prolog/
+
+Conceitos - Classes Abstratas
+https://www.devmedia.com.br/conceitos-classes-abstratas-programacao-orientada-a-objetos/18812
+
+ABC - Abstract Base Classes
+https://docs.python.org/3/library/abc.html
+
+Pisani - Orientação a objetos - os 4 grandes pilares do paradigma
+https://www.youtube.com/watch?v=1fXfDKtSip4
+
+Python - Classes with encapsulated state
+https://github.com/fluentpython/pyob2019/blob/master/03-classes.ipynb
+
+OOP: You’re Doing It Completely Wrong
+https://vimeo.com/91672848?__s=xuey6qecxo2cunfuas8e
+
+O que é UML e Diagramas de Caso de Uso: Introdução Prática à UML
+https://www.devmedia.com.br/o-que-e-uml-e-diagramas-de-caso-de-uso-introducao-pratica-a-uml/23408
+
+UML - Examples by Types of Diagrams
+https://www.uml-diagrams.org/index-examples.html """
