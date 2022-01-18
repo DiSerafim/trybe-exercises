@@ -335,3 +335,8 @@ return 1 + somatorio(0)  # 1
 # - > EXERCÍCIO do dia - 35.2 - <--- / FIM --------------------------------- //
 # ########################################## Recursividade e Estratégias para solução de problemas
 # - Concluído \o/ ------------------------------------------------------------ #
+
+""" Recursos Adicionais """
+# Técnicas de divisão, conquista e de programação dinâmica para a resolução de Problemas de Otimização
+
+# http://www.prof-lori-viali.com/graduacao/po_2/literatura/pdinamica/artigos/Vol8_Artigo1.pdf
