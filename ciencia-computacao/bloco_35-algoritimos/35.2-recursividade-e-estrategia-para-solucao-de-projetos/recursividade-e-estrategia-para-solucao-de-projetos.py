@@ -307,10 +307,31 @@ return 1 + somatorio(0)  # 1
 
 # Agora a prática
 
-# Exercício 1: 
+# Exercício 1: Crie um algoritmo não recursivo para contar quantos números pares existem em uma sequência numérica (1 a n).
+# R= ./ex1-conta-numeros-pares.py
+
+# Exercício 2: Transforme o algoritmo criado acima em recursivo.
+# R= ./ex2-transforma-em-recursivo.py
+
+# Exercício 3: Crie um algoritmo recursivo que encontre, em uma lista, o maior número inteiro.
+# R= ./ex3-recursivo-maior-inteiro.py
+
+# Exercício 4: Escreva um algoritmo recursivo para encontrar o máximo divisor comum ( mdc ) de dois inteiros.
+# R= ./ex4-maximo-divisor.py
+
+# Exercício 5: Escreva um algoritmo recursivo que identifica se um número é primo.
+# R= ./ex5-numero-primo.py
+
+
+# Bônus
+# Exercício 6: Escreva um algoritmo recursivo que resolva o problema da torre de hanoi, seguindo as instruções:
+# - Assim como na imagem abaixo, a torre deve conter 3 discos, e três colunas;
+# - Os discos começam alinhados na primeira coluna, e devem ser organizados respeitando a ordem de tamanho, na última coluna.
+# R = ./ex6-torre.py
+
 
 # #####################################
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 35.2 - <--- / FIM --------------------------------- //
 # ########################################## Recursividade e Estratégias para solução de problemas
-# - Concluído ... ------------------------------------------------------------ #
+# - Concluído \o/ ------------------------------------------------------------ #
