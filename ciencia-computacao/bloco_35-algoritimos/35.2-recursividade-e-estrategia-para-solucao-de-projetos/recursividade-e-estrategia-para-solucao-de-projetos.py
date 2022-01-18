@@ -269,6 +269,34 @@ Outra solução ótima: 8kg + 2kg + 4kg = 14kg.
 # Foco de hoje
 # ... Recursividade e Estratégias para solução de problemas
 
+''' 3 leis da recursividade '''
+# - Ter um caso base
+# - Mudar seu estado e se aproximar do caso base
+# - Chamar a si mesmo, recursivamente.
+
+# Ex:
+def somatorio(n):
+    if n == 0:
+        return 0
+
+    return n + somatorio(n - 1)
+
+print(somatorio(5))  # 15
+
+# ./somatorio.py
+
+# simplificando
+somatorio(5)
+return 5 + somatorio(4)  # 15  <<
+return 4 + somatorio(3)  # 10
+return 3 + somatorio(2)  # 6
+return 2 + somatorio(1)  # 3
+return 1 + somatorio(0)  # 1
+
+# Na prática
+# ./fatorial.py
+# ./inverter.py
+
 
 # #####################################
 # --------------------------------------------------------------------------- #
