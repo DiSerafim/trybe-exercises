@@ -388,7 +388,7 @@ Para medir o tempo de execução de um algoritmo (em segundos) implemente a segu
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 35.3 - <--- / FIM --------------------------------- //
 # ########################################## Algoritmos de ordenação e busca
-# - Concluído ... ------------------------------------------------------------ #
+# - Concluído \o/ ------------------------------------------------------------ #
 
 """ Recursos Adicionais """
 # Visualização gráfica dos algoritmos de ordenação
