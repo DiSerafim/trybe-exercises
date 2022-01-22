@@ -282,6 +282,19 @@ Fatorial: O(n!),
 # Foco de hoje
 # ... Complexidade de algoritmos
 
+# 1. Problema - Elemento aparece mais de 25% em um array ordenado.
+# Dado uma coleção de números inteiros 'ordenados' em ordem crescente, 
+# tem exatamente um inteiro que corre mais de 25% das vezes.
+# analize a ordem de complexidade de tempo e espaço
+""" ./problema-1-repetido.py """
+
+# 2 Problema - Procurando a menor letra, maior que o alvo
+# Dado uma lista "ordenada" de letras do alfabeto, contendo somente letras minúsculas,
+# e dado uma letra como alvo, procure o menor elemento na lista que é maior que o alvo.
+""" ./problema-2-percorre-lista.py """
+
+
+
 
 # --------------------------------------------------------------------------- #
 # - > AULA ao VIVO - 35.1 ----- <--- / FIM --------------------------------- //
