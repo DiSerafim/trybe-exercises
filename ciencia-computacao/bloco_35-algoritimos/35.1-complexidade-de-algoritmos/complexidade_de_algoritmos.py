@@ -58,6 +58,9 @@
 # - Quanto tempo um algoritmo demora para executar? 😁
 # - Quanto maior o dado passado por parâmetro, mais o algoritmo demorará para executar.
 
+from numpy import number
+
+
 def sum_array(numbers):
     sum = 0
     for number in numbers:
@@ -96,7 +99,7 @@ sum_array("array_com_um_milhão_de_numeros")
 # ./tempo-e-espaco.py
 
 """ Exercícios de Fixação """
-# ./fixacao-1.py
+# ./fixacao-1_0(n).py
 
 
 """  --------------------------------------------------------------------------- 
@@ -123,40 +126,151 @@ sum_array("array_com_quatro_mil_numeros")
 # Já esse teve tempo de execução de 1.8s, cerca de quatro vezes maior.
 
 # - Temos dois arrays do mesmo tamanho, que vamos chamar de n . Repare que temos dois loops aninhados um dentro do outro. Isso significa que, para cada número de array1 , todo o array2 será percorrido!
-
-# ./complexidade-quadratica.py
+""" ./complexidade-quadratica.py """
 
 """ Exercícios de Fixação """
-# ./fixacao-2.py
-# ./fixacao-3.py
+# ./fixacao-2_n².py
+# ./fixacao-3_0(n³).py
 
 
 """  --------------------------------------------------------------------------- 
 | -> Comparando complexidades                                                  |
 ---------------------------------------------------------------------------  """
 
+""" A Ordem de Complexidade """
+# - diz o quanto o tempo de execução(ou espaço de memória ocupado) de um algoritmo cresce, na medida em que aumentamos o tamanho da sua entrada!
+
+""" O(1) """
+# - executa no mesmo tempo independente do tamanho da entrada.
+# Como exemplo, lembre-se do acesso a um elemento do array, Bloco"34.3".
+# Esse acesso é O(1), pois leva o mesmo tempo, independente do tamanho do array;
+
+""" O(n) """
+# - significa que o algoritmo é linear: se aumentamos a entrada em 2 vezes, aumentamos o tempo de execução em 2 vezes;
+
+""" O(n²) """
+# - significa que o algoritmo é quadrático: se aumentamos a entrada em 2 vezes, aumentamos o tempo de execução em 4 (2²) vezes;
+
+""" O(n³) """
+# - significa que o algoritmo é cúbico: se aumentamos a entrada em 2 vezes, aumentamos o tempo de execução em 8(2³) vezes.
+
+# Para se ter uma noção: para um algoritmo linear, com:
+""" n = 1000 temos mil operações """
+# Quando o algoritmo é:
+""" O(n²) um n = 1000 gera um milhão de operações. """
+# Essa mesma quantidade (um milhão) para:
+""" O(n³), se atinge com n = 100. """
+# Alguns algoritmos podem, rapidinho, ficar inviáveis de se executar?
+
+
 """  --------------------------------------------------------------------------- 
  -> Complexidade logarítmica                                                   |
 ---------------------------------------------------------------------------  """
+# - Dado pela notação O(log n), um algoritmo logarítmico geralmente reduz pela metade o tamanho do input a cada iteração.
+
+# O tempo de execução de um algoritmo é dito logarítmico porque log₂n(lê-se: "log de n na base 2") nos dá o número de iterações que uma entrada de tamanho n terá no algoritmo.
+
+""" complexidade-logaritimico.py """
+# Dado um array de tamanho n ordenado em ordem crescente, encontre um número passado na entrada . É como procurar por um nome numa lista telefônica!
+
+""" Exercícios de Fixação """
+# ./fixacao-4_0(n log n).py
+
 
 """  --------------------------------------------------------------------------- 
  -> Complexidade exponencial e fatorial                                        |
 ---------------------------------------------------------------------------  """
+# - caracterizam algoritmos que, para aumentos pequenos no tamanho da entrada, aumentam enormemente o seu tempo de execução.
+"""
+Exponencial: 2ⁿ ;
+Fatorial: n! .
+"""
+
+
+""" Exponencial: 2ⁿ """
+# se n possui vinte elementos, o algoritmo faz um milhão de operações. Para o caso fatorial, os mesmos vinte elementos rendem 24 quatrilhões de operações (O número exato é: 2432902008176640000 operações 😨).
+
+""" Fatorial: n! """
+# força bruta. Ou seja: testa todas as possibilidades.
+
+# - Belo Horizonte > São Paulo > Florianópolis
+# - Belo Horizonte > Florianópolis > São Paulo
+# - Florianópolis > Belo Horizonte > São Paulo
+# - Florianópolis > São Paulo > Belo Horizonte
+# - São Paulo > Belo Horizonte > Florianópolis
+# - São Paulo > Florianópolis > Belo Horizonte
+
+# O número de rotas para 3 cidades é 3! == 3 * 2 * 1 = 6
+
+# o Brasil tem 5570 municípios. Isso daria 5570 * 5569 * 5568 * ... . Quantos milhares de anos um computador precisaria para rodar esse algoritmo nesse caso? 😄
+
+# Algoritmos que não tem solução conhecida em tempo "polinomial", que são fatoriais ou exponenciais, resolvíveis somente com "força bruta", pertencem a uma categoria de problemas na computação chamada "problemas NP Completos".
+
 
 """  --------------------------------------------------------------------------- 
 | -> Analisando algoritmos com várias estruturas de repetição                  |
 ---------------------------------------------------------------------------  """
 
+# Esse algoritmo tem três estruturas de repetição evidentes:
+# uma linear
+# uma quadrática
+# uma cúbica.
+# Qual é a ordem de complexidade dele?!
+""" ./algoritmos-com-estruturas-de-repeticao.py """
+# a rigor ela seria "O(n + n² + n³)"
+
+# Se os loops estão aninhados você os multiplica, e se estão paralelos você os soma.
+
+# Um algoritmo de busca binária que roda três vezes = O(3 * log n) ;
+
+# Um algoritmo que roda uma busca binária num array de tamanho n para cada elemento de um array de tamanho m = O(m * log n) .
+
+# geralmente simplificam-se essas notações.
+# ordens de complexidade diferentes, para entradas grandes, tem valores absurdamente diferentes.
+
+# Imagine escrever O(n! + log(n))
+# para uma entrada de tamanho 8 esse número seria "O(40320 + 3)"
+# o componente fatorial da equação, n! = 40320 , domina completamente a ordem de complexidade.
+# dizemos que a complexidade menor é "desprezível" , então a omitimos.
+# para valores grandes, dizer a maior ordem de complexidade do conjunto já basta para uma boa análise.
+
+
 """  --------------------------------------------------------------------------- 
 | -> Melhor caso, pior caso e caso médio                                       |
 ---------------------------------------------------------------------------  """
+# - "A depender da minha entrada, o meu algoritmo pode executar em O(1) ou O(n) ".
+
+# Ex:
+""" ./busca-linear.py """
+
+# Dizemos que, para entradas muito grandes, esse algoritmo é O(n)
+# caso tenhamos sorte e o número que procuramos seja o primeiro do array, mesmo para uma entrada infinita, nossa complexidade será "O(1)" 
+# Esse é o melhor caso
+# o pior caso é o número ser o último elemento do array, ou seja "O(n)".
+# E o caso médio, seria algo como "O(n * 1/2)"
+# ou seja, o número que procuramos está no meio da lista
+
+# para entradas muito grandes, aprendemos a desprezar os números menos relevantes da soma, então podemos simplificar e dizer que o caso médio é O(n) também.
+
 
 """  --------------------------------------------------------------------------- 
  -> Em suma                                                                    |
 ---------------------------------------------------------------------------  """
+# - ordens de complexidade , uma forma de se analisar um algoritmo de qualquer linguagem e feito em qualquer paradigma.
+"""
+Constantes: O(1),
+Logarítmicos: O(log n),
+Linear: O(n),
+Quadráticos: O(n²),
+Cúbicos: O(n³),
+Exponencial: O(2ⁿ),
+Fatorial: O(n!),
+"""
 
-
-
+# 1- a depender do algoritmo, essas análises podem ser combinadas, como por exemplo num algoritmo O(n log n)
+# 2- problemas que não tem solução conhecida em tempo "polinomial", sendo apenas "exponenciais" ou "fatoriais", em algoritmos de força bruta, são chamados "NP Completo"
+# 3- algoritmos com várias estruturas de repetição diferentes, devemos sempre considerar a maior ordem de complexidade possível e desprezar as demais na nossa notação.
+# 4- algoritmos podem ter diferentes ordens de complexidade para seu melhor caso, pior caso e caso médio.
 
 
 # --------------------------------------------------------------------------- #
