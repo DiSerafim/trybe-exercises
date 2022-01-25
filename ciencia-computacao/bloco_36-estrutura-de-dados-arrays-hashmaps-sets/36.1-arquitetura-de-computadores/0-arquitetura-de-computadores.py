@@ -343,7 +343,7 @@ Memória Secundária ou de massa(disco rigido, cd/dvd, pendrive)
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 36.1 - <--- / FIM --------------------------------- //
 # ################################ Arquitetura de Computadores
-# - Concluído \ ----------------------------------------------------------- #
+# - Concluído \o/ ----------------------------------------------------------- #
 
 """ Recursos adicionais (opcional) """
 # - A falha fundamental da matemática - O problema que levou à invenção do computador
