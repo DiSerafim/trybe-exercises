@@ -225,8 +225,30 @@ Memória Secundária ou de massa(disco rigido, cd/dvd, pendrive)
 
 # Foco de hoje
 # ...Arquitetura de Computadores
-""" teminal python3 """
 
+""" SOs """
+# sistemas operacionais(tv, relogios, aparelhos de jogo)
+
+# é quase tudo energia elétrica = 01011001
+
+""" processamento binario """
+# AND ... como sempre
+# OR ... como sempre
+# NOT ... como sempre
+# XOR ... ou un, ou outro
+
+""" Gerenciamento """
+# Processos
+# - Oque vamos pedir para a CPU executar?
+# - Atualizador de pacotes; script Python, música do Spotify; notificação do Slack..
+
+# Dispositivos
+# - Quais são as peças conectadas, e o que cada uma pode fazer?
+# - Mouse; monitor; pen-driver; microfone; câmera; receptor Wi-Fi; ...
+
+# Recursos
+# - Qual processo vai poder acessar o que agora?
+# - Memoria RAM; Disco; Portas de rede; placa de vídeo
 
 
 # --------------------------------------------------------------------------- #
