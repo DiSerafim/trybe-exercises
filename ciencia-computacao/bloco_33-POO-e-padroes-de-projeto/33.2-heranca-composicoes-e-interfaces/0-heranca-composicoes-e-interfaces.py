@@ -257,23 +257,76 @@ class SalesReportCSV(SalesReport):
 """  --------------------------------------------------------------------------
  -> Métodos de Classe, Métodos Estáticos e Métodos de Instância
 --------------------------------------------------------------------------- """
-# 
+
+# se o local de criação do arquivo for sempre o mesmo quantos "ZipCompressor" você acha que faz sentido instanciar na sua aplicação?
+
+# Tanto faz se invocamos a função com "minha_instancia_de_zip_compressor.compress()" ou "ZipCompressor.compress()".
+# Mas é possível fazer dessa segunda forma? É possível, em suma, invocar um método a partir de uma classe, e não de uma instância dela? Sim! Observe nossa refatoração:
+
+""" ZipCompressor-refatoracao.py """
+
+# métodos de classe são chamados diretamente da classe, sem instâncias, e utilizam algum atributo ou função auxiliar da classe para funcionar!
+# Métodos estáticos são chamados diretamente da classe e não utilizam nada dela.
+
+
 """  --------------------------------------------------------------------------
  -> Composição versus Herança
 --------------------------------------------------------------------------- """
-# 
+# - reaproveitar códigos
+
+# Utilize herança para especialização e composição para compartilhamento de código.
+
+
 """  --------------------------------------------------------------------------
  -> Dicionário de conceitos, parte 2
 --------------------------------------------------------------------------- """
-# 
+
+""" Herança: """
+# é uma forma de especializar o comportamento de uma classe com outra classe;
+
+""" Classe Abstrata: """
+# uma classe que não pode ser instanciada.
+# Utilizada para definir as funções comuns(nem sempre abstratas) e suas assinaturas;
+
+""" Métodos Abstratos: """
+# um método, ou função, que precisa ser implementado por uma classe herdeira para funcionar corretamente.
+# Criado para definir uma Interface ;
+
+""" Interface: """
+# conjunto de métodos que um determinado objeto "possui" ou, conjunto de mensagens que um objeto é capaz de entender e responder para;
+
+""" Composição: """
+# incorporar em um objeto outro objeto, para compartilhar código de maneira eficaz;
+
+""" Métodos de classe: """
+# métodos que podem ser chamados diretamente pela classe definida, e não por sua instância, para definirmos quando instanciar um objeto dessa classe for desnecessário!
+# Utilizam, obrigatóriamente, atributos ou métodos internos da classe em seu funcionamento;
+
+""" Métodos estáticos: """
+# como os métodos de classe, mas não utilizam nada de sua classe em seu funcionamento.
+
+""" E lembre-se: """
+# utilize herança para especialização de uma classe geral e composição para compartilhamento de código
+
+
 """  --------------------------------------------------------------------------
  -> Os quatro pilares da Programação Orientada a Objetos
 --------------------------------------------------------------------------- """
-# 
-"""  --------------------------------------------------------------------------
- -> Muita calma nessa hora!
---------------------------------------------------------------------------- """
-# 
+# No bloco anterior foi faldo dobre "Encapsulamento" e "Abstração". 2 dos 4 pilares de POO.
+
+""" Herança """
+# A herança, como o próprio nome já diz, é o princípio que define que uma classe deve ser capaz de herdar seus atributos e métodos de outra.
+# E embora a classe base possa ter tanto métodos abstratos(que precisam ser implementados) quanto métodos concretos(que já estão implementados), a boa prática diz que a herança deve ser usada apenas para especialização.
+# Se você quer apenas compartilhar código, use composição.
+
+""" Polimorfismo """
+# Segundo o dicionário, a palavra "polimorfismo" significa "qualidade ou estado de ser capaz de assumir diferentes formas".
+# Em POO, o polimorfismo é caracterizado quando duas ou mais classes contêm implementações diferentes para métodos com a mesma interface.
+# Nos nossos exemplos de hoje pense, por exemplo, no método serialize, que é definido de forma abstrata na classe Serializer e assume diferentes formas nas classes JSONSerializer e CSVSerializer
+
+""" Os quatro pilares em uma frase """
+# Na Programação Orientada a Objetos, você deve criar entidades(Abstração) com as mensagens que escuta bem definidas(Encapsulamento), podendo especializar comportamentos de entidades(Herança) contanto que garanta que a forma de enviar mensagens é consistente(Polimorfismo)
+
 
 # --------------------------------------------------------------------------- #
 # - > CONTEÚDO do dia - 33.2 - <--- / FIM ---------------------------------- //
