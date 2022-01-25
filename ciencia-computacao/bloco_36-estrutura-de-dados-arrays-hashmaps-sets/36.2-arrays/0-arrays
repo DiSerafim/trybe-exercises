@@ -1,0 +1,281 @@
+# ############################## Arrays
+# --> CONTEÚDO do dia - 36.2 - <--- / INICIO ----------------------------- //
+# ############################## Arrays
+
+# 1 - O problema das notas
+# 2 - Por que arrays?
+# 3 - Entendendo a estrutura
+# 4 - Arrays multidimensionais e outras operações
+# 5 - Arrays no Pythonverso
+
+""" ---> OBJETIVO <---
+- Entender o que são estruturas de dados ( ED )
+- Entender o que são tipos abstratos de dados ( TAD )
+- Reconhecer arrays e seu funcionamento em baixo nível
+- Aplicar arrays multi-dimensionais;
+"""
+
+
+# ---> Conteúdos <---
+
+
+"""  --------------------------------------------------------------------------
+| -> O problema das notas <-                                                  |
+--------------------------------------------------------------------------- """
+
+# Em uma escola, o sistema precisa armazenar todas as notas das provas, de cada estudante, de uma turma para uma determinada matéria.
+# Quando selecionado um estudante, o sistema deve calcular a soma das notas para verificar se o/a estudante foi aprovado ou não.
+# Este estudante possui quatro notas referentes à provas e trabalhos e caso não seja aprovado, tem direito a uma prova de recuperação.
+estudante1_matematica_prova1 = 10
+estudante1_matematica_prova2 = 8
+estudante1_matematica_prova3 = 9
+estudante2_matematica_prova1 = 9
+estudante2_matematica_prova2 = 6
+estudante2_matematica_prova3 = 10
+
+# 💡 Em python não existem tipos primitivos, tudo é objeto.
+# Por exemplo, experimente em um terminal interativo "(5).bit_length()".
+# Viu que conseguimos chamar um método até mesmo de um número?
+# Podemos fazer isso, pois, assim como todo objeto, um número possui atributo e comportamento.
+
+# Precisamos de uma forma dinâmica para armazenar de forma organizada dados, como as notas por exemplo. Vamos tentar usar uma lista:
+turma_A_matematica = [
+    ["Estudante1", 10, 8, 9],
+    ["Estudante2", 9, 6, 10],
+    # ...
+]
+# Neste caso, a Estrutura De Dados utilizada é a lista, e ela armazena dados do tipo "int" e dados do tipo "string". Note que a lista é uma estrutura de dados, mas também é um dado do tipo "list". Nesse exemplo, temos uma lista de listas.
+
+""" Estruturas de dados(ED) """
+# são implementações de ideias de como organizar os dados.
+# Existem muitas formas de organizar dados, e cada uma tem diferentes métodos de acesso e inserção, que podem levar mais ou menos tempo, e ocupam uma quantidade de memória diferente.
+# Estas particularidades determinam qual estrutura devemos utilizar para resolver cada problema.
+
+""" Tipos Abstratos de Dados(TAD) """
+# é um documento que serve para definir estruturas de dados com base em como são usadas e os comportamentos que fornecem.
+# Eles não especificam como a estrutura de dados deve ser implementada, mas simplesmente fornecem uma interface mínima esperada e um conjunto de comportamentos.
+# Pense assim, para você poder chamar um objeto de "carro", ele deve ter pelo menos as seguintes características:
+# - Quatro rodas
+# - Volante, acelerador, freio
+# - Ser movido a motor
+# - Espaço para pelo menos 1 motorista, e talvez passageiros
+
+""" Exercício de Fixação """
+# - 1 Tipos abstratos de dados possuem uma única implementação bem documentada?
+""" R= """
+# é um documento que serve para definir estruturas de dados com base em como são usadas e os comportamentos que fornecem.
+# Eles não especificam como a estrutura de dados deve ser implementada, mas simplesmente fornecem uma interface mínima esperada e um conjunto de comportamentos.
+
+# - 2 Listas(list), dicionários(dict) e conjuntos(set), que já vêm no Python, são considerados tipos de dados?
+# Caso negativo, justifique sua resposta.
+""" R= """
+# Sim!
+
+# - Voltando ao nosso problema de notas, precisamos de uma estrutura onde os elementos (dados) sejam de fácil acesso, facilmente percorrível e que mantenha as notas ordenadas.
+
+
+"""  --------------------------------------------------------------------------
+| -> Por que arrays?                                                          |
+--------------------------------------------------------------------------  """
+# - Array é um tipo abstrato de dado ( TAD ) que possui uma coleção de elementos que são acessados através do índice. Um array pode armazenar todo o tipo de dado e estes normalmente são de tipos homogêneos, ou seja, do mesmo tipo.
+
+# 💡 Em python, listas armazenam somente uma referência a um objeto. Portanto, um objeto armazenado em uma lista, modificado posteriormente, será modificado na lista.
+
+# A principal característica de um array é que elementos são armazenados e recuperados através de índices, o mesmo índice utilizado para adicionar um elemento pode ser utilizado para a sua recuperação.
+
+# Devemos implementar pelo menos um jeito de recuperar e armazenar um dado através do índice.
+""" ./array_example.py """
+
+# Relembrando o problema das notas, como arrays são estruturas eficientes para consultas, podemos buscar um estudante, através de um índice, e percorrer suas notas de uma maneira eficaz. Ainda temos o detalhe de que não ocorrem tantas inserções de notas, somente quando um estudante entrar em recuperação.
+
+
+"""  --------------------------------------------------------------------------
+| -> Entendendo a estrutura                                                   |
+--------------------------------------------------------------------------  """
+
+# Para entender o que acontece a cada inserção em um array, devemos entender o comportamento de uma lista(list).
+""" ./array_example2.py """
+
+# Quando inicializamos nossa estrutura array e internamente inicializamos uma lista(list) vazia, adicionando alguns itens, um espaço adicional é reservado para armazenar os itens.
+# O tamanho de cada slot é baseado no tamanho da estrutura que vamos armazenar (referência para objetos no caso do Python).
+
+# A lista cresceu de tamanho à medida que adicionamos novos itens.
+# De acordo com a documentação da linguagem Python, a cada vez que um elemento é inserido, a lista cresce o seu tamanho em 1.125.
+
+# quando há um crescimento, um novo endereço na memória é reservado para uma nova lista.
+# Em seguida, os elementos são copiados da lista original para a nova, e então o novo elemento é adicionado ao espaço de memória da nova lista.
+
+# Supondo uma lista com 4 valores numéricos:
+"""         *---*---*---*---*
+original    | 1 | 2 | 3 | 4 |   posição na memória: 0x01
+            *---*---*---*---*
+
+# Ao adicionar um novo item, a lista precisa crescer:
+            *---*
+novo item   | 5 |
+            *---*
+            *---*---*---*---*
+original    | 1 | 2 | 3 | 4 |    posição na memória: 0x01
+            *---*---*---*---*
+
+# Uma nova lista é criada:
+            *---*---*---*---*---*---*---*---*
+nova        |   |   |   |   |   |   |   |   |    posição na memória: 0x1A
+            *---*---*---*---*---*---*---*---*
+
+# Os elementos da lista original são copiados para a nova lista:
+            *---*---*---*---*
+original    | 1 | 2 | 3 | 4 |    posição na memória: 0x01
+            *---*---*---*---*
+              ↓   ↓   ↓   ↓
+            *---*---*---*---*---*---*---*---*
+nova        | 1 | 2 | 3 | 4 |   |   |   |   |    posição na memória: 0x1A
+            *---*---*---*---*---*---*---*---*
+
+# O novo elemento é colocado na nova lista:
+            *---*
+novo item   | 5 | -------------
+            *---*             ↓
+            *---*---*---*---*---*---*---*---*
+nova        | 1 | 2 | 3 | 4 |   |   |   |   |    posição na memória: 0x1A
+            *---*---*---*---*---*---*---*---*
+
+# O endereço onde se encontrava a lista antiga é liberado para ser utilizado
+# e o "nome original" é atribuído a nova lista:
+            *---*---*---*---*---*---*---*---*
+original    | 1 | 2 | 3 | 4 | 5 |   |   |   |    posição na memória: 0x1A
+            *---*---*---*---*---*---*---*---* """
+
+# Essa organização em espaços contínuos em memória torna o acesso a índices muito eficiente, pois basta pegar o endereço em memória do primeiro elemento e somar ao índice, multiplicando pelo tamanho do tipo armazenado e teremos o valor daquela posição.
+# Posso ter dez, cem ou mil itens que o tempo para acessar o valor pelo índice será o mesmo.
+
+# Quando inserimos um novo elemento no início do array, todos os elementos já existentes são deslocados à direita, tendo seu índice modificado em 1. Análogo a isto, quando adicionamos em uma posição intermediária, todos os elementos com índices posteriores ao inserido serão movidos em uma posição.
+""" # Supondo uma lista com 4 caracteres ao qual adicionaremos mais um no início:
+            *---*
+novo item   | a |
+            *---*
+              ↓
+            *---*---*---*---*
+original    | b | c | d |   |    posição na memória: 0x01
+            *---*---*---*---*
+                ⤻  ⤻  ⤻
+
+# Os elementos são deslocados para o próximo índice.
+
+            *---*---*---*---*
+original    | a | b | c | d |    posição na memória: 0x01
+            *---*---*---*---*
+
+
+# As regras de crescimento ainda se aplicam portanto pode ser que uma nova lista
+# seja criada, o elemento adicionado e os elementos copiados para a nova lista.
+# Ainda assim, o índice de todos os elementos posteriores a inserção
+# serão acrescidos em 1. """
+
+# O mesmo acontece se inserirmos um novo elemento no meio da lista:
+""" # Supondo uma lista com 3 caracteres ao qual adicionaremos mais um na segunda posição, vulgo índice 1:
+(inserimos b na posição 1).
+
+                *---*
+novo item       | b |
+                *---*
+                  ↓
+            *---*---*---*---*
+original    | a | c | d |   |    posição na memória: 0x01
+            *---*---*---*---*
+                    ⤻  ⤻
+
+# O resultado final seria:
+            *---*---*---*---*
+original    | a | b | c | d |    posição na memória: 0x01
+            *---*---*---*---* """
+
+# Algo similar ocorre quando fazemos remoções de valores à partir dos índices:
+""" # Supondo uma lista com 4 caracteres ao qual removeremos um elemento
+
+# Se removermos o último elemento (índice 3), nada precisa ser modificado
+
+         *---*---*---*---*
+array    | a | b | c |   |    posição na memória: 0x01
+         *---*---*---*-⤹-*
+                        d
+
+# Porém se removermos o primeiro, ou qualquer outro índice,
+# todos os valores serão deslocados à esquerda:
+                 ⤺  ⤺  ⤺
+         *---*---*---*---*---*---*---*---*
+array    | a |   | c | d | e |   |   |   |    posição na memória: 0x01
+         *---*-⤹-*---*---*---*---*---*---*
+                b
+
+# À medida que itens são removidos, a estrutura diminui em tamanho:
+         *---*---*---*---*
+array    | a | c | d | e |    posição na memória: 0x01
+         *---*---*---*---* """
+
+
+""" Exercício de Fixação """
+# 3 Que tal adicionarmos um método update que atualiza o valor a partir de um índice?
+# 🐦 A assinatura deve ser def update(self, index, value):
+""" R= """
+
+
+"""  --------------------------------------------------------------------------
+ -> Arrays multidimensionais e outras operações
+--------------------------------------------------------------------------- """
+# - Arrays podem ser estendidas para um número N de dimensões.
+# Isto pode ser bastante útil para modelagens de matrizes, tabuleiros em jogos ou problemas que envolvam tabela de dados.
+
+""" multidimensional_array_example.py """
+
+# list é uma implementação do TAD Array , e embora aqui tenhamos utilizado uma nova classe para escrever a estrutura de dados array , isto está cheirando muito a um MiddleMan. Portanto vamos remover o intermediário e utilizar diretamente a classe.
+""" functions_examples.py """
+
+
+"""  --------------------------------------------------------------------------
+ -> Arrays no Pythonverso
+--------------------------------------------------------------------------- """
+# Arrays no Python em outras implementações além do tipo "list".
+
+""" Módulo array """
+# Este módulo que já vem na linguagem Python, contém uma implementação de arrays compacta e otimizada para "valores básicos" como caracteres, números inteiros e ponto flutuante.
+""" ./module_array_example.py """
+# Um exemplo de utilização deste array pode ser para armazenar avaliações de um motorista em um sistema de motoristas particulares.
+
+""" Numpy """
+# - Pacote fundamental para computação científica em Python, possui uma implementação rápida e versátil para array de n-dimensões.
+# 🐦 Para usar o Numpy devemos instalá-lo através do pip
+#  python3 -m pip install numpy
+
+""" numpy_array_example.py """
+
+
+# --------------------------------------------------------------------------- #
+# - > CONTEÚDO do dia - 36.2 - <--- / FIM ---------------------------------- //
+# #####################################
+# - > AULA ao VIVO - 36.2 ----- <--- / INICIO ------------------------------ //
+# --------------------------------------------------------------------------- #
+
+# Foco de hoje
+# ...Arrays
+""" teminal python3 """
+
+
+
+# --------------------------------------------------------------------------- #
+# - > AULA ao VIVO - 36.2 ----- <--- / FIM --------------------------------- //
+# #####################################
+# - > EXERCÍCIO do dia - 36.2 - <--- / INICIO ------------------------------ //
+# --------------------------------------------------------------------------- #
+
+# Agora a prática
+"""
+Exercício 1: 
+"""
+# --------------------------------------------------------------------------- #
+# - > EXERCÍCIO do dia - 36.2 - <--- / FIM --------------------------------- //
+# ################################ Arrays
+# - Concluído ... ----------------------------------------------------------- #
+
+# Recursos adicionais (opcional)
+"""  """
