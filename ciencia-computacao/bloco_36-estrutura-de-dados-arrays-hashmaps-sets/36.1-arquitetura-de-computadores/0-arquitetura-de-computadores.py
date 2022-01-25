@@ -250,6 +250,18 @@ Memória Secundária ou de massa(disco rigido, cd/dvd, pendrive)
 # - Qual processo vai poder acessar o que agora?
 # - Memoria RAM; Disco; Portas de rede; placa de vídeo
 
+# Simulador de processador
+# http://www.buthowdoitknow.com/but_how_do_it_know_cpu_model.html
+
+# Vídeo do HD funcionando aberto
+# https://www.youtube.com/watch?v=BNSusmWFSPw
+
+# Comando htop
+# https://www.treinaweb.com.br/blog/monitorando-processos-com-o-htop
+
+# Comando hd
+# https://daemoniolabs.wordpress.com/tag/como-usar-hexdump-linux/
+
 
 # --------------------------------------------------------------------------- #
 # - > AULA ao VIVO - 36.1 ----- <--- / FIM --------------------------------- //
@@ -258,13 +270,117 @@ Memória Secundária ou de massa(disco rigido, cd/dvd, pendrive)
 # --------------------------------------------------------------------------- #
 
 # Agora a prática
-"""
-Exercício 1: 
-"""
+
+""" Exercício 1: """
+# Crie um projeto que irá simular a arquitetura que vimos em aula de uma maneira bem simples, ela terá um arquivo principal para a execução do programa que representará nosso Sistema Operacional e duas classes que representarão a Memória Principal e a Secundária .
+# Cada tipo de memória irá armazenar os dados de fato na memória que ela representa, sendo a Principal armazenando tudo em memória RAM e a secundária no disco.
+# Através do Python estaremos fazendo chamadas ao Sistema Operacional para realizar essas tarefas para gente, pois ele melhor do que ninguém saberá utilizar as memórias.
+# O objetivo do nosso script será realizar a soma de uma lista de números aleatórios utilizando as duas implementações de memória.
+# Os dados serão sempre armazenados como strings!
+
+# Vamos começar a nossa memória principal, ou memória RAM, para isso crie um arquivo "main_memory.py". Implemente os métodos get e load.
+# No load você irá adicionar(append) o elemento passado(value) à lista loaded_memory.
+# No get você irá retornar o valor presente na posição dada(index) na lista loaded_memory. Se o valor não existir ou não for numérico, retorne 0.
+""" ./ex1-main_memory.py """
+
+# Perceba que ela de fato ela estará armazenando os valores na memória RAM, através das variáveis que definimos!
+# Agora, crie um arquivo "secondary_memory.py" para ser a nossa memória secundária e adicione o conteúdo abaixo.
+# Mais uma vez você será responsável pela implementação dos métodos get e load porém, agora, você deverá utilizar a função open, para persistir esses dados em disco.
+# No load, utilizando o método open, escreva o código que crie um novo arquivo utilizando next_file_name como path e salve o value no conteúdo deste novo arquivo.
+# No get, também utilizando o método open, retorne o conteúdo do arquivo file_name.
+# Não esqueça de converter o valor para numérico(float ou int).
+""" ./ex1-secondary_memory.py """
+
+# Vamos criar nosso arquivo principal para gerenciar as "memórias" que criamos, crie um novo arquivo:
+""" ./ex1-operating_system.py """
+
+# resultado no terminal
+""" └─# python3 operating_system.py """
+
+# Perceba que o script do nosso Sistema Operacional faz a medição do tempo que cada uma das três operações (load, get e clean) leva para acontecer tanto na memória principal quanto na secundária. Além disso, as operações são testadas com uma lista de valores (`RANDOM_NUMBERS`).
+# Vamos testar nosso script,
+# Para deixar nosso script ainda mais legal, vamos aumentar a quantidade de números para serem somados, adicione uma grande quantidade de números no array de números aleatórios. Para isso, basta adicionar * 200 ao final da linha que declara a lista RANDOM_NUMBERS, para multiplicar a quantidade de elementos na lista.
+# Agora, vamos reforçar mais um conteúdo apreendido:
+# Comente os trechos de código que fazem a operação de limpeza(clean) da memória.
+# Execute o comando novamente
+# Comente os trechos de código que fazem a operação de carregamento(load) da memória e execute novamente.
+
+""" Exercício 2: """
+# Crie um script chamado my_platform.py e utilize-o para exibir no console as informações solicitadas abaixo.
+# Para isso utilize o módulo platform do Python 😎.
+# A plataforma que está sendo utilizada(linux, win32, darwin, etc);
+# A versão(release);
+# A arquitetura(x32 ou x64);
+""" ./ex2-my_platform.py """
+
+""" Exercício 3: """
+# enviar programaticamente comandos para o shell.
+# Crie um script chamado "resources.py" e utilize-o para exibir no console as informações solicitadas abaixo.
+# Para isso utilize o método check_output do módulo subprocess do Python 😎.
+# Informações sobre a sua CPU(no linux você pode usar comando lscpu, e no OSX você pode usar o comando sysctl -n machdep.cpu.brand_string):
+# O modelo;
+# A quantidade de cores ;
+# A velocidade em Megahertz - MHz ;
+# A quantidade de cache (L1, L2, L3);
+# Informações sobre a memória RAM (no linux você pode usar comando free , e no OSX você pode usar o comando top -l 1 | head -n 10 | grep PhysMem ):
+# A quantidade total de memória RAM disponível em sua máquina em megabytes - MB (faça a conversão também 😉).
+# A quantidade total de memória RAM que está sendo utilizada em megabytes - MB .
+# Dicas:
+# O método decode("UTF-8") vai ser útil para ler os dados oriundos da check_output ;
+# Os métodos split e strip vão ser úteis para limpar e separar as informações obtidas com os comandos;
+# O método startswith vai ser útil para selecionar informações específicas.
+# Se estiver muito difícil fazer a filtragem e limpeza dos dados, se contente com a exibição de informações a mais 
+""" ./ex3-resources.py """
+
+""" Exercício 4: """
+# Faça um script que, a cada intervalo de segundo, mostre no console a memória utilizada do sistema operacional vs a memória total(ambos em megabytes - MB). Dica: você pode se basear no script do exercício anterior.
+""" ./ex4-memoria-utilizada.py """
+
+""" Exercício 5: """
+# Faça um script que exibe o seu respectivo process id utilizando o módulo os do Python e então fique em execução por um determinado tempo. Agora utilizando os comandos de monitoramento visto no conteúdo, exiba os processos em execução e então identifique o seu processo.
+""" ./process-id.py """
+
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 36.1 - <--- / FIM --------------------------------- //
 # ################################ Arquitetura de Computadores
-# - Concluído ... ----------------------------------------------------------- #
+# - Concluído \ ----------------------------------------------------------- #
 
-# Recursos adicionais (opcional)
-"""  """
+""" Recursos adicionais (opcional) """
+# - A falha fundamental da matemática - O problema que levou à invenção do computador
+# https://youtu.be/HeQX2HjkcNo
+
+# - O Jogo da Imitação - Alan Turing quebra a criptografia da Enigma
+# https://www.youtube.com/watch?v=zZuqLLdx2YQ
+
+# - O Mapa da Ciência da Computação
+# https://www.youtube.com/watch?v=SzJ46YA_RaA
+
+# - Os Computadores Quânticos - por Kurzgesagt
+# https://www.youtube.com/watch?v=JhHMJCUmq28
+
+# - Vídeo - Evolução dos Processadores Intel
+# https://www.youtube.com/watch?v=TqOCC65HkCQ
+
+# - Vídeo - Evolução dos Processadores AMD
+# https://www.youtube.com/watch?v=-S3fm9OAlZ8
+
+# - Vídeo - Como os circuitos realizam uma soma simples
+# https://www.youtube.com/watch?v=wvJc9CZcvBc
+
+# - Vídeo - Transistores - A invenção que mudou o mundo
+# https://www.youtube.com/watch?v=OwS9aTE2Go4
+
+# - Lógica Booleana e portas lógicas
+# https://www.youtube.com/watch?v=gI-qXk7XojA
+
+# - Bases numéricas
+# https://www.youtube.com/watch?v=J5q7s7l2EuI
+
+# - ALU - Unidade lógica e aritmética
+# https://www.youtube.com/watch?v=1I5ZMmrOfnA
+
+# - Simulador - CPU
+# http://www.buthowdoitknow.com/
+
+# - Uma máquina de Turing construída 100% no Minecraft
+# https://www.youtube.com/watch?v=1X21HQphy6I
