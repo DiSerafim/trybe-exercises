@@ -20,3 +20,8 @@ print("Após remover um valor:", myarray)
 
 
 """ Resultado """
+# python3 numpy_array_example.py                                                            130 ⨯ 1 ⚙
+
+# Após adicionar alguns valores:  [5 3 5]
+# Após inserção em índice intermediário:  [5 4 3 5]
+# Após remover um valor: [4 3 5]
