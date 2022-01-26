@@ -257,9 +257,83 @@ array    | a | c | d | e |    posição na memória: 0x01
 # --------------------------------------------------------------------------- #
 
 # Foco de hoje
-# ...Arrays
-""" teminal python3 """
+# ...Arrays(list)
 
+# Estruturas de Dados
+# - Filas (um a um, até chegar no ultimo)
+# - Pilhas (ultimo que entra e o primeiro a sair)
+# - Matriz (semelhante ao jogo da velha(linhas e colunas))
+# - Árvore ()
+# - Hashmap ()
+
+# exemplo_a = [1, 2, 3]
+# exemplo_b = exemplo_a
+# exemplo_a[0] = 9
+# exemplo_a
+# [9, 2, 3]
+# exemplo_b
+# [9, 2, 3]
+
+""" copy """
+# exemplo_b = exemplo_a.copy()
+# exemplo_a[0] = 0
+# exemplo_a
+# [0, 2, 3]
+# exemplo_b
+# [9, 2, 3]
+
+""" LIST(array) e seus poderes """
+# https://docs.python.org/3/tutorial/datastructures.html
+
+list.append('x')        # insere
+list.remove('x')        # remove o 1° elemento encontrado
+list.copy()           # cria uma cópia
+list.sort()           # Ordenar os elementos
+list.insert('i','x')      # 
+list.clear()          # limpa a list(array)
+list.count('x')         # conta o numero de vezes que o elemento se repete
+list.reverse()        # inverte de trás pra frente
+list.pop()            # remove o elemento pelo indice ou o ultimo se o indice não for apontado
+list.extend()         # 
+list.index()          # 
+min(list), max(list)  # pega o valor máximo ou o mínimo
+ 
+# Sequência para resolver algoritmos:
+""" 
+- Entender
+- Pensar
+- Codar
+"""
+
+""" Problema 1- Contém Duplicado """
+# Dado um array de números,
+# verifiquem se o array possui algum elemento duplicado.
+# Sua função deve retornar True
+# se algum valor aparece pelo menos duas vezes no array
+# e False caso todos os elementos sejam distintos.
+""" ./1-duplicado.py """
+
+
+""" Problema 2- Remodele a Matriz """
+# Em softwares científicos,
+# existe uma função bastante útil chamada reshape
+# que é capaz de remodelar a matriz em uma nova com
+# tamanho diferente,porém mantendo os dados originais.
+# Se algum erro ocorrer na remodelagem, a matriz original
+# deve ser retornada.
+""" ./2-remodelagem.py """
+
+
+""" Problema 3- Melhor par de passeios turísticos """
+# Dado um array de números inteiros que representam uma
+# avaliação a respeito de um ponto turístico.
+# E a distância entre seus índices representam a distância
+# entre os pontos turísticos
+# Calcule a máxima pontuação obtida a partir
+# de um par de pontos turísticos.
+# Para calcular a pontuação some as avaliações dos dois
+# pontos e em seguida subtraia a distância entre eles.
+""" ./3-melhorpar.py """
 
 
 # --------------------------------------------------------------------------- #
@@ -343,7 +417,7 @@ array    | a | c | d | e |    posição na memória: 0x01
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 36.2 - <--- / FIM --------------------------------- //
 # ################################ Arrays
-# - Concluído ... ----------------------------------------------------------- #
+# - Concluído \o/ ----------------------------------------------------------- #
 
 
 """ Recursos adicionais (opcional) """
@@ -361,4 +435,3 @@ array    | a | c | d | e |    posição na memória: 0x01
 
 # Documentação do módulo array
 # https://docs.python.org/pt-br/3/library/array.html
-
