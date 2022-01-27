@@ -260,6 +260,61 @@
 # Foco de hoje
 # ...Hashmap e Dict
 
+""" terminal bpython """
+# >>> dicionario = {"BH": ["bux", "gabriel e.", "gleison"],}
+# >>> dicionario["BH"]
+# ['bux', 'gabriel e.', 'gleison']
+# >>> hash("BH")
+# -5396900140779277787
+# >>> hash("BH") % 100
+# 13
+# >>> dicionario["AL"] = ['herculano']
+# >>> dicionario["PP"] = ['vini', 'tulio', 'joao vitor', 'wolf']
+# >>> "BH" in dicionario
+# True
+# >>> "AL" in dicionario
+# True
+# >>> "POA" in dicionario
+# False
+
+# 0(n) && 0(n log n)
+""" ./pair_sum.py """
+
+""" ./compute_order.py """
+
+""" ./hund_thousand_names.py """
+
+""" ./test_compute_order.py """
+
+""" ./thousand_names.py """
+
+# testando o tempo de leitura
+# └─# python3 test_compute_order.py   
+#   
+# > > > tempo entrada pequena: 0.01461611000013363
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # --------------------------------------------------------------------------- #
