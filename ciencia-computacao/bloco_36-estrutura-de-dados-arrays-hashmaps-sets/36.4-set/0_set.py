@@ -342,7 +342,99 @@ A = {1, 2, 3}
 # Foco de hoje
 # ...Set
 
-""" terminal bpython """
+""" DECLARA Conjunto em python """
+meu_conjunto = set()
+
+""" DICT em python """
+meu_conjunto = {}
+meu_conjunto = {'a': 1, 'b': 3, 'c': 4, 'e': 5}  # chave e valor
+
+""" TUPLA em python """
+meu_conjunto = ()
+meu_conjunto = set((1, 2, 5))
+
+""" LIST em python """
+meu_conjunto = []
+
+''' DECLARA Conjunto carregado '''
+meu_conjunto = set([1, 2, 3])
+meu_conjunto = set('Oi')
+meu_conjunto = set(set('Oi'))
+meu_conjunto = {1, 3, 4, 5}  # somente valor
+meu_conjunto = set((1, 2, 5))
+
+''' ADICIONA itens em um conjunto '''
+meu_conjunto = {1, 2, 3}
+meu_conjunto.add(4)
+
+''' REMOVE itens em um conjunto '''
+meu_conjunto = {1, 2, 3, 4}
+meu_conjunto.pop()    # remove um valor aleatoriamente
+meu_conjunto.discard(4)
+meu_conjunto.clear()  # apaga tudo
+
+''' Qual a saida ao criar um conjunto com a string "William"? '''
+meu_conjunto = set('WILLIAM')  # {'W', 'M', 'L', 'A', 'I'}
+
+''' Como UNIR conjuntos '''
+a = {'Arroz', 'Milho'}
+b = {'Feijão', 'Alface'}
+
+a.union(b)
+a | b
+
+''' Intersessão '''
+a = {'Arroz', 'Strogonof', 'Batata'}
+b = {'Feijoada', 'Arroz', 'Batata'}
+
+a & b              # {'Batata', 'Arroz'}
+a.intersection(b)  # {'Batata', 'Arroz'}
+
+''' Diferença '''
+a = {'Arroz', 'Strogonof', 'Batata'}
+b = {'Feijoada', 'Arroz', 'Batata'}
+
+a - b            # {'Strogonof'}
+a.difference(b)  # {'Strogonof'}
+
+''' Diferença Simétrica '''
+a = {'Feijoada', 'Arroz', 'Batata', 'Jiló', 'Sorvete', 'Pimenta'}
+b = {'Jiló', 'Sorvete', 'Pimenta', 'Nutella'}
+
+a ^ b                      # {'Batata', 'Arroz', 'Feijoada', 'Nutella'}
+a.symmetric_difference(b)  # {'Batata', 'Arroz', 'Feijoada', 'Nutella'}
+
+''' Verifica se contém '''
+a = {'Feijoada', 'Arroz', 'Batata', 'Jiló', 'Sorvete', 'Pimenta'}
+
+'Pimenta' in a                 # True
+len(a) > len(a - {'Pimenta'})  # True
+a - {'Pimenta'} < a            # True
+
+''' SUBCONJUNTO (issubset)'''
+alimentos = {'Arroz', 'Maça', 'Goiaba', 'Laranja', 'Feijão'}
+frutas = {'Maça', 'Goiaba', 'Laranja'}
+
+frutas.issubset(alimentos)  # True
+frutas > alimentos          # False
+frutas < alimentos          # True
+
+''' SUPER CONJUNTO (issuperset)'''
+alimentos = {'Arroz', 'Maça', 'Goiaba', 'Laranja', 'Feijão'}
+frutas = {'Maça', 'Goiaba', 'Laranja'}
+
+alimentos.issuperset(frutas)  # True
+alimentos > frutas            # True
+alimentos < frutas            # False
+
+
+''' DESAFIO '''
+
+''' ./1_conjunto_complementar.py '''
+
+''' ./2_amigos_na_escola.py '''
+
+''' ./3_rede_de_amigos.py '''
 
 
 # --------------------------------------------------------------------------- #
