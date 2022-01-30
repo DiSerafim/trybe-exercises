@@ -427,7 +427,28 @@ class SalesReportCSV(SalesReport):
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 33.2 - <--- / FIM --------------------------------- //
 # ################################ Herança, Composição e Interfaces
-# - Concluído ... ----------------------------------------------------------- #
+# - Concluído \o/ ----------------------------------------------------------- #
 
-# Recursos adicionais (opcional)
-"""  """
+
+""" Recursos adicionais (opcional) """
+
+# O que é UML e Diagramas de Caso de Uso: Introdução Prática à UML
+# https://www.devmedia.com.br/o-que-e-uml-e-diagramas-de-caso-de-uso-introducao-pratica-a-uml/23408
+
+# UML - Examples by Types of Diagrams
+# https://www.uml-diagrams.org/index-examples.html
+
+# Composition over inheritance - The MurderRobotDog taxonomy problem
+# https://medium.com/humans-create-software/the-murderrobotdog-taxonomy-problem-767eb1785731
+
+# RailsConf 2015 - Nothing is Something
+# https://www.youtube.com/watch?v=OMPfEXIlTVE
+
+# Live de Python - Composição e métodos mágicos
+# https://www.youtube.com/watch?v=MYaXUrmvrho
+
+# Uncle Bob - The Principles of OOD
+# http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod
+
+# SOLID Object-Oriented Design by Sandi Metz
+# https://www.youtube.com/watch?v=v-2yFMzxqwU
