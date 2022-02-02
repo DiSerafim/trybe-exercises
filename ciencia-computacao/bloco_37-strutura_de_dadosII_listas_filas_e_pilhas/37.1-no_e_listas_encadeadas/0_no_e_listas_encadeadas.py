@@ -261,6 +261,62 @@
 
 """ Agora a prática """
 
+""" Exercício 1: """
+# Aprimorando a classe Lista: nossa classe Lista atende as principais operações que essa TAD nos oferece, mas que tal melhorarmos?
+# Para isso, você deve adicionar os seguintes métodos:
+# a. A operação clear nos permite remover todos os Nodes da lista;
+# b. A operação __get_node_at nos permite acessar o Node em qualquer posição da lista.
+# Após criada as operações anteriores, refatore os seguintes métodos para que utilizem a __get_node_at ante iterações:
+# insert_at ;
+# insert_last ;
+# remove_last ;
+# remove_at ;
+# get_element_at
+""" R= ./ex1.py """
+
+""" Exercício 2: """
+# Nova busca: até o momento nossa estrutura consulta elementos através da posição.
+# Nesta atividade será necessário criar uma função chamada def index_of(self, value), onde ela será responsável por consultar na lista a existência do valor informado e retornar a posição da primeira ocorrência.
+# Caso o valor não exista, considere retornar -1.
+# Esta função deve respeitar a complexidade O(n)
+""" R= ./ex2.py """
+
+""" Exercício 3: """
+# remover duplicatas de uma LinkedList, atividade extraída e adaptada do LeetCode.
+# Nesta atividade será necessário implementar um algoritmo que receba uma LinkedList como argumento e retorne uma nova lista sem elementos duplicados.
+# Esta função deve respeitar a complexidade O(n).
+# Exemplo:
+# # input: 1 -> 1 -> 2
+# # saída: 1 -> 2
+# # input: 1 -> 1 -> 2 -> 3 -> 3
+# # saída: 1 -> 2 -> 3
+""" R= ./ex3.py """
+
+""" Exercício 4: """
+# Remover duplicatas de uma DoublyLinkedList, atividade extraída e adaptada do LeetCode.
+# Nesta atividade será necessário implementar um algoritmo que receba uma DoublyLinkedList como argumento e retorne uma nova lista, sem elementos que possuem mais de uma ocorrência.
+# # input: 1 <-> 1 <-> 2
+# # saída: 2
+# # input: 1 <-> 1 <-> 2 <-> 3 <-> 3
+# # saída: 2
+# # input: 1 <-> 2 <-> 3 <-> 3
+# # saída: 1 <-> 2
+""" R= ./ex4.py """
+
+""" Bônus """
+# Implemente as seguintes TADs, utilizando a lista como a estrutura interna:
+
+""" Exercício 5: """
+# Pilhas: crie uma classe Stack, onde deve conter as operações:
+# push, pop, peek e is_empty
+""" R= ./ex5.py """
+
+
+""" Exercício 6: """
+# Filas: crie uma classe Queue, onde deve conter as operações:
+# enqueue, dequeue, peek e is_empty
+""" R= ./ex6.py """
+
 
 
 # #####################################
@@ -270,4 +326,8 @@
 # - Concluído  ------------------------------------------------------------ #
 
 """ Recursos Adicionais """
-# 
+# #SideNotes - Linked List - Abstract Data Type and Data Structure
+# https://medium.com/@lucasmagnum/sidenotes-linked-list-abstract-data-type-and-data-structure-fd2f8276ab53
+
+# Construindo uma Lista Encadeada em Python
+# https://www.youtube.com/watch?v=jIM87UqOq3g
