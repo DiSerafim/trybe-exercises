@@ -250,6 +250,52 @@
 # para simulação:
 # https://visualgo.net/en/list
 
+# colorir terminal
+# from rich import print
+
+
+""" Insere no início """
+# i = 0
+# v = 8
+
+# Vertex vtx = new Vertex(v)
+# vtx.next = head
+# head = vtx
+# Todo o processo é O(1).
+
+""" Insere no meio """
+# specify both i in [1..N-1] and v =
+
+# i = 4
+# v = 95
+# Vertex pre = head
+# for (k = 0; k < i-1; k++)
+#     pre = pre.next
+
+# Vertex aft = pre.next
+# Vertex vtx = new Vertex(v)
+# vtx.next = aft
+# pre.next = vtx
+# Todo o processo é O(N).
+
+
+""" ARRAY               X                Lista Encadeada """
+
+#   O(1)  Acessar elemento do meio          O(N)
+#   O(N)  Inseri ou apagar dados do meio    O(N)
+#   O(N)  Inseri ou apagar dados do início  O(1)
+#   O(1)  Acessar primeiro elemento         O(1)
+#   O(1)  Acessar último elemento           O(N)
+#   O(1)  Inserir ou apagar dados no fim    O(N)
+
+
+""" ./linked_list_guardian.py """
+
+""" node_double.py """
+
+""" doubly_linked_list.py """
+
+""" linked_list.py """
 
 
 # #####################################
@@ -311,19 +357,17 @@
 # push, pop, peek e is_empty
 """ R= ./ex5.py """
 
-
 """ Exercício 6: """
 # Filas: crie uma classe Queue, onde deve conter as operações:
 # enqueue, dequeue, peek e is_empty
 """ R= ./ex6.py """
 
 
-
 # #####################################
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 37.1 - <--- / FIM --------------------------------- //
 # ########################################## Nó e Listas Encadeadas
-# - Concluído  ------------------------------------------------------------ #
+# - Concluído \o/ ------------------------------------------------------------ #
 
 """ Recursos Adicionais """
 # #SideNotes - Linked List - Abstract Data Type and Data Structure
