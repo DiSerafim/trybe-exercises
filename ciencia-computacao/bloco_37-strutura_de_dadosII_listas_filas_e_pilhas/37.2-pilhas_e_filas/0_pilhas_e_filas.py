@@ -255,6 +255,137 @@ x = 45
 # Foco de hoje
 # ... Pilhas e Filas
 
+''' First in, first out | Lastin, last out '''
+
+'''  QUEUE (fila) '''
+# Filas - Operações
+# - Operações de Fila
+
+# Push | Insere no Fim 🏌
+# Pop  | Remove no início ❌
+# Peek | Visualiza no início 👀
+
+# https://visualgo.net/en
+
+# - Peek (Olhadinha)
+head = [85, 93, 41, 3, 81, 91]
+# if empty return NOT_FOUND
+# return head.item
+# Retorna o valor armazenado na cabeça: 85.
+
+# - Enqueue (Enfileirar)
+head = [85, 93, 41, 3, 81, 91]
+v = 57
+# vtx = new Vertex(v)
+# tail.next = vtx
+# tail = vtx
+# Agora, a tail aponta para o novo vértice também. 85, 93, 41, 3, 81, 91, 57
+
+# - Dequeue (desenfileirar) ou (furão de fila)
+head = [85, 93, 41, 3, 81, 91, 57]
+# if empty, do nothing
+# temp = head
+# head = head.next
+# delete temp
+# Agora, 93, 41, 3, 81, 91, 57
+
+''' ./fila_deque.py '''
+
+''' ./fila_queue_with_deque.py '''
+
+
+''' STACK (pilhas) '''
+# - o útimo que entra é o primeiro que sai
+
+# Pilhas - Operações
+# - Operações de Pilhas
+
+# Push | Insere no Topo 👆
+# Pop  | Remove no Topo  ❌👆
+# Peek | Visualiza Topo  👀👆
+
+# https://visualgo.net/en
+
+# - Peek (Olhadinha)
+header = [60, 31, 65]
+# if empty return NOT_FOUND
+# return head.item
+# Retorna o valor armazenado na header: 60.
+
+# - Push (Empurre)
+header = [23, 60, 31, 65]
+v = 23
+# Vertex vtx = new Vertex(v)
+# vtx.next = head
+# head = vtx
+# Retorna o valor armazenado na header: 23, 60, 31, 65.
+
+# - Pop (excluir)
+header = [23, 60, 31, 65]
+# if empty do nothing:
+#     temp = head
+#     head = head.next
+# delete temp
+# Retorna o valor armazenado na header: 60, 31, 65
+
+
+''' Problema - Validar parênteses '''
+# Criar uma  função chamada is_valid() que receberá uma string formada por (,), [,], { e }.
+# A função deve verificar se os "parênteses", são válidos seguindo as regras:
+# - Os 'caracteres de abertura' devem possuir os 'caracteres de fechamaneto' correspondente;
+# - Os caracteres de abertura devem ser fechados na ordem correta;
+
+# Exemplo:
+str = "()"        # True
+str = "))(("      # False
+str = "()[]{}"    # True
+str = "(())"      # True
+str = "[]"        # True
+str = "(]"        # False
+str = "[[]"       # False
+str = "[[]]"      # True
+str = "{}"        # True
+str = "{{}"       # False
+str = "([)]"      # False
+str = "asdasdasd" # None
+str = "34134345"  # None
+
+''' ./pilha_stack.py '''
+
+''' ./pilha_basebal_game.py '''
+
+
+''' Problema - Jogo de baseball '''
+# Criar uma função que receba uma 'lista de string' e calcule o somatório do total da tardida de baseball.
+# Cada item da lista consiste em uma rodada da partida para determinado time.
+# As regras para se calcular os pontos são as seguintes:
+# - Inteiro: Representa os 'pontos' para a rodada;
+# - +: Os pontos para a rodada será o 'somatório' das 'duas' útimas rodadas válidas;
+# - D: Os pontos para a rodada será igual ao 'dobro' da 'última' rodada válida;
+# - C: Representa que os pontos da 'última rodada' válida devem ser removidos;
+
+# Exemplo:
+str = ['1', '2', '+', 'D', 'C']
+# Rodada 1: Foi feito 1 pontos pelo time
+# Rodada 2: Foi feito 2 pontos pelo time
+# Rodada 3: Foi feito o somatório entre as duas útimas rodadas, dando o valor de 3 pontos na rodada.
+# Rodada 4: Foi dobrado o valor da última rodada válida. Nessa rodada form feitos 6 pontos
+# Rodada 5: Foi removido o valor da última rodada válida, nessa rodada o time perdeu os 6 pontos da última rodada
+# Rodadas: 1 2 3 4 5
+# Saída: 6 pontos(1 + 2 + 3 + 6 - 6)
+''' ./pilha_validate_parenteses.py '''
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # #####################################
@@ -326,7 +457,15 @@ x = 45
 # --------------------------------------------------------------------------- #
 # - > EXERCÍCIO do dia - 37.2 - <--- / FIM --------------------------------- //
 # ########################################## Pilhas e Filas
-# - Concluído ... ------------------------------------------------------------ #
+# - Concluído \o/ ------------------------------------------------------------ #
+
 
 """ Recursos Adicionais """
-#
+# Stacks - A Level Computer Science
+# https://www.youtube.com/watch?v=zIbQf_yR7-U
+
+# Stack - LeetCode
+# https://leetcode.com/tag/stack/
+
+# Stack Data Structure
+# https://www.geeksforgeeks.org/stack-data-structure/
